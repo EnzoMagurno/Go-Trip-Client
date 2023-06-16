@@ -2,6 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/redux/store'
 import { increment, decrement } from '@/redux/Features/counter/counterSlice'
+import FiltersBar from '@/components/Filters/FiltersBar'
 
 export default function Home() {
     const dispatch = useDispatch()
@@ -16,6 +17,8 @@ export default function Home() {
             <button onClick={() => dispatch(decrement())}>Decrementar</button>
             <hr />
             {counter}
+
+            <FiltersBar/>
         </>
     )
 }
