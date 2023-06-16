@@ -1,4 +1,6 @@
 "use client"
+
+
 const vegas =
 	'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/8a/e0/b9/bellagio-las-vegas.jpg?w=1200&h=-1&s=1';
 const italia =
@@ -6,15 +8,15 @@ const italia =
 
 
 
-interface Font {
+export interface Font {
     className: string
 }
 
-interface SliderHoltels {
+export interface Fonts {
     roboto: Font
 }
 
-const SliderHotels: React.FC<SliderHoltels> = ({ roboto }) => {
+const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 
 
 
