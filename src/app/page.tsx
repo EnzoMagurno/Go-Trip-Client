@@ -1,6 +1,7 @@
 
 import Image from 'next/image';
 import React from 'react';
+import SearchBar from "../components/SearchBar/SearchBar"
 import { Josefin_Sans, Roboto } from 'next/font/google';
 
 const josefin = Josefin_Sans({
@@ -20,11 +21,8 @@ const Home = () => {
 				<h4 className={`${josefin.className}  text-gray-500`}>Hello, User</h4>
 				<h3 className={`${roboto.className} text-3xl`}>Where We Go?</h3>
 			</div>
-      <input
-				type='text'
-        placeholder='Search'
-				className={`w-full h-12 rounded-full shadow-input outline-none pl-3 mt-2 mb-2`}
-			/>
+      <SearchBar />
+      
 		</div>
 	);
 };
