@@ -3,8 +3,8 @@ import React from 'react';
 import { Josefin_Sans, Roboto } from 'next/font/google';
 import SliderHotels from "../components/SlidersImages/SliderHotels"
 import NavBarFooter from '@/components/navBarFooter/NavBarFooter';
-import SearchBar from "../components/SearchBar/SearchBar"
-
+import SearchBar from "../components/SearchBar/SearchBar";
+import SliderHotDeals from  "../components/SlidersImages/SliderHotDeals";
 const josefin = Josefin_Sans({
   weight: ['400'],
   subsets: ['latin'],
@@ -26,6 +26,7 @@ const Home = () => {
       
       <main>
         <SliderHotels roboto={roboto} />
+        <SliderHotDeals roboto={roboto}/>
       </main>
 
       <footer className=' bg-slate-600'>

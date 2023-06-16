@@ -23,7 +23,8 @@ module.exports = {
         iconsPurple: "#3F0071F7"
       },
       fontSize: {
-        "little": "10px"
+        "little": "10px",
+        "subTitle": "20px"
       }
   
     },

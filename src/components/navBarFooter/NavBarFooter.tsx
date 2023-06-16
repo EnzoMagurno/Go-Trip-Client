@@ -5,7 +5,7 @@ import {
 	AiOutlineMail,
 	AiOutlineUser,
 } from 'react-icons/ai';
-
+import { BsCalendarCheck } from "react-icons/bs"
 const fStext = 'text-sm';
 
 const NavBarFooter = () => {
@@ -31,8 +31,8 @@ const NavBarFooter = () => {
 
 			<Link href=''>
 				<div className='flex justify-center items-center  h-full flex-wrap'>
-					<AiOutlineMail className='w-full flex items-center justify-center' />
-					<p className={`${fStext} w-fullflex items-center justify-center`}>
+					<BsCalendarCheck className='w-full text-2xl flex items-center justify-center' />
+					<p className={`${fStext} w-full flex items-center justify-center`}>
 						Reservation
 					</p>
 				</div>
