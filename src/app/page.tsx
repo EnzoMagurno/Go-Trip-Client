@@ -1,5 +1,4 @@
 
-import Image from 'next/image';
 import React from 'react';
 import { Josefin_Sans, Roboto } from 'next/font/google';
 import SliderHotels from "../components/SlidersImages/SliderHotels"
@@ -29,10 +28,13 @@ const Home = () => {
         <SliderHotels roboto={roboto} />
       </main>
 
-
-    <NavBarFooter />
+      <footer className=' bg-slate-600'>
+           <NavBarFooter />
+      </footer>
+ 
 		</div>
 	);
+  }
 
 
 export default Home;

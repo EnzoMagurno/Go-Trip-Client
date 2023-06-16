@@ -1,15 +1,51 @@
-import Link from "next/link"
-import { AiOutlineHome, AiOutlineHeart, AiOutlineMail, AiOutlineUser } from 'react-icons/ai'
+import Link from 'next/link';
+import {
+	AiOutlineHome,
+	AiOutlineHeart,
+	AiOutlineMail,
+	AiOutlineUser,
+} from 'react-icons/ai';
 
+const fStext = 'text-sm';
 
 const NavBarFooter = () => {
-    return (
-        <nav className='center flex justify-evenly rounded-full shadow-input pt-5 pb-5 text-3xl fixed bottom-0 w-full'>
-            <Link href='' ><AiOutlineHome /></Link>
-            <Link href='' ><AiOutlineHeart /></Link>
-            <Link href='' ><AiOutlineMail /></Link>
-            <Link href='' ><AiOutlineUser /></Link>
-        </nav>
-    )
-}
-export default NavBarFooter
+	return (
+		<nav className=' flex justify-evenly text-iconsPurple shadow-input pt-3 pb-3 text-3xl fixed left-0 bottom-0 w-full '>
+			<Link href=''>
+				<div className='flex justify-center items-center h-full flex-wrap'>
+					<AiOutlineHome className='w-full flex items-center justify-center' />
+					<p className={`${fStext} w-fullflex items-center justify-center`}>
+						Home
+					</p>
+				</div>
+			</Link>
+
+			<Link href=''>
+				<div className='flex justify-center items-center h-full flex-wrap'>
+					<AiOutlineHeart className='w-full flex items-center justify-center' />
+					<p className={`${fStext} w-fullflex items-center justify-center`}>
+						Favorites
+					</p>
+				</div>
+			</Link>
+
+			<Link href=''>
+				<div className='flex justify-center items-center  h-full flex-wrap'>
+					<AiOutlineMail className='w-full flex items-center justify-center' />
+					<p className={`${fStext} w-fullflex items-center justify-center`}>
+						Reservation
+					</p>
+				</div>
+			</Link>
+			<Link href=''>
+				<div className='flex justify-center items-center h-full flex-wrap'>
+					<AiOutlineUser className='w-full flex items-center justify-center' />
+					<p className={`${fStext} w-fullflex items-center justify-center`}>
+						Profile
+					</p>
+				</div>
+			</Link>
+		</nav>
+	);
+};
+export default NavBarFooter;
