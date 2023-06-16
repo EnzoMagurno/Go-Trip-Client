@@ -16,8 +16,16 @@ module.exports = {
         "celS": "350px"
       },
       boxShadow: {
-        input: "0 1.5px 2px 2px rgba(0,0,0,0.2)"
+        input: "0 1.5px 2px 2px rgba(0,0,0,0.2)",
+        img: "0 2px 3px 2px rgba(0,0,0,0.3)"
+      },
+      colors: {
+        iconsPurple: "#3F0071F7"
+      },
+      fontSize: {
+        "little": "10px"
       }
+  
     },
   },
   plugins: [],
