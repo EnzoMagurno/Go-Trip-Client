@@ -1,6 +1,7 @@
 
 import Image from 'next/image';
 import React from 'react';
+import SearchBar from "../components/SearchBar/SearchBar"
 import { Josefin_Sans, Roboto } from 'next/font/google';
 import NavBarFooter from '@/components/navBarFooter/NavBarFooter';
 
@@ -15,6 +16,7 @@ const roboto = Roboto({
 });
 
 const Home = () => {
+
   return (
     <div className='p-5 h-screen box-border'>
       <div className='pt-2 pb-2 mt-12'>
@@ -29,6 +31,8 @@ const Home = () => {
       <NavBarFooter />
     </div>
   );
+
+
 };
 
 export default Home;
