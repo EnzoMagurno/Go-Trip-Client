@@ -12,5 +12,4 @@ const NavBarFooter = () => {
         </nav>
     )
 }
-
 export default NavBarFooter
