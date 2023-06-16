@@ -5,6 +5,9 @@ const page = () => {
     <>
       <h1>Go-Trip</h1>
       <Link href={'/testing'}>Testing Redux</Link>
+      <nav>
+
+      </nav>
     </>
   )
 }
