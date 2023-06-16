@@ -5,6 +5,8 @@ import SliderHotels from "../components/SlidersImages/SliderHotels"
 import NavBarFooter from '@/components/navBarFooter/NavBarFooter';
 import SearchBar from "../components/SearchBar/SearchBar";
 import SliderHotDeals from  "../components/SlidersImages/SliderHotDeals";
+import HotSaleSlider from "../components/SlidersImages/HotSaleSlider";
+import FiltersBar from "../components/Filters/FiltersBar";
 const josefin = Josefin_Sans({
   weight: ['400'],
   subsets: ['latin'],
@@ -23,10 +25,12 @@ const Home = () => {
 				<h3 className={`${roboto.className} text-3xl`}>Where We Go?</h3>
 			</div>
       <SearchBar />
+      <FiltersBar />
       
       <main>
         <SliderHotels roboto={roboto} />
         <SliderHotDeals roboto={roboto}/>
+        <HotSaleSlider roboto={roboto}/>
       </main>
 
       <footer className=' bg-slate-600'>

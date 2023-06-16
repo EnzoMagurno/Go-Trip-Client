@@ -20,7 +20,8 @@ module.exports = {
         img: "0 2px 3px 2px rgba(0,0,0,0.3)"
       },
       colors: {
-        iconsPurple: "#3F0071F7"
+        iconsPurple: "#3F0071F7",
+        orangeBg: "#FF5903",
       },
       fontSize: {
         "little": "10px",

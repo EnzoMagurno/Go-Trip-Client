@@ -8,7 +8,7 @@ const {RangePicker} = DatePicker
 const DatePick= () => {
 
     const [dates, setDates] = useState([])
-    console.log(dates)
+    /* console.log(dates) */
 
     return (
         <div style={{margin:20}}>
