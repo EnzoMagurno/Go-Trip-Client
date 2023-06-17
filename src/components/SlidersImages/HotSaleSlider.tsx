@@ -6,7 +6,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 			<div className='flex flex-col justify-between'>
 				
 
-				<div className='relative h-52 shadow-img rounded-3xl'>
+				<div className='relative h-56 shadow-img rounded-3xl'>
 					<img
 						src='https://atomarpormundo.com/wp-content/uploads/2021/12/alojamiento-en-paris-citadines-1-1.jpg'
 						alt=''
@@ -41,7 +41,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
                     </div> 
                 </div>
 
-				<div className='relative  h-52 shadow-img rounded-3xl'>
+				<div className='relative  h-56 shadow-img rounded-3xl'>
 					<img
 						src='https://www.mexicodestinos.com/blog/wp-content/uploads/2013/07/ventanas-al-paraiso-los-cabos.jpeg'
 						alt=''
