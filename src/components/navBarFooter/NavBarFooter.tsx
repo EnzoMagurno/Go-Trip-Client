@@ -10,7 +10,7 @@ const fStext = 'text-sm';
 
 const NavBarFooter = () => {
 	return (
-		<nav className=' flex justify-evenly text-iconsPurple shadow-input pt-3 pb-3 text-3xl fixed left-0 bottom-0 w-full '>
+		<nav className=' flex justify-evenly text-iconsPurple bg-white shadow-input pt-3 pb-3 text-3xl fixed left-0 bottom-0 w-full '>
 			<Link href=''>
 				<div className='flex justify-center items-center h-full flex-wrap'>
 					<AiOutlineHome className='w-full flex items-center justify-center' />
