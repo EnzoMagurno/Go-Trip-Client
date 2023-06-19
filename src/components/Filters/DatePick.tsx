@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import dayjs, {Dayjs} from 'dayjs';
 
 
-TODO: //Me Falta traer los datos y hacer el filtro de la fecha
+//TODO: Me Falta traer los datos y hacer el filtro de la fecha
 
 const DatePick= () => {
 
