@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "back2": "json-server --watch db/rooms.json --port 5001"
+    "back2": "json-server --watch db/rooms.json --port 5001",
     "back": "json-server --watch simulationDB/hotels.json --port 4000"
   },
   "dependencies": {
