@@ -23,7 +23,7 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 
 
 	return (
-		<div className='grid grid-cols-2 gap-5 h-52 mt-3'>
+		<div className='grid grid-cols-2 gap-5 h-56 mt-3'>
 			<div className={`w-full relative shadow-img rounded-3xl`}>
                 <div className='bg-black absolute z-10 w-full h-full opacity-30 rounded-3xl'></div>
                     <img
