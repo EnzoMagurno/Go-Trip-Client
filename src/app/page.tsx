@@ -21,6 +21,7 @@ const roboto = Roboto({
 
 const Home = () => {
 
+
   const hotels = useSelector(selectHotelState)
 
   useEffect(() => {
@@ -30,31 +31,32 @@ const Home = () => {
 
 	return (
 		<div className={`p-5 pb-24 dark:bg-neutral-900`}>
+
       <NavBar />
-			<div className='pt-2 pb-2 mt-20'>
-				<h4 className={`${josefin.className}  text-gray-500 dark:text-blueSky`}>Hello, User</h4>
-				<h3 className={`${roboto.className} text-3xl dark:text-white`}>Where We Go?</h3>
-			</div>
+      <div className='pt-2 pb-2 mt-20'>
+        <h4 className={`${josefin.className}  text-gray-500 dark:text-blueSky`}>Hello, User</h4>
+        <h3 className={`${roboto.className} text-3xl dark:text-white`}>Where We Go?</h3>
+      </div>
       <SearchBar />
       <FiltersBar />
-      
+
       <main>
+
         {
           hotels.length 
           ? <ContainerResults roboto={roboto} />
           :  <SliderMain roboto={roboto}/>
         }
        
-        
       </main>
 
       <footer className=' bg-slate-600'>
-           <NavBarFooter />
+        <NavBarFooter />
       </footer>
- 
-		</div>
-	);
-  }
+
+    </div>
+  );
+}
 
 
 export default Home;
