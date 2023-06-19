@@ -4,7 +4,7 @@ const SliderHotDeals: React.FC<Fonts> = ({ roboto }) => {
 	return (
 		<div className=' mt-3 mb-3'>
 			<h2 className={`${roboto.className} text-subTitle mb-3`}>Hot Deals</h2>
-			<div className='h-52 relative'>
+			<div className='h-56 relative'>
 				<div className='absolute bottom-0 text-white w-full pl-3 pr-3 h-12 '>
 					<div className='bg-slate-600 w-full h-full left-0 opacity-50 absolute rounded-bl-3xl rounded-br-3xl'></div>
 					<div className='flex justify-between'>
