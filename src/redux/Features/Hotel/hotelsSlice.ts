@@ -19,7 +19,9 @@ const hotelSlice = createSlice({
         error: null
     },
     reducers: {
-
+      getHotelsCoincidence: (state, action) => {
+        state.copyHotelData = state.hotelData.filter(hotel =>  hotel.city_id == action.payload)
+      }
     },
     extraReducers: (builder) => {
         builder
@@ -28,7 +30,8 @@ const hotelSlice = createSlice({
         })
         .addCase(fetchingHotel.fulfilled, (state, action) => {
             state.hotelData = action.payload
-            state.copyHotelData = action.payload
+            console.log(action.payload)
+            
         })
         .addCase(fetchingHotel.rejected, (state, action) => {
             state.error = action.error.message || null
@@ -40,4 +43,4 @@ const hotelSlice = createSlice({
 
 export default hotelSlice;
 export const selectHotelState = (state) => state.hotel.copyHotelData
-/* export const {  } = hotelSlice.actions */
+export const { getHotelsCoincidence } = hotelSlice.actions 

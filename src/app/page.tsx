@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Josefin_Sans, Roboto } from 'next/font/google';
 import NavBarFooter from '@/components/navBarFooter/NavBarFooter';
 import SearchBar from "../components/SearchBar/SearchBar";
@@ -7,8 +7,11 @@ import SliderMain from "../components/SlidersImages/SliderMain";
 import FiltersBar from "../components/Filters/FiltersBar";
 import NavBar from "../components/NavBarTop/NavBarTop";
 import ContainerResults from "../components/ContainerResults/ContainersResults";
-import { useSelector } from 'react-redux';
-import { selectHotelState } from '@/redux/Features/Hotel/hotelsSlice';
+import { fetchingCity, selectCityState } from "../redux/Features/Citys/CitySlice";
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchingHotel, selectHotelState } from '../redux/Features/Hotel/hotelsSlice';
+
+
 const josefin = Josefin_Sans({
   weight: ['400'],
   subsets: ['latin'],
@@ -19,14 +22,23 @@ const roboto = Roboto({
   subsets: ['cyrillic'],
 });
 
+
 const Home = () => {
 
-
-  const hotels = useSelector(selectHotelState)
+  const dispatch = useDispatch()
+  const cityResults = useSelector(selectCityState)
+  const hotelResults = useSelector(selectHotelState)
 
   useEffect(() => {
 
-  }, [hotels.length])
+
+  
+    dispatch(fetchingCity())
+
+    dispatch(fetchingHotel())
+
+
+  }, [cityResults.length, hotelResults.length])
 
 
 	return (
@@ -41,12 +53,11 @@ const Home = () => {
       <FiltersBar />
 
       <main>
-
-        {
-          hotels.length 
+          {
+          hotelResults.length 
           ? <ContainerResults roboto={roboto} />
           :  <SliderMain roboto={roboto}/>
-        }
+        } 
        
       </main>
 

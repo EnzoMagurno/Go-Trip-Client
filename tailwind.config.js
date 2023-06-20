@@ -29,7 +29,8 @@ module.exports = {
         iconsPurple: "#3F0071F7",
         orangeBg: "#FF5903",
         darkBlue: "#082032",
-        blueSky: "#4AAFFF"
+        blueSky: "#4AAFFF",
+        blueDark: "#3D446B"
       },
       fontSize: {
         "little": "10px",

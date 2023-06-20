@@ -12,6 +12,7 @@ const ContainerResults = ({roboto}) => {
         <div className="grid grid-rows-6 gap-5" >
             {
                 hotels.map(hotel => <ContainerResult 
+                    id={hotel.hotel_id}
                     name={hotel.hotel_name} 
                     img={hotel.photo1} 
                     cost={hotel.rates_from}
