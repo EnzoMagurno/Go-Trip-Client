@@ -1,5 +1,9 @@
+import Link from "next/link";
+
 const ContainerResult = (props) => {
+
 	const { 
+        id,
         name, 
         img, 
         reviews, 
@@ -13,7 +17,10 @@ const ContainerResult = (props) => {
     
     
     return (
-		<div className='relative h-60'>
+        <>
+        <Link href={`detail/${id}`}>
+        
+        	<div className='relative h-60'>
             
 			<img src={img} alt={name} className=' w-full rounded-3xl h-full shadow-img' />
 			<div className='absolute bottom-0 text-white p-4 flex  w-full'>
@@ -30,6 +37,9 @@ const ContainerResult = (props) => {
                 </div>
 			</div>
 		</div>
+        </Link>
+        </>
+	
 	);
 };
 
