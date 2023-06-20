@@ -67,7 +67,7 @@ const hotelId =  async (id: number) => {
 export default  async function Detail({params}) {
     const {id} = params
     const response =  await hotelId(id)
-    const hotel = response.find(h => h.country_id == id)
+    const hotel = response.find(h => h.hotel_id == id)
     console.log(hotel);
     
     
