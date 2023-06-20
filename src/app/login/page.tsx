@@ -1,6 +1,7 @@
 import GoTripLogo from '../../../public/Go-Trip-logo.svg'
 import Image from 'next/image'
 import { BsArrowRight } from 'react-icons/bs'
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import Link from 'next/link'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
 
@@ -40,7 +41,8 @@ const page = () => {
 
             <div className='pl-5 pr-5 flex flex-col'>
                 <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 `} type="text" placeholder='Email' />
-                <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3`} type="text" placeholder='Password' />
+                <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3`} type="password" placeholder='Password' />
+                <AiOutlineEye />
             </div>
 
             <div className='flex justify-around mt-4 '>
