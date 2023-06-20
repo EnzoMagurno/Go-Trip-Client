@@ -1,0 +1,38 @@
+{
+    "rooms":[
+        {
+            "id":1,
+            "name": "Cuarto Maravilla",
+            "description": "El hotel mas maravilloso",
+            "capacidad" : "4",
+            "Booking": ["25-06-2023","27-06-2023" ]
+        },
+        {
+            "id":2,
+            "name": "Cuarto Thor",
+            "description": "El cuarto de Rayo",
+            "capacidad" : "1",
+            "Booking": ["30-06-2023","02-07-2023" ]
+        },
+        {
+            "id":3,
+            "name": "Cuarto de Hulk",
+            "description": "El cuarto verde",
+            "capacidad" : "2",
+            "Booking": ["06-08-2023","07-08-2023" ]
+        },
+        {
+            "id":4,
+            "name": "El cuarto cuarto mas tecnologico",
+            "capacidad" : "4",
+            "Booking": ["26-07-2023","29-07-2023" ]
+        },
+        {
+            "id":5,
+            "name": "Cuarto de Henry",
+            "description": "Lleno de Henrys",
+            "capacidad" : "6",
+            "Booking": ["21-09-2023","27-09-2023" ]
+        }
+    ]
+}
