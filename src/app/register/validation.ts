@@ -40,8 +40,8 @@ const validation = (form: FormState): Errors => {
 
 
 
-    if (!/^[A-Za-z0-9\s-]+$/.test(form.postalCode)) {
-        errors.postalCode = "Invalid postal code";
+    if (!form.postalCode) {
+        errors.postalCode = "Please introduce a Postal Code";
     }
     else {
         errors.postalCode = "";
