@@ -58,7 +58,9 @@ const page = () => {
             [e.target.name]: e.target.value
         }))
     }
-    console.log(form.country);
+
+    console.log(errors);
+
     const selectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setForm({
             ...form,
@@ -122,10 +124,14 @@ const page = () => {
                     </select>
 
                     <label className={`${josefin.className}`} htmlFor="postalCodeInput">Postal code (Optional)</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `} type="text" placeholder='Postal Code' id='postalCodeInput' autoComplete='off' />
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                        type="text"
+                        placeholder='Postal Code'
+                        id='postalCodeInput'
+                        autoComplete='off'
+                        onChange={handleChange} />
 
                     <label className={`${josefin.className}`} htmlFor='phone'>Phone number</label>
-
                     <div>
                         <select className={`${josefin.className} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3`} id='select'>
                             {phoneCode.map(phone => (
@@ -133,22 +139,48 @@ const page = () => {
                             ))}
                         </select>
 
-                        <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2`} type="number" placeholder='Phone Number' id='phone' autoComplete='off' />
+                        <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2`}
+                            type="number"
+                            placeholder='Phone Number'
+                            id='phone'
+                            autoComplete='off' />
                     </div>
 
                     <label className={`${josefin.className}`} htmlFor="email">Email adress</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `} type="email" placeholder='Email address' id='email' autoComplete='off' />
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                        type="email"
+                        placeholder='Email address'
+                        id='email'
+                        autoComplete='off' />
 
                     <label className={`${josefin.className}`} htmlFor="password">Password</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `} type="password" placeholder='Create password' id='password' autoComplete='off' />
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                        type="password"
+                        placeholder='Create password'
+                        id='password'
+                        autoComplete='off' />
 
                     <label className={`${josefin.className}`} htmlFor="confirmPassword">Confirm password</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `} type="password" placeholder='Confirm password' id='confirmPassword' autoComplete='off' />
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                        type="password"
+                        placeholder='Confirm password'
+                        id='confirmPassword'
+                        autoComplete='off' />
                 </form>
             </div>
 
             {/* //?SHOW ERRORS ON SCREEN */}
-
+            {Object.keys(errors).length > 0 && (
+                <div className='sticky bottom-0 bg-white border-t-[3px]'>
+                    <div className='flex justify-center mt-2'>
+                        <ul className='text-red-500'>
+                            {Object.values(errors).map((error, index) => (
+                                <li key={index}>{error}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
 
 
             {/* //!STICKY DIV SIGN UP */}
