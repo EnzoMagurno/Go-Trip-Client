@@ -5,7 +5,7 @@ import { BsArrowLeftShort } from 'react-icons/bs'
 import Link from 'next/link'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
 import { useState, useEffect } from 'react'
-import React from 'react'
+import React, {MouseEventHandler} from 'react'
 import { countries } from 'countries-list'
 import validation from './validation'
 import { Errors } from './validation'
@@ -19,14 +19,15 @@ const page = () => {
 
     const [countriesList, setCountriesList] = useState<string[]>([])
     const [phoneCode, setPhoneCode] = useState<string[]>([])
+    const [disabled, setDisabled] = useState<boolean>(true);
+    const [focusedField, setFocusedField] = useState<string | null>(null);
 
-    useEffect(() => {
-        const optionsCountries: string[] = listOfCountries.map(country => country.name)
-        const optionsPhone: string[] = listOfCountries.map(country => country.phone)
-        const phoneSet: string[] = [...new Set(optionsPhone)].sort((a: string, b: string) => parseInt(a, 10) - parseInt(b, 10));
-        setPhoneCode(phoneSet)
-        setCountriesList(optionsCountries)
-    }, [])
+    const optionsCountries: string[] = listOfCountries.map(country => country.name)
+    const optionsPhone: string[] = listOfCountries.map(country => country.phone)
+    const phoneSet: string[] = [...new Set(optionsPhone)].sort((a: string, b: string) => parseInt(a, 10) - parseInt(b, 10));
+
+
+
 
     interface FormState {
         name: string;
@@ -49,6 +50,15 @@ const page = () => {
         email: ''.trim(),
         password: ''
     });
+
+    useEffect(() => {
+
+        setPhoneCode(phoneSet)
+        setCountriesList(optionsCountries)
+        buttonStatus()
+
+
+    }, [form])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({
@@ -91,6 +101,19 @@ const page = () => {
         }
     };
 
+    const buttonStatus = () => {
+        if (!form.name || !form.country || !form.email || !form.password || !form.phone || !form.phoneCode || errors.name || errors.country || errors.email || errors.password || errors.phone || errors.phoneCode ){
+            setDisabled(true)
+            // console.log(disabled) 
+        }else{
+            setDisabled(false)
+        }
+    }
+
+    const handleClick = (e:MouseEventHandler<HTMLButtonElement>) =>{
+        console.log(form)
+    } 
+
     return (
         <>
             <div className='overflow-y-auto'>
@@ -119,6 +142,7 @@ const page = () => {
                     </p>
                 </div>
 
+{/* NAME */}
                 <form className='pl-5 pr-5 flex flex-col'>
                     <label className={`${josefin.className}`} htmlFor="nameInput">Full name</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
@@ -131,6 +155,7 @@ const page = () => {
 
                     {errors.name ? <li className='text-red-400'>{errors.name}</li> : null}
 
+{/* COUNTRIES */}
                     <label className={`${josefin.className}`} htmlFor="countryInput">Country/Region</label>
                     <select className={`border-2 rounded-xl pt-2 w-1/2 my-2 pl-3 py-3 pb-3 `}
                         name='country'
@@ -144,7 +169,8 @@ const page = () => {
                     </select>
 
                     {errors.country ? <li className='text-red-400'>{errors.country}</li> : null}
-
+                    
+{/* POSTAL */}
                     <label className={`${josefin.className}`} htmlFor="postalCodeInput">Postal code (Optional)</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
                         type="text"
@@ -156,6 +182,8 @@ const page = () => {
 
                     {errors.postalCode ? <li className='text-red-400'>{errors.postalCode}</li> : null}
 
+
+{/* PHONE */}
                     <label className={`${josefin.className}`} htmlFor='phone'>Phone number</label>
                     <div>
                         <div>
@@ -164,14 +192,13 @@ const page = () => {
                                 name='phoneCode'
                                 onChange={phoneHandler}
                             >
-                                <option className={`${josefin.className}`} value="">Select lada</option>
+                                <option className={`${josefin.className}`} value="code">Code</option>
                                 {phoneCode.map(phone => (
                                     <option className={`${josefin.className}`} key={phone}>
                                         +{phone}
                                     </option>
                                 ))}
                             </select>
-                            {errors.phoneCode ? <li className='text-red-400'>{errors.phoneCode}</li> : null}
                             <input
                                 className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2`}
                                 type="number"
@@ -183,9 +210,11 @@ const page = () => {
                             />
                         </div>
                     </div>
-
+                    {errors.phoneCode ? <li className='text-red-400'>{errors.phoneCode}</li> : null}
                     {errors.phone ? <li className='text-red-400'>{errors.phone}</li> : null}
 
+
+{/* EMAIL */}
                     <label className={`${josefin.className}`} htmlFor="email">Email adress</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
                         type="email"
@@ -196,6 +225,9 @@ const page = () => {
                         autoComplete='off' />
 
                     {errors.email ? <li className='text-red-400'>{errors.email}</li> : null}
+
+
+{/* PASSWORD */}
 
                     <label className={`${josefin.className}`} htmlFor="password">Password</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
@@ -211,10 +243,19 @@ const page = () => {
                 </form>
             </div>
 
+{/* SIGN BUTTON */}
+
             {/* //!STICKY DIV SIGN UP */}
             <div className='sticky inset-x-0 bottom-0 bg-white border-t-[3px] '>
                 <div className='flex justify-center mt-5 items-center'>
-                    <button onClick={() => console.log(form)} className='bg-[#3F0071] disabled text-white font-semibold py-4 px-4 rounded-full w-[85%]'>Sign up</button>
+                    <button 
+                    className={`${disabled ? `bg-[#8888]` : `bg-[#3F0071]`} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
+                    name='signButton' 
+                    onClick={(e:any) => {handleClick(e)}}
+                    disabled={disabled}
+                    >
+                    Sign up
+                    </button>
                 </div>
 
                 <div className='flex justify-center mt-3 items-center'>

@@ -19,16 +19,25 @@ interface Errors {
 const validation = (form: FormState): Errors => {
     const errors: Errors = {}
 
+
+//!Name
+
+
+
     if (!form.name) {
         errors.name = "Empty field"
     }
+
+    if (!form.name.includes(" ")) {
+        errors.name = "Please fill your full name";
+      }
+
     if (!/^[a-zA-ZÀ-ÿ']+([a-zA-ZÀ-ÿ\s']*?[a-zA-ZÀ-ÿ]+)*$/u.test(form.name)) {
         errors.name = "Only letters and spaces are allowed";
     }
-    else {
-        errors.name = "";
-    }
 
+
+//!Country
 
     if (!form.country) {
         errors.country = "Please select a country";
@@ -37,6 +46,7 @@ const validation = (form: FormState): Errors => {
         errors.country = "";
     }
 
+//!Postal
 
     if (!form.postalCode) {
         errors.postalCode = "Please introduce a Postal Code";
@@ -48,6 +58,7 @@ const validation = (form: FormState): Errors => {
         errors.postalCode = "";
     }
 
+//!Phone
 
     if (!form.phone) {
         errors.phone = "Please introduce a phone number";
@@ -59,6 +70,12 @@ const validation = (form: FormState): Errors => {
         errors.phone = "";
     }
 
+    if (form.phoneCode==="") {
+        errors.phoneCode = "Please select a valid code";
+    }
+
+//!Email
+
     if (!form.email.length) {
         errors.email = "Empty field";
     }
@@ -69,6 +86,10 @@ const validation = (form: FormState): Errors => {
     else {
         errors.email = "";
     }
+
+
+//!Password
+
 
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/u.test(form.password)) {
         if (!/^[a-zA-Z0-9äöüÄÖÜ]*$/.test(form.password)) {
