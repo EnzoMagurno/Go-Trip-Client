@@ -1,7 +1,7 @@
 'use client'
 import GoTripLogo from '../../../public/Go-Trip-logo.svg'
 import Image from 'next/image'
-import { BsArrowRight, BsArrowLeftShort } from 'react-icons/bs'
+import { BsArrowLeftShort } from 'react-icons/bs'
 import Link from 'next/link'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
 import { useState, useEffect } from 'react'
@@ -10,11 +10,11 @@ import { countries } from 'countries-list'
 import validation from './validation'
 import { Errors } from './validation'
 
-
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] })
 const listOfCountries = Object.values(countries)
+
 const page = () => {
 
     const [countriesList, setCountriesList] = useState<string[]>([])
@@ -24,27 +24,29 @@ const page = () => {
         const optionsCountries: string[] = listOfCountries.map(country => country.name)
         const optionsPhone: string[] = listOfCountries.map(country => country.phone)
         const phoneSet: string[] = [...new Set(optionsPhone)].sort((a: string, b: string) => parseInt(a, 10) - parseInt(b, 10));
-        setCountriesList(optionsCountries)
         setPhoneCode(phoneSet)
+        setCountriesList(optionsCountries)
     }, [])
-
 
     interface FormState {
         name: string;
         country: string;
         postalCode: string;
+        phoneCode: string;
         phone: string;
         email: string;
         password: string;
     }
 
     const [errors, setErrors] = useState<Errors>({})
+
     const [form, setForm] = useState<FormState>({
         name: '',
         country: '',
         postalCode: '',
+        phoneCode: '',
         phone: '',
-        email: '',
+        email: ''.trim(),
         password: ''
     });
 
@@ -59,8 +61,6 @@ const page = () => {
         }))
     }
 
-    console.log(errors);
-
     const selectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setForm({
             ...form,
@@ -71,6 +71,26 @@ const page = () => {
             [e.target.name]: e.target.value
         }))
     }
+
+    const phoneHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedPhoneLada = e.target.value;
+        const phoneNumber = form.phone;
+        if (phoneNumber && phoneNumber.startsWith("+")) {
+            const extractedPhoneNumber = phoneNumber.slice(form.phoneCode.length);
+            const updatedPhone = `${selectedPhoneLada}${extractedPhoneNumber}`;
+            setForm(() => ({
+                ...form,
+                phoneCode: selectedPhoneLada,
+                phone: updatedPhone,
+            }));
+        } else {
+            setForm(() => ({
+                ...form,
+                phoneCode: selectedPhoneLada,
+            }));
+        }
+    };
+
     return (
         <>
             <div className='overflow-y-auto'>
@@ -107,86 +127,94 @@ const page = () => {
                         placeholder='Full name'
                         id='nameInput'
                         name='name'
-                        value={form.name}
                         autoComplete='off' />
+
+                    {errors.name ? <li className='text-red-400'>{errors.name}</li> : null}
 
                     <label className={`${josefin.className}`} htmlFor="countryInput">Country/Region</label>
                     <select className={`border-2 rounded-xl pt-2 w-1/2 my-2 pl-3 py-3 pb-3 `}
                         name='country'
                         autoComplete='off'
                         onChange={selectChange}
-                        value={form.country}
                         id="countryInput">
-                        <option>Select a country</option>
+                        <option value='' className={`${josefin.className}`}>Select a country</option>
                         {countriesList.sort().map(country => (
-                            <option key={country} value={country}>{country}</option>
+                            <option className={`${josefin.className}`} key={country} value={country}>{country}</option>
                         ))}
                     </select>
+
+                    {errors.country ? <li className='text-red-400'>{errors.country}</li> : null}
 
                     <label className={`${josefin.className}`} htmlFor="postalCodeInput">Postal code (Optional)</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
                         type="text"
+                        name='postalCode'
                         placeholder='Postal Code'
                         id='postalCodeInput'
                         autoComplete='off'
                         onChange={handleChange} />
 
+                    {errors.postalCode ? <li className='text-red-400'>{errors.postalCode}</li> : null}
+
                     <label className={`${josefin.className}`} htmlFor='phone'>Phone number</label>
                     <div>
-                        <select className={`${josefin.className} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3`} id='select'>
-                            {phoneCode.map(phone => (
-                                <option key={phone} value={phone}>+{phone}</option>
-                            ))}
-                        </select>
-
-                        <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2`}
-                            type="number"
-                            placeholder='Phone Number'
-                            id='phone'
-                            autoComplete='off' />
+                        <div>
+                            <select
+                                className={`${josefin.className} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3`}
+                                name='phoneCode'
+                                onChange={phoneHandler}
+                            >
+                                <option className={`${josefin.className}`} value="">Select lada</option>
+                                {phoneCode.map(phone => (
+                                    <option className={`${josefin.className}`} key={phone}>
+                                        +{phone}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.phoneCode ? <li className='text-red-400'>{errors.phoneCode}</li> : null}
+                            <input
+                                className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2`}
+                                type="number"
+                                name='phone'
+                                placeholder='Phone Number'
+                                id='phone'
+                                onChange={handleChange}
+                                autoComplete='off'
+                            />
+                        </div>
                     </div>
+
+                    {errors.phone ? <li className='text-red-400'>{errors.phone}</li> : null}
 
                     <label className={`${josefin.className}`} htmlFor="email">Email adress</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
                         type="email"
+                        name='email'
+                        onChange={handleChange}
                         placeholder='Email address'
                         id='email'
                         autoComplete='off' />
 
+                    {errors.email ? <li className='text-red-400'>{errors.email}</li> : null}
+
                     <label className={`${josefin.className}`} htmlFor="password">Password</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
                         type="password"
+                        name='password'
+                        onChange={handleChange}
                         placeholder='Create password'
                         id='password'
                         autoComplete='off' />
 
-                    <label className={`${josefin.className}`} htmlFor="confirmPassword">Confirm password</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
-                        type="password"
-                        placeholder='Confirm password'
-                        id='confirmPassword'
-                        autoComplete='off' />
+                    {errors.password ? <li className='text-red-400'>{errors.password}</li> : null}
+
                 </form>
             </div>
 
-            {/* //?SHOW ERRORS ON SCREEN */}
-            {Object.keys(errors).length > 0 && (
-                <div className='sticky bottom-0 bg-white border-t-[3px]'>
-                    <div className='flex justify-center mt-2'>
-                        <ul className='text-red-500'>
-                            {Object.values(errors).map((error, index) => (
-                                <li key={index}>{error}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            )}
-
-
             {/* //!STICKY DIV SIGN UP */}
             <div className='sticky inset-x-0 bottom-0 bg-white border-t-[3px] '>
-                <div className='flex justify-center mt-8 items-center'>
-                    <button className='bg-[#3F0071] text-white font-semibold py-4 px-4 rounded-full w-[85%]'>Sign up</button>
+                <div className='flex justify-center mt-5 items-center'>
+                    <button onClick={() => console.log(form)} className='bg-[#3F0071] disabled text-white font-semibold py-4 px-4 rounded-full w-[85%]'>Sign up</button>
                 </div>
 
                 <div className='flex justify-center mt-3 items-center'>
@@ -228,5 +256,4 @@ const page = () => {
         </>
     )
 }
-
 export default page
