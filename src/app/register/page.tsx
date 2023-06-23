@@ -9,6 +9,13 @@ import React from 'react'
 import { countries } from 'countries-list'
 import validation from './validation'
 import { Errors } from './validation'
+import { DatePicker } from "antd";
+import {Dayjs} from "dayjs";
+import { useRouter} from 'next/navigation'
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+import axios from '../../utils/axios'
+
+
 
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
@@ -19,14 +26,21 @@ const page = () => {
 
     const [countriesList, setCountriesList] = useState<string[]>([])
     const [phoneCode, setPhoneCode] = useState<string[]>([])
+    const [disabled, setDisabled] = useState<boolean>(true);
+    const [focusedField, setFocusedField] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [dates, setDates] = useState<string>("")
 
-    useEffect(() => {
-        const optionsCountries: string[] = listOfCountries.map(country => country.name)
-        const optionsPhone: string[] = listOfCountries.map(country => country.phone)
-        const phoneSet: string[] = [...new Set(optionsPhone)].sort((a: string, b: string) => parseInt(a, 10) - parseInt(b, 10));
-        setPhoneCode(phoneSet)
-        setCountriesList(optionsCountries)
-    }, [])
+    const PasswordIcon = showPassword ? AiOutlineEye : AiOutlineEyeInvisible;
+    const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
+    const router = useRouter()
+
+    const optionsCountries: string[] = listOfCountries.map(country => country.name)
+    const optionsPhone: string[] = listOfCountries.map(country => country.phone)
+    const phoneSet: string[] = [...new Set(optionsPhone)].sort((a: string, b: string) => parseInt(a, 10) - parseInt(b, 10));
+
+
+
 
     interface FormState {
         name: string;
@@ -36,6 +50,13 @@ const page = () => {
         phone: string;
         email: string;
         password: string;
+        confirmPassword: string;
+        birthday:string;
+        rol:string;
+        gender:string;
+        address:string;
+        dniPassport:string;
+        thirdPartyCreated:boolean
     }
 
     const [errors, setErrors] = useState<Errors>({})
@@ -47,8 +68,26 @@ const page = () => {
         phoneCode: '',
         phone: '',
         email: ''.trim(),
-        password: ''
+        password: '',
+        confirmPassword: '',
+        birthday:'',
+        rol:"user",
+        gender:"",
+        address:"",
+        dniPassport:"",
+        thirdPartyCreated:false
+
+
+
     });
+
+    useEffect(() => {
+
+        setPhoneCode(phoneSet)
+        setCountriesList(optionsCountries)
+        buttonStatus()
+
+    }, [form])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({
@@ -89,7 +128,65 @@ const page = () => {
                 phoneCode: selectedPhoneLada,
             }));
         }
+
+        setErrors(validation({
+            ...form,
+            [e.target.name]: e.target.value
+        }))
     };
+
+    const buttonStatus = () => {
+        if (!form.name || !form.country || !form.email || !form.password || !form.phone || !form.phoneCode || !form.confirmPassword || !form.birthday || errors.name || errors.country || errors.email || errors.password || errors.phone || errors.phoneCode || errors.confirmPassword || errors.birthday ){
+            setDisabled(true)
+            // console.log(disabled) 
+        }else{
+            setDisabled(false)
+        }
+    }
+
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+        setFocusedField(e.target.name);
+      };
+      
+    const handleBlur = () => {
+        setFocusedField(null);
+      };
+
+      const handleSelectFocus = (e: React.FocusEvent<HTMLSelectElement>) => {
+        setFocusedField(e.target.name);
+      };
+
+      const handleDatePickerFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+        setFocusedField(e.target.name);
+      };
+
+      const handleDateChange = (value: Dayjs | null, fieldName: string) => {
+
+        const dateValue = value?.format('DD-MM-YYYY')
+        // console.log(dateValue,fieldName)
+
+        setForm({
+            ...form,
+            [fieldName]: dateValue
+        });
+        setErrors(validation({
+            ...form,
+            [fieldName]: dateValue
+        }))
+    }
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+
+        if (disabled===false){
+            console.log(form)
+            axios
+            .post("/User/createNewUser/", form)
+            .catch((err) => alert(err));
+        }
+
+
+        // router.push('/')
+    } 
 
     return (
         <>
@@ -119,23 +216,50 @@ const page = () => {
                     </p>
                 </div>
 
+
                 <form className='pl-5 pr-5 flex flex-col'>
+
+{/* NAME */}
                     <label className={`${josefin.className}`} htmlFor="nameInput">Full name</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                    <input 
+                        className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 ${
+                        errors.name && focusedField === 'password' || errors.name && focusedField === 'confirmPassword' ? 'border-red-300' : ''}`}
+                                    
                         type="text"
                         onChange={handleChange}
                         placeholder='Full name'
                         id='nameInput'
                         name='name'
-                        autoComplete='off' />
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        autoComplete='off'
+                         />
 
-                    {errors.name ? <li className='text-red-400'>{errors.name}</li> : null}
+                        {errors.name && focusedField === 'name' && <li className='text-red-400'>{errors.name}</li>}
 
+{/* DATE */}
+                    <label className={`${josefin.className}`} htmlFor="nameInput">Birthdate</label>
+                        <DatePicker
+                        className={`${errors.birthday && focusedField === 'password' || errors.birthday && focusedField === 'confirmPassword' ? 'border-red-400' : ''}`}
+                        name='birthday'
+                        onFocus={handleDatePickerFocus}
+                        onBlur={handleBlur}
+                        onChange={(value) => handleDateChange(value, 'birthday')}
+                        format={dateFormatList}
+                        />
+
+                    {errors.birthday && focusedField === 'birthday' && <li className='text-red-400'>{errors.birthday}</li>}
+
+                        
+{/* COUNTRIES */}
                     <label className={`${josefin.className}`} htmlFor="countryInput">Country/Region</label>
-                    <select className={`border-2 rounded-xl pt-2 w-1/2 my-2 pl-3 py-3 pb-3 `}
+                    <select className={`border-2 rounded-xl pt-2 w-1/2 my-4 pl-3 py-3 pb-3 ${
+                            errors.country && focusedField === 'password' || errors.country && focusedField === 'confirmPassword' ? 'border-red-300' : ''}`}
                         name='country'
                         autoComplete='off'
                         onChange={selectChange}
+                        onFocus={handleSelectFocus}
+                        onBlur={handleBlur}
                         id="countryInput">
                         <option value='' className={`${josefin.className}`}>Select a country</option>
                         {countriesList.sort().map(country => (
@@ -143,8 +267,11 @@ const page = () => {
                         ))}
                     </select>
 
-                    {errors.country ? <li className='text-red-400'>{errors.country}</li> : null}
+                    {errors.country && focusedField === 'country' && <li className='text-red-400'>{errors.country}</li>}
 
+                    
+                    
+{/* POSTAL */}
                     <label className={`${josefin.className}`} htmlFor="postalCodeInput">Postal code (Optional)</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
                         type="text"
@@ -152,69 +279,117 @@ const page = () => {
                         placeholder='Postal Code'
                         id='postalCodeInput'
                         autoComplete='off'
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         onChange={handleChange} />
 
-                    {errors.postalCode ? <li className='text-red-400'>{errors.postalCode}</li> : null}
+                    {errors.postalCode && focusedField === 'postalCode' && <li className='text-red-400'>{errors.postalCode}</li>}
 
+{/* PHONECODE */}
                     <label className={`${josefin.className}`} htmlFor='phone'>Phone number</label>
                     <div>
                         <div>
                             <select
-                                className={`${josefin.className} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3`}
+                                  className={`${josefin.className} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3 ${
+                                    errors.phoneCode && focusedField === 'password' || errors.phoneCode && focusedField === 'confirmPassword' ? 'border-red-300': ''}`}
                                 name='phoneCode'
+                                onFocus={handleSelectFocus}
+                                onBlur={handleBlur}
                                 onChange={phoneHandler}
+                                defaultValue={"code"}
                             >
-                                <option className={`${josefin.className}`} value="">Select lada</option>
+                                <option className={`${josefin.className}`} value="code">Code</option>
                                 {phoneCode.map(phone => (
                                     <option className={`${josefin.className}`} key={phone}>
                                         +{phone}
                                     </option>
                                 ))}
                             </select>
-                            {errors.phoneCode ? <li className='text-red-400'>{errors.phoneCode}</li> : null}
+
+{/* PHONE */}                            
                             <input
-                                className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2`}
+                                className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2
+                                 ${errors.phone && focusedField === 'password' || errors.phone && focusedField === 'confirmPassword' ? 'border-red-300': ''}`}
+    
                                 type="number"
                                 name='phone'
                                 placeholder='Phone Number'
                                 id='phone'
                                 onChange={handleChange}
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
                                 autoComplete='off'
                             />
                         </div>
                     </div>
+                    {errors.phoneCode && focusedField === 'phoneCode' && <li className='text-red-400'>{errors.phoneCode}</li>}
+                    {errors.phone && focusedField === 'phone' && <li className='text-red-400'>{errors.phone}</li>}
 
-                    {errors.phone ? <li className='text-red-400'>{errors.phone}</li> : null}
 
+{/* EMAIL */}
                     <label className={`${josefin.className}`} htmlFor="email">Email adress</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 
+                         ${errors.email && focusedField === 'password' || errors.email && focusedField === 'confirmPassword' ? 'border-red-300': ''}`}
                         type="email"
                         name='email'
                         onChange={handleChange}
                         placeholder='Email address'
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         id='email'
                         autoComplete='off' />
 
-                    {errors.email ? <li className='text-red-400'>{errors.email}</li> : null}
+                    {errors.email && focusedField === 'email' && <li className='text-red-400'>{errors.email}</li>}
+
+
+{/* PASSWORD */}
 
                     <label className={`${josefin.className}`} htmlFor="password">Password</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name='password'
                         onChange={handleChange}
                         placeholder='Create password'
                         id='password'
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        autoComplete='off'
+                        />
+                    {/* <PasswordIcon className='absolute top-30vh right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setShowPassword(!showPassword)} /> */}
+
+                    {errors.password && focusedField === 'password' && <li className='text-red-400'>{errors.password}</li>}
+
+{/* CONFIRM PASSWORD */}
+
+                    <label className={`${josefin.className}`} htmlFor="password">Confirm Password</label>
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                        type="password"
+                        name='confirmPassword'
+                        onChange={handleChange}
+                        placeholder='Create password'
+                        id='confirmPassword'
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         autoComplete='off' />
 
-                    {errors.password ? <li className='text-red-400'>{errors.password}</li> : null}
+                    {errors.confirmPassword && focusedField === 'confirmPassword' && <li className='text-red-400'>{errors.confirmPassword}</li>}
+
 
                 </form>
             </div>
 
+{/* SIGN BUTTON */}
+
             {/* //!STICKY DIV SIGN UP */}
             <div className='sticky inset-x-0 bottom-0 bg-white border-t-[3px] '>
                 <div className='flex justify-center mt-5 items-center'>
-                    <button onClick={() => console.log(form)} className='bg-[#3F0071] disabled text-white font-semibold py-4 px-4 rounded-full w-[85%]'>Sign up</button>
+                    <button 
+                    className={`${disabled ? `bg-[#8888]` : `bg-[#3F0071]`} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
+                    name='signButton' 
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => { handleClick(e) }}
+                    >
+                    Sign up
+                    </button>
                 </div>
 
                 <div className='flex justify-center mt-3 items-center'>
