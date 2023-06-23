@@ -27,7 +27,6 @@ const page = () => {
     const [errors, setErrors] = useState<Errors>({})
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [loading, setLoading] = useState(false)
-    let timeoutId: null | ReturnType<typeof setTimeout> = null
     const PasswordIcon = showPassword ? AiOutlineEye : AiOutlineEyeInvisible;
 
 
@@ -94,7 +93,7 @@ const page = () => {
 
             <div className='flex justify-around mt-4 '>
                 <div className='justify-start'>
-                    <input type="checkbox" name="" id="rememberMeInput" autoComplete='off' />
+                    <input type="checkbox" name="" id="rememberMeInput" />
                     <label htmlFor='rememberMeInput' className='justify-start text-[#A6A6A6] ml-1' >Remember me</label>
                 </div>
                 <Link href='' className='text-purple-800'>Forgot Password?</Link>
