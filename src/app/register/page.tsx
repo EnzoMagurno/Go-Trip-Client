@@ -12,6 +12,8 @@ import { Errors } from './validation'
 import { DatePicker } from "antd";
 import {Dayjs} from "dayjs";
 import { useRouter} from 'next/navigation'
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+import axios from '../../utils/axios'
 
 
 
@@ -22,16 +24,16 @@ const listOfCountries = Object.values(countries)
 
 const page = () => {
 
-    const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
-    const router = useRouter()
-
-
     const [countriesList, setCountriesList] = useState<string[]>([])
     const [phoneCode, setPhoneCode] = useState<string[]>([])
     const [disabled, setDisabled] = useState<boolean>(true);
     const [focusedField, setFocusedField] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const [dates, setDates] = useState<string>("")
 
+    const PasswordIcon = showPassword ? AiOutlineEye : AiOutlineEyeInvisible;
+    const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
+    const router = useRouter()
 
     const optionsCountries: string[] = listOfCountries.map(country => country.name)
     const optionsPhone: string[] = listOfCountries.map(country => country.phone)
@@ -174,7 +176,15 @@ const page = () => {
     }
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(form)
+
+        if (disabled===false){
+            console.log(form)
+            axios
+            .post("/User/createNewUser/", form)
+            .catch((err) => alert(err));
+        }
+
+
         // router.push('/')
     } 
 
@@ -336,14 +346,16 @@ const page = () => {
 
                     <label className={`${josefin.className}`} htmlFor="password">Password</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name='password'
                         onChange={handleChange}
                         placeholder='Create password'
                         id='password'
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        autoComplete='off' />
+                        autoComplete='off'
+                        />
+                    {/* <PasswordIcon className='absolute top-30vh right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setShowPassword(!showPassword)} /> */}
 
                     {errors.password && focusedField === 'password' && <li className='text-red-400'>{errors.password}</li>}
 
