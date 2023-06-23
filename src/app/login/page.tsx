@@ -1,14 +1,46 @@
+'use client'
 import GoTripLogo from '../../../public/Go-Trip-logo.svg'
 import Image from 'next/image'
 import { BsArrowRight } from 'react-icons/bs'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import Link from 'next/link'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
+import { useState } from 'react'
+import { Errors } from './validation'
+import validation from './validation'
+import spinner from './loading.module.css'
 
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] })
+
+
 const page = () => {
+    interface FormState {
+        email: string;
+        password: string;
+    }
+    const [form, setForm] = useState<FormState>({
+        password: '',
+        email: ''
+    })
+    const [errors, setErrors] = useState<Errors>({})
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [loading, setLoading] = useState(false)
+    let timeoutId: null | ReturnType<typeof setTimeout> = null
+    const PasswordIcon = showPassword ? AiOutlineEye : AiOutlineEyeInvisible;
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        });
+        setErrors(validation({
+            ...form,
+            [e.target.name]: e.target.value
+        }))
+    }
 
     return (
         <>
@@ -40,9 +72,24 @@ const page = () => {
             </div>
 
             <div className='pl-5 pr-5 flex flex-col'>
-                <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 `} type="text" placeholder='Email' />
-                <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3`} type="password" placeholder='Password' />
-                <AiOutlineEye />
+                <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 `}
+                    type="text"
+                    autoComplete='off'
+                    name='email'
+                    onChange={handleChange}
+                    placeholder='Email' />
+                {errors.email ? <li className='text-red-400'>{errors.email}</li> : null}
+                <div className='relative '>
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 w-full`}
+                        type={showPassword ? 'text' : 'password'}
+                        autoComplete='off'
+                        name='password'
+                        onChange={handleChange}
+                        placeholder='Password' />
+                    <PasswordIcon className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setShowPassword(!showPassword)} />
+                </div>
+                {errors.password ? <li className='text-red-400'>{errors.password}</li> : null}
+
             </div>
 
             <div className='flex justify-around mt-4 '>
@@ -52,10 +99,38 @@ const page = () => {
                 </div>
                 <Link href='' className='text-purple-800'>Forgot Password?</Link>
             </div>
-
-            <div className='flex justify-center mt-8 items-center'>
-                <button className='bg-[#3F0071] text-white font-semibold py-4 px-4 rounded-full w-[85%]'>Log in</button>
+            <div className=''>
+                <div className='flex justify-center mt-8 items-center'>
+                    <button
+                        onClick={() => {
+                            if (errors.email !== '' || errors.password !== '') {
+                                // Mostrar alerta de que no se puede iniciar sesión debido a errores
+                                alert('No se puede iniciar sesión debido a errores.');
+                            } else {
+                                setLoading(true)
+                                setTimeout(() => {
+                                    setLoading(false)
+                                }, 2000);
+                                console.log(form);
+                                console.log('Petición de inicio de sesión');
+                            }
+                        }}
+                        className={`bg-[#3F0071] text-white font-semibold py-4 px-4 rounded-full w-[85%] ${errors.email !== '' || errors.password !== ''
+                            ? 'opacity-50 cursor-not-allowed'
+                            : ''
+                            }`}
+                        disabled={errors.email !== '' || errors.password !== ''}
+                    >
+                        Log in
+                    </button>
+                </div>
             </div>
+
+            {loading && (
+                <div className="flex justify-center items-center mt-4">
+                    <span className={spinner.loader}></span>
+                </div>
+            )}
 
             <div className='flex justify-center mt-5 items-center'>
                 <svg className='mr-3' width="130" height="1" viewBox="0 0 139 1" fill="none" xmlns="http://www.w3.org/2000/svg">
