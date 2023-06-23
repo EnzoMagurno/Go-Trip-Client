@@ -5,10 +5,15 @@ import { BsArrowLeftShort } from 'react-icons/bs'
 import Link from 'next/link'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
 import { useState, useEffect } from 'react'
-import React, {MouseEventHandler} from 'react'
+import React from 'react'
 import { countries } from 'countries-list'
 import validation from './validation'
 import { Errors } from './validation'
+import { DatePicker } from "antd";
+import {Dayjs} from "dayjs";
+import { useRouter} from 'next/navigation'
+
+
 
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
@@ -17,10 +22,16 @@ const listOfCountries = Object.values(countries)
 
 const page = () => {
 
+    const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
+    const router = useRouter()
+
+
     const [countriesList, setCountriesList] = useState<string[]>([])
     const [phoneCode, setPhoneCode] = useState<string[]>([])
     const [disabled, setDisabled] = useState<boolean>(true);
     const [focusedField, setFocusedField] = useState<string | null>(null);
+    const [dates, setDates] = useState<string>("")
+
 
     const optionsCountries: string[] = listOfCountries.map(country => country.name)
     const optionsPhone: string[] = listOfCountries.map(country => country.phone)
@@ -37,6 +48,13 @@ const page = () => {
         phone: string;
         email: string;
         password: string;
+        confirmPassword: string;
+        birthday:string;
+        rol:string;
+        gender:string;
+        address:string;
+        dniPassport:string;
+        thirdPartyCreated:boolean
     }
 
     const [errors, setErrors] = useState<Errors>({})
@@ -48,7 +66,17 @@ const page = () => {
         phoneCode: '',
         phone: '',
         email: ''.trim(),
-        password: ''
+        password: '',
+        confirmPassword: '',
+        birthday:'',
+        rol:"user",
+        gender:"",
+        address:"",
+        dniPassport:"",
+        thirdPartyCreated:false
+
+
+
     });
 
     useEffect(() => {
@@ -56,7 +84,6 @@ const page = () => {
         setPhoneCode(phoneSet)
         setCountriesList(optionsCountries)
         buttonStatus()
-
 
     }, [form])
 
@@ -99,10 +126,15 @@ const page = () => {
                 phoneCode: selectedPhoneLada,
             }));
         }
+
+        setErrors(validation({
+            ...form,
+            [e.target.name]: e.target.value
+        }))
     };
 
     const buttonStatus = () => {
-        if (!form.name || !form.country || !form.email || !form.password || !form.phone || !form.phoneCode || errors.name || errors.country || errors.email || errors.password || errors.phone || errors.phoneCode ){
+        if (!form.name || !form.country || !form.email || !form.password || !form.phone || !form.phoneCode || !form.confirmPassword || !form.birthday || errors.name || errors.country || errors.email || errors.password || errors.phone || errors.phoneCode || errors.confirmPassword || errors.birthday ){
             setDisabled(true)
             // console.log(disabled) 
         }else{
@@ -110,8 +142,40 @@ const page = () => {
         }
     }
 
-    const handleClick = (e:MouseEventHandler<HTMLButtonElement>) =>{
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+        setFocusedField(e.target.name);
+      };
+      
+    const handleBlur = () => {
+        setFocusedField(null);
+      };
+
+      const handleSelectFocus = (e: React.FocusEvent<HTMLSelectElement>) => {
+        setFocusedField(e.target.name);
+      };
+
+      const handleDatePickerFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+        setFocusedField(e.target.name);
+      };
+
+      const handleDateChange = (value: Dayjs | null, fieldName: string) => {
+
+        const dateValue = value?.format('DD-MM-YYYY')
+        // console.log(dateValue,fieldName)
+
+        setForm({
+            ...form,
+            [fieldName]: dateValue
+        });
+        setErrors(validation({
+            ...form,
+            [fieldName]: dateValue
+        }))
+    }
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         console.log(form)
+        // router.push('/')
     } 
 
     return (
@@ -142,25 +206,50 @@ const page = () => {
                     </p>
                 </div>
 
-{/* NAME */}
+
                 <form className='pl-5 pr-5 flex flex-col'>
+
+{/* NAME */}
                     <label className={`${josefin.className}`} htmlFor="nameInput">Full name</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                    <input 
+                        className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 ${
+                        errors.name && focusedField === 'password' || errors.name && focusedField === 'confirmPassword' ? 'border-red-300' : ''}`}
+                                    
                         type="text"
                         onChange={handleChange}
                         placeholder='Full name'
                         id='nameInput'
                         name='name'
-                        autoComplete='off' />
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        autoComplete='off'
+                         />
 
-                    {errors.name ? <li className='text-red-400'>{errors.name}</li> : null}
+                        {errors.name && focusedField === 'name' && <li className='text-red-400'>{errors.name}</li>}
 
+{/* DATE */}
+                    <label className={`${josefin.className}`} htmlFor="nameInput">Birthdate</label>
+                        <DatePicker
+                        className={`${errors.birthday && focusedField === 'password' || errors.birthday && focusedField === 'confirmPassword' ? 'border-red-400' : ''}`}
+                        name='birthday'
+                        onFocus={handleDatePickerFocus}
+                        onBlur={handleBlur}
+                        onChange={(value) => handleDateChange(value, 'birthday')}
+                        format={dateFormatList}
+                        />
+
+                    {errors.birthday && focusedField === 'birthday' && <li className='text-red-400'>{errors.birthday}</li>}
+
+                        
 {/* COUNTRIES */}
                     <label className={`${josefin.className}`} htmlFor="countryInput">Country/Region</label>
-                    <select className={`border-2 rounded-xl pt-2 w-1/2 my-2 pl-3 py-3 pb-3 `}
+                    <select className={`border-2 rounded-xl pt-2 w-1/2 my-4 pl-3 py-3 pb-3 ${
+                            errors.country && focusedField === 'password' || errors.country && focusedField === 'confirmPassword' ? 'border-red-300' : ''}`}
                         name='country'
                         autoComplete='off'
                         onChange={selectChange}
+                        onFocus={handleSelectFocus}
+                        onBlur={handleBlur}
                         id="countryInput">
                         <option value='' className={`${josefin.className}`}>Select a country</option>
                         {countriesList.sort().map(country => (
@@ -168,7 +257,9 @@ const page = () => {
                         ))}
                     </select>
 
-                    {errors.country ? <li className='text-red-400'>{errors.country}</li> : null}
+                    {errors.country && focusedField === 'country' && <li className='text-red-400'>{errors.country}</li>}
+
+                    
                     
 {/* POSTAL */}
                     <label className={`${josefin.className}`} htmlFor="postalCodeInput">Postal code (Optional)</label>
@@ -178,19 +269,24 @@ const page = () => {
                         placeholder='Postal Code'
                         id='postalCodeInput'
                         autoComplete='off'
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         onChange={handleChange} />
 
-                    {errors.postalCode ? <li className='text-red-400'>{errors.postalCode}</li> : null}
+                    {errors.postalCode && focusedField === 'postalCode' && <li className='text-red-400'>{errors.postalCode}</li>}
 
-
-{/* PHONE */}
+{/* PHONECODE */}
                     <label className={`${josefin.className}`} htmlFor='phone'>Phone number</label>
                     <div>
                         <div>
                             <select
-                                className={`${josefin.className} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3`}
+                                  className={`${josefin.className} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3 ${
+                                    errors.phoneCode && focusedField === 'password' || errors.phoneCode && focusedField === 'confirmPassword' ? 'border-red-300': ''}`}
                                 name='phoneCode'
+                                onFocus={handleSelectFocus}
+                                onBlur={handleBlur}
                                 onChange={phoneHandler}
+                                defaultValue={"code"}
                             >
                                 <option className={`${josefin.className}`} value="code">Code</option>
                                 {phoneCode.map(phone => (
@@ -199,32 +295,41 @@ const page = () => {
                                     </option>
                                 ))}
                             </select>
+
+{/* PHONE */}                            
                             <input
-                                className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2`}
+                                className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2
+                                 ${errors.phone && focusedField === 'password' || errors.phone && focusedField === 'confirmPassword' ? 'border-red-300': ''}`}
+    
                                 type="number"
                                 name='phone'
                                 placeholder='Phone Number'
                                 id='phone'
                                 onChange={handleChange}
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
                                 autoComplete='off'
                             />
                         </div>
                     </div>
-                    {errors.phoneCode ? <li className='text-red-400'>{errors.phoneCode}</li> : null}
-                    {errors.phone ? <li className='text-red-400'>{errors.phone}</li> : null}
+                    {errors.phoneCode && focusedField === 'phoneCode' && <li className='text-red-400'>{errors.phoneCode}</li>}
+                    {errors.phone && focusedField === 'phone' && <li className='text-red-400'>{errors.phone}</li>}
 
 
 {/* EMAIL */}
                     <label className={`${josefin.className}`} htmlFor="email">Email adress</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 
+                         ${errors.email && focusedField === 'password' || errors.email && focusedField === 'confirmPassword' ? 'border-red-300': ''}`}
                         type="email"
                         name='email'
                         onChange={handleChange}
                         placeholder='Email address'
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         id='email'
                         autoComplete='off' />
 
-                    {errors.email ? <li className='text-red-400'>{errors.email}</li> : null}
+                    {errors.email && focusedField === 'email' && <li className='text-red-400'>{errors.email}</li>}
 
 
 {/* PASSWORD */}
@@ -236,9 +341,27 @@ const page = () => {
                         onChange={handleChange}
                         placeholder='Create password'
                         id='password'
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         autoComplete='off' />
 
-                    {errors.password ? <li className='text-red-400'>{errors.password}</li> : null}
+                    {errors.password && focusedField === 'password' && <li className='text-red-400'>{errors.password}</li>}
+
+{/* CONFIRM PASSWORD */}
+
+                    <label className={`${josefin.className}`} htmlFor="password">Confirm Password</label>
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                        type="password"
+                        name='confirmPassword'
+                        onChange={handleChange}
+                        placeholder='Create password'
+                        id='confirmPassword'
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        autoComplete='off' />
+
+                    {errors.confirmPassword && focusedField === 'confirmPassword' && <li className='text-red-400'>{errors.confirmPassword}</li>}
+
 
                 </form>
             </div>
@@ -251,8 +374,7 @@ const page = () => {
                     <button 
                     className={`${disabled ? `bg-[#8888]` : `bg-[#3F0071]`} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
                     name='signButton' 
-                    onClick={(e:any) => {handleClick(e)}}
-                    disabled={disabled}
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => { handleClick(e) }}
                     >
                     Sign up
                     </button>

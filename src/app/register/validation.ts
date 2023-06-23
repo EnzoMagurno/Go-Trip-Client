@@ -1,3 +1,9 @@
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
+
+
 interface FormState {
     name: string;
     country: string;
@@ -6,6 +12,8 @@ interface FormState {
     phone: string;
     email: string;
     password: string;
+    confirmPassword: string;
+    birthday: string;
 }
 interface Errors {
     name?: string;
@@ -15,6 +23,10 @@ interface Errors {
     phone?: string;
     email?: string;
     password?: string;
+    confirmPassword?: string;
+    birthday?: string;
+
+
 }
 const validation = (form: FormState): Errors => {
     const errors: Errors = {}
@@ -60,6 +72,10 @@ const validation = (form: FormState): Errors => {
 
 //!Phone
 
+    if (form.phoneCode==="code") {
+    errors.phoneCode = "Please select a valid code";
+    }
+
     if (!form.phone) {
         errors.phone = "Please introduce a phone number";
     }
@@ -70,9 +86,7 @@ const validation = (form: FormState): Errors => {
         errors.phone = "";
     }
 
-    if (form.phoneCode==="") {
-        errors.phoneCode = "Please select a valid code";
-    }
+
 
 //!Email
 
@@ -101,6 +115,43 @@ const validation = (form: FormState): Errors => {
     else {
         errors.password = "";
     }
+
+
+//!CONFIRM-Password
+
+    if(!form.confirmPassword){
+
+         errors.confirmPassword = "Those passwords didn’t match. Try again."
+    }
+
+    if(form.confirmPassword !== form.password){
+        errors.confirmPassword = "Those passwords didn’t match. Try again."
+    }
+
+
+//!BirthDay
+
+    if (!form.birthday){
+                errors.birthday="Select a valid date"
+           }
+
+    if (form.birthday){
+                
+        const dateString = form.birthday;
+        const inputDate = dayjs(dateString, 'DD-MM-YYYY');
+        const currentDate = dayjs();
+        
+        const age = currentDate.diff(inputDate, 'year');
+
+        if (age <= 18) {
+            errors.birthday='You must be older than 18';
+        } 
+        
+        if (age >= 150) {
+            errors.birthday='Please enter a valid date';
+        } 
+ }
+
     return errors;
 }
 export default validation
