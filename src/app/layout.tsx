@@ -1,8 +1,16 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import Providers from '@/redux/provider'
-
+import NavBarTop from '../components/NavBarTop/NavBarTop';
+import NavBarFooter from "../components/navBarFooter/NavBarFooter";
+import { Josefin_Sans } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] })
+
+export const josefin = Josefin_Sans({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-josefin-sans"
+})
 
 export const metadata = {
   title: 'Create Next App',
@@ -17,7 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={inter.className}>{children}</body>
+        <body className={`${inter.className}`}>
+          <NavBarTop />
+          {children}
+          <NavBarFooter />
+          </body>
       </Providers>
     </html>
   )

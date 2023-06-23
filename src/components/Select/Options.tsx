@@ -1,9 +1,16 @@
 import { cleanCoincedences } from "../../redux/Features/Citys/CitySlice";
 import { getHotelsCoincidence, fetchingHotel } from "../../redux/Features/Hotel/hotelsSlice";
-import Link from "next/link"
 import { BsPinMapFill } from "react-icons/bs"
 import { useDispatch } from "react-redux";
-const Options = ({ city, state, country, id }) => {
+
+interface OptionsObj {
+	city: string
+	state: string
+	country: string
+	id: string | number
+}
+
+const Options: React.FC<OptionsObj> = ({ city, state, country, id }) => {
 	const dispatch = useDispatch();
 	return (
 		<li onClick={() => { dispatch(getHotelsCoincidence(id)); dispatch(cleanCoincedences())}} className='h-16 flex justify-start items-center cursor-pointer border-b border-solid border-zinc-300 '>
