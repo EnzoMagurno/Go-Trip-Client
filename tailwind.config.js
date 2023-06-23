@@ -38,6 +38,9 @@ module.exports = {
       },
       width: {
         "sizeLogo": "40%"
+      },
+      fontFamily: {
+        josefin: ["var(--font-josefin-sans)"]
       }
   
     },
