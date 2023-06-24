@@ -13,6 +13,7 @@ import { DatePicker } from "antd";
 import {Dayjs} from "dayjs";
 import { useRouter} from 'next/navigation'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+import spinner from '../login/loading.module.css'
 import axios from '../../utils/axios'
 
 
@@ -29,9 +30,15 @@ const page = () => {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [focusedField, setFocusedField] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [confirmShowPassword, setConfirmShowPassword] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
+
+
     const [dates, setDates] = useState<string>("")
 
     const PasswordIcon = showPassword ? AiOutlineEye : AiOutlineEyeInvisible;
+    const ConfirmPasswordIcon = confirmShowPassword ? AiOutlineEye : AiOutlineEyeInvisible;
+
     const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
     const router = useRouter()
 
@@ -179,9 +186,18 @@ const page = () => {
 
         if (disabled===false){
             console.log(form)
+
+            setLoading(true)
+            setTimeout(() => {
+                setLoading(false)
+            }, 1000);
+            console.log('Petición de inicio de sesión');
+            
             axios
             .post("/User/createNewUser/", form)
             .catch((err) => alert(err));
+        }else{
+            alert("An error ocurred, please check data, and try again")
         }
 
 
@@ -198,11 +214,11 @@ const page = () => {
                         </Link>
                     </div>
 
-                    <div className=' flex justify-start items-center w-2/4'>
+                    {/* <div className=' flex justify-start items-center w-2/4'>
                         <Link href=''>
                             <Image className="w-40" src={GoTripLogo} alt='Go-Trip-Logo' />
                         </Link>
-                    </div>
+                    </div> */}
 
                 </div>
 
@@ -355,7 +371,7 @@ const page = () => {
                         onBlur={handleBlur}
                         autoComplete='off'
                         />
-                    {/* <PasswordIcon className='absolute top-30vh right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setShowPassword(!showPassword)} /> */}
+                        <PasswordIcon className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setShowPassword(!showPassword)} />
 
                     {errors.password && focusedField === 'password' && <li className='text-red-400'>{errors.password}</li>}
 
@@ -363,7 +379,7 @@ const page = () => {
 
                     <label className={`${josefin.className}`} htmlFor="password">Confirm Password</label>
                     <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
-                        type="password"
+                        type={confirmShowPassword ? 'text' : 'password'}
                         name='confirmPassword'
                         onChange={handleChange}
                         placeholder='Create password'
@@ -373,6 +389,7 @@ const page = () => {
                         autoComplete='off' />
 
                     {errors.confirmPassword && focusedField === 'confirmPassword' && <li className='text-red-400'>{errors.confirmPassword}</li>}
+                        <ConfirmPasswordIcon className='absolute top-3/4 right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setConfirmShowPassword(!confirmShowPassword)} />
 
 
                 </form>
@@ -391,7 +408,11 @@ const page = () => {
                     Sign up
                     </button>
                 </div>
-
+                {loading && (
+                    <div className="flex justify-center items-center mt-4">
+                        <span className={spinner.loader}></span>
+                    </div>
+                )}
                 <div className='flex justify-center mt-3 items-center'>
                     <svg className='mr-3' width="130" height="1" viewBox="0 0 139 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <line y1="0.5" x2="139" y2="0.5" stroke="black" strokeOpacity="0.35" />
