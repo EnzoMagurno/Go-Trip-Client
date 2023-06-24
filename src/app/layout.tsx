@@ -34,9 +34,6 @@ export default function RootLayout({
     const renderNavBarTop = pathname !== '/register' && pathname !== '/login';
     const renderNavBarFooter = pathname !== '/register' && pathname !== '/login';
 
-
-
-
   return (
     <html lang="en">
       <Providers>
