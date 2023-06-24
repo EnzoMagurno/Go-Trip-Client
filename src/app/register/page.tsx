@@ -196,12 +196,14 @@ const page = () => {
             axios
             .post("/User/createNewUser/", form)
             .catch((err) => alert(err));
+
+            // router.push('/')
         }else{
-            alert("An error ocurred, please check data, and try again")
+            alert("Please check data, and try again")
         }
 
 
-        // router.push('/')
+        
     } 
 
     return (
@@ -361,7 +363,8 @@ const page = () => {
 {/* PASSWORD */}
 
                     <label className={`${josefin.className}`} htmlFor="password">Password</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                    <div  className='relative '>
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-full`}
                         type={showPassword ? 'text' : 'password'}
                         name='password'
                         onChange={handleChange}
@@ -370,15 +373,17 @@ const page = () => {
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         autoComplete='off'
+
                         />
                         <PasswordIcon className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setShowPassword(!showPassword)} />
-
+                    </div>                    
                     {errors.password && focusedField === 'password' && <li className='text-red-400'>{errors.password}</li>}
 
 {/* CONFIRM PASSWORD */}
 
                     <label className={`${josefin.className}`} htmlFor="password">Confirm Password</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                    <div  className='relative '>
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-full`}
                         type={confirmShowPassword ? 'text' : 'password'}
                         name='confirmPassword'
                         onChange={handleChange}
@@ -387,9 +392,11 @@ const page = () => {
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         autoComplete='off' />
+                    
+                        <ConfirmPasswordIcon className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setConfirmShowPassword(!confirmShowPassword)} />
+                    </div>
 
                     {errors.confirmPassword && focusedField === 'confirmPassword' && <li className='text-red-400'>{errors.confirmPassword}</li>}
-                        <ConfirmPasswordIcon className='absolute top-3/4 right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setConfirmShowPassword(!confirmShowPassword)} />
 
 
                 </form>
@@ -401,9 +408,10 @@ const page = () => {
             <div className='sticky inset-x-0 bottom-0 bg-white border-t-[3px] '>
                 <div className='flex justify-center mt-5 items-center'>
                     <button 
-                    className={`${disabled ? `bg-[#8888]` : `bg-[#3F0071]`} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
+                    className={`${disabled ? `bg-[#3F0071] opacity-50` : `bg-[#3F0071]`} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
                     name='signButton' 
                     onClick={(e: React.MouseEvent<HTMLButtonElement>) => { handleClick(e) }}
+                    disabled={disabled}
                     >
                     Sign up
                     </button>
