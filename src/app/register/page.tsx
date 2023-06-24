@@ -13,6 +13,7 @@ import { DatePicker } from "antd";
 import {Dayjs} from "dayjs";
 import { useRouter} from 'next/navigation'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+import spinner from '../login/loading.module.css'
 import axios from '../../utils/axios'
 
 
@@ -29,9 +30,15 @@ const page = () => {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [focusedField, setFocusedField] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [confirmShowPassword, setConfirmShowPassword] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
+
+
     const [dates, setDates] = useState<string>("")
 
     const PasswordIcon = showPassword ? AiOutlineEye : AiOutlineEyeInvisible;
+    const ConfirmPasswordIcon = confirmShowPassword ? AiOutlineEye : AiOutlineEyeInvisible;
+
     const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
     const router = useRouter()
 
@@ -179,13 +186,24 @@ const page = () => {
 
         if (disabled===false){
             console.log(form)
+
+            setLoading(true)
+            setTimeout(() => {
+                setLoading(false)
+            }, 1000);
+            console.log('Petición de inicio de sesión');
+            
             axios
             .post("/User/createNewUser/", form)
             .catch((err) => alert(err));
+
+            // router.push('/')
+        }else{
+            alert("Please check data, and try again")
         }
 
 
-        // router.push('/')
+        
     } 
 
     return (
@@ -345,7 +363,8 @@ const page = () => {
 {/* PASSWORD */}
 
                     <label className={`${josefin.className}`} htmlFor="password">Password</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
+                    <div  className='relative '>
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-full`}
                         type={showPassword ? 'text' : 'password'}
                         name='password'
                         onChange={handleChange}
@@ -354,16 +373,18 @@ const page = () => {
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         autoComplete='off'
-                        />
-                    {/* <PasswordIcon className='absolute top-30vh right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setShowPassword(!showPassword)} /> */}
 
+                        />
+                        <PasswordIcon className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setShowPassword(!showPassword)} />
+                    </div>                    
                     {errors.password && focusedField === 'password' && <li className='text-red-400'>{errors.password}</li>}
 
 {/* CONFIRM PASSWORD */}
 
                     <label className={`${josefin.className}`} htmlFor="password">Confirm Password</label>
-                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 `}
-                        type="password"
+                    <div  className='relative '>
+                    <input className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-full`}
+                        type={confirmShowPassword ? 'text' : 'password'}
                         name='confirmPassword'
                         onChange={handleChange}
                         placeholder='Create password'
@@ -371,6 +392,9 @@ const page = () => {
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         autoComplete='off' />
+                    
+                        <ConfirmPasswordIcon className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer' onClick={() => setConfirmShowPassword(!confirmShowPassword)} />
+                    </div>
 
                     {errors.confirmPassword && focusedField === 'confirmPassword' && <li className='text-red-400'>{errors.confirmPassword}</li>}
 
@@ -384,14 +408,19 @@ const page = () => {
             <div className='sticky inset-x-0 bottom-0 bg-white border-t-[3px] '>
                 <div className='flex justify-center mt-5 items-center'>
                     <button 
-                    className={`${disabled ? `bg-[#8888]` : `bg-[#3F0071]`} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
+                    className={`${disabled ? `bg-[#3F0071] opacity-50` : `bg-[#3F0071]`} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
                     name='signButton' 
                     onClick={(e: React.MouseEvent<HTMLButtonElement>) => { handleClick(e) }}
+                    disabled={disabled}
                     >
                     Sign up
                     </button>
                 </div>
-
+                {loading && (
+                    <div className="flex justify-center items-center mt-4">
+                        <span className={spinner.loader}></span>
+                    </div>
+                )}
                 <div className='flex justify-center mt-3 items-center'>
                     <svg className='mr-3' width="130" height="1" viewBox="0 0 139 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <line y1="0.5" x2="139" y2="0.5" stroke="black" strokeOpacity="0.35" />
