@@ -314,9 +314,8 @@ const page = () => {
                                 onFocus={handleSelectFocus}
                                 onBlur={handleBlur}
                                 onChange={phoneHandler}
-                                defaultValue={"code"}
                             >
-                                <option className={`${josefin.className}`} value="code">Code</option>
+                                <option className={`${josefin.className}`} value=''>Code</option>
                                 {phoneCode.map(phone => (
                                     <option className={`${josefin.className}`} key={phone}>
                                         +{phone}

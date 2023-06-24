@@ -72,7 +72,7 @@ const validation = (form: FormState): Errors => {
 
 //!Phone
 
-    if (form.phoneCode==="code") {
+    if (form.phoneCode==='') {
     errors.phoneCode = "Please select a valid code";
     }
 
