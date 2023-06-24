@@ -214,11 +214,11 @@ const page = () => {
                         </Link>
                     </div>
 
-                    {/* <div className=' flex justify-start items-center w-2/4'>
+                    <div className=' flex justify-start items-center w-2/4'>
                         <Link href=''>
                             <Image className="w-40" src={GoTripLogo} alt='Go-Trip-Logo' />
                         </Link>
-                    </div> */}
+                    </div>
 
                 </div>
 
