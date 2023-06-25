@@ -1,7 +1,7 @@
 'use client'
 import GoTripLogo from '../../../public/Go-Trip-logo.svg'
 import Image from 'next/image'
-import { BsArrowRight } from 'react-icons/bs'
+import { BsArrowLeftShort } from 'react-icons/bs'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import Link from 'next/link'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
@@ -47,7 +47,7 @@ const page = () => {
             <div className='p-5 flex  w-full h-28'>
                 <div className=' flex justify-start items-center w-1/4'>
                     <Link href=''>
-                        <BsArrowRight className='transform scale-x-[-1] text-4xl text-gray-500' />
+                        <BsArrowLeftShort className=' text-5xl ' />
                     </Link>
                 </div>
                 <div className=' flex justify-start items-center w-2/4'>
