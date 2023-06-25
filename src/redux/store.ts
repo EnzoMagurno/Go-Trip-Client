@@ -7,7 +7,7 @@ export const store = configureStore({
     reducer: {
         users: usersSlice.reducer,
         hotel: hotelSlice.reducer,
-        city: citySlice.reducer
+        city: citySlice.reducer,
     }
 })
 
