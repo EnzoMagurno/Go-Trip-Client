@@ -341,7 +341,7 @@ function ContainerUsersInfo() {
 					{/* EMAIIIIIIIIIIIIILLLLLLLLLLLLLLL */}
 					<div className='flex justify-between p-x-4 '>
 						<label className={`${josefin.className}`} htmlFor='nameInput'>
-							Email address:
+							Email address
 						</label>
 						{!editEnableEmail ? (
 							<EditIcon
@@ -399,7 +399,7 @@ function ContainerUsersInfo() {
 				<div className='mb-4 '>
 					<div className='flex justify-between p-x-4 '>
 						<label className={`${josefin.className}`} htmlFor='nameInput'>
-							Phone number:
+							Phone number
 						</label>
 						{!editEnablePhone ? (
 							<EditIcon
@@ -493,7 +493,7 @@ function ContainerUsersInfo() {
 				<div className='mb-4 '>
 					<div className='flex justify-between p-x-4 '>
 						<label className={`${josefin.className}`} htmlFor='nameInput'>
-							Gender (opcional):
+							Gender (opcional)
 						</label>
 						{!editEnableGender ? (
 							<EditIcon

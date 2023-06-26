@@ -419,7 +419,7 @@ const page = () => {
 
 					{/* EMAIL */}
 					<label className={`${josefin.className}`} htmlFor='email'>
-						Email adress
+						Email address
 					</label>
 					<input
 						className={`${
