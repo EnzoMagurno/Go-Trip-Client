@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { MainGlobal } from "@/redux/mainInterface";
+import { log } from "console";
 
 
 
@@ -22,10 +23,10 @@ export interface InitialStateCity {
 
 
 export const fetchingCity = createAsyncThunk("getCity", async () => {
-    return await fetch("http://localhost:4000/hotels")
+    return await fetch("http://localhost:3001/destination")
     .then(response => response.json())
     .then(data => {
-
+        
         return data
     })
 })  

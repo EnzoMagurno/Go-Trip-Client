@@ -19,6 +19,8 @@
     "antd": "^5.6.1",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "cloudinary-core": "^2.13.0",
+    "cloudinary-react": "^1.8.1",
     "countries-list": "^2.6.1",
     "dayjs": "^1.11.8",
     "dotenv": "^16.3.1",
@@ -31,7 +33,11 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.9.0",
     "react-redux": "^8.1.0",
+
     "stripe": "^12.10.0",
+
+    "react-select": "^5.7.3",
+
     "tailwindcss": "3.3.2"
   },
   "devDependencies": {
