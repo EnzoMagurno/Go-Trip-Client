@@ -14,6 +14,11 @@ interface FormState {
     password: string;
     confirmPassword: string;
     birthday: string;
+    rol: string;
+    gender: string;
+    address: string;
+    dniPasaport: string;
+    thirdPartyCreated: boolean;
 }
 interface Errors {
     name?: string;
@@ -25,6 +30,11 @@ interface Errors {
     password?: string;
     confirmPassword?: string;
     birthday?: string;
+    rol?: string;
+    gender?: string ;
+    address?: string;
+    dniPasaport?: string;
+    thirdPartyCreated?: boolean;
 
 
 }
@@ -72,7 +82,12 @@ const validation = (form: FormState): Errors => {
 
 //!Phone
 
-    if (form.phoneCode==="code") {
+    if (Number(form.phone) < 0) {
+    errors.phoneCode = "Please select a valid number";
+    }
+
+
+    if (form.phoneCode==='') {
     errors.phoneCode = "Please select a valid code";
     }
 
@@ -149,7 +164,19 @@ const validation = (form: FormState): Errors => {
         
         if (age >= 150) {
             errors.birthday='Please enter a valid date';
-        } 
+        }
+        
+        
+        //!DNI PASSPORT
+
+        if(isNaN(Number(form.dniPasaport))){
+            errors.dniPasaport='Should be a numeric value.';
+
+        }
+
+
+
+
  }
 
     return errors;
