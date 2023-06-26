@@ -5,9 +5,12 @@ import { RiHotelLine } from 'react-icons/ri';
 import { AiOutlineSetting } from 'react-icons/ai';
 import Link from 'next/link';
 
+interface UserOptionsProps {
+	window: string
+	closeWindow: never
+}
 
-
-const UserOptions = ({ window, closeWindow }) => {
+const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 	return (
 		<div className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5 h-60 pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`} >
 			<button

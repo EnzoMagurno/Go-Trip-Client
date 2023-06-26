@@ -16,11 +16,11 @@ const NavBarTop = () => {
         if (!themeIsDark) {
 
             setThemeIsDark(true)
-            return document.body.classList.add('dark');
+             document.body.classList.add('dark');
         } else {
 
             setThemeIsDark(false)
-            return document.body.classList.remove('dark');
+             document.body.classList.remove('dark');
         }
     };
 
@@ -35,7 +35,7 @@ const NavBarTop = () => {
 	};
 
     return (
-        <nav className=" absolute z-30 left-0 shadow-input top-0 w-full h-24 flex justify-between items-end p-5 pb-3 dark:bg-neutral-900 dark:shadow-Orange ">
+        <nav className=" relative z-30 left-0 shadow-input top-0 w-full h-24 flex justify-between items-end p-5 pb-3 dark:bg-neutral-900 dark:shadow-Orange ">
             <div className=" inline-block w-sizeLogo">
                 <Image 
                 src={ !themeIsDark ? Logo_GoTrip : Logo_GoTrip_Dark} 
