@@ -29,18 +29,19 @@ const NavBarTop = () => {
 	const closeWindow = () => {
 		if (windowIsOpen === '') {
 			setWindow('hidden');
-		} else {
+		} else { 
 			setWindow('');
 		}
 	};
 
     return (
         <nav className=" relative z-30 left-0 shadow-input top-0 w-full h-24 flex justify-between items-end p-5 pb-3 dark:bg-neutral-900 dark:shadow-Orange ">
+
             <div className=" inline-block w-sizeLogo">
                 <Image 
                 src={ !themeIsDark ? Logo_GoTrip : Logo_GoTrip_Dark} 
                 alt="Logo_GoTrip"
-                className=" w-full"
+                className=""
                 />
             </div>
 

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 
+
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
     return await fetch("http://localhost:3001/hotel/findHotel")
     .then(response => response.json())
