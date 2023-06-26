@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 
 
-export const fetchingHotel = createAsyncThunk("getHotels", async () => {
-    return await fetch("http://localhost:4000/hotels")
+export const fetchingHotel = createAsyncThunk("getHotel", async () => {
+    return await fetch("http://localhost:3001/hotel")
     .then(response => response.json())
     .then(data => data)
 })
