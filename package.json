@@ -34,10 +34,18 @@
     "react-icons": "^4.9.0",
     "react-redux": "^8.1.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "stripe": "^12.10.0",
 =======
     "react-select": "^5.7.3",
 >>>>>>> e976cba06be0a8c483c80d21351e2c60307fcde2
+=======
+
+    "stripe": "^12.10.0",
+
+    "react-select": "^5.7.3",
+
+>>>>>>> 97641a704c0ef26f926a5f076186a7cfdf7dbcc4
     "tailwindcss": "3.3.2"
   },
   "devDependencies": {
