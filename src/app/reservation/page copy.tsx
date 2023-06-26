@@ -73,14 +73,14 @@ const page = (props: PageProps): React.ReactNode => {
                     </div>
                 </div>
 
-                {/* <div className={`${josefin.className} mt-4 flex flex-col pl-5`}>
+                <div className={`${josefin.className} mt-4 flex flex-col pl-5`}>
                     <p className={`${asap.className} mb-2 mt-2 text-gray-500 font-semibold `}>
                         Stay information
                     </p>
                     <p>Dec 11-15 (4 nights)</p>
                     <p>1 Room, 2 Guests</p>
                     <p>1 King bed, gest room, Non-Smoking</p>
-                </div> */}
+                </div>
             </div>
 
             <div className='flex justify-center'>
@@ -91,8 +91,12 @@ const page = (props: PageProps): React.ReactNode => {
             </p>
 
             <div className={`${josefin.className} pl-5 grid grid-cols-2 gap-4`}>
-                <p>Days of stay</p>
-                <p>{ }</p>
+                <p>Sun, Dec 11</p>
+                <p>250 USD</p>
+                <p>Mon, Dec 12</p>
+                <p>250 USD</p>
+                <p>Tue, Dec 13</p>
+                <p>250 USD</p>
                 <p>Service charges</p>
                 <p>20 USD</p>
                 <p>Taxes and fee</p>
