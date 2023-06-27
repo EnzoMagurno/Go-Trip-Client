@@ -15,7 +15,7 @@ const UserInfo = () => {
 	return (
 		<>
 			<div className='overflow-y-auto'>
-				<div className='pl-5 flex w-full h-28'></div>
+				<div className='pl-5 flex w-full h-6'></div>
 				<div className='flex flex-col pl-5'>
 					<h1 className={`${asap.className} text-3xl font-bold text-gray-900`}>
 						Personal Details
