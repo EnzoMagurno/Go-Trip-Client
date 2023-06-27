@@ -210,12 +210,13 @@ const page = () => {
 			setLoading(true);
 			setTimeout(() => {
 				setLoading(false);
+				router.push('/')
 			}, 1000);
 			console.log('Petición de inicio de sesión');
 
 			axios.post('/User/createNewUser/', form).catch((err) => alert(err));
 
-			// router.push('/')
+			
 		} else {
 			alert('Please check data, and try again');
 		}

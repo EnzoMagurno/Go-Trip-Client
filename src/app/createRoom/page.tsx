@@ -58,8 +58,8 @@ const router = useRouter()
       .post("/rooms/newRooms", form)
       .catch((err) => alert(err))
       console.log(response)
-      throw ("Room created")
-      // await router.push(`/myHotels/idHotel${id}`)
+      
+      router.push(`/myHotels/${id}`)
   } catch (error) {
   console.error('Error al crear el hotel:', error);
   }}

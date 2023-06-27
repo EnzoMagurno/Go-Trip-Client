@@ -6,21 +6,23 @@ import ContainerResult from "./ContainerResult";
 const ContainerResults = ({roboto}) => {
     const hotels = useSelector(selectHotelState) 
 
+    console.log(hotels)
 
- 
+
     return (
         <div className="grid grid-rows-6 gap-5" >
             {
                 hotels.map(hotel => <ContainerResult 
-                    id={hotel.hotel_id}
-                    name={hotel.hotel_name} 
-                    img={hotel.photo1} 
+                    key={hotel.id}
+                    id={hotel.id}
+                    name={hotel.name} 
+                    img={hotel.image} 
                     cost={hotel.rates_from}
                     reviews={hotel.number_of_reviews}
                     rating={hotel.rating_average}
-                    city={hotel.city}
-                    state={hotel.state}
-                    country={hotel.country}
+                    city={hotel.destination.city}
+                    state={hotel.destination.state}
+                    country={hotel.destination.country}
                     roboto={roboto}
                     />)
             }    
