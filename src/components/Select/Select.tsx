@@ -6,6 +6,7 @@ import { City } from '../../redux/Features/Citys/CitySlice';
 const Select = () => {
 	const cityResults: City[] = useSelector(selectCityState);
 
+	console.log(cityResults)
 	return (
 		<>
 			{
@@ -13,7 +14,7 @@ const Select = () => {
 				<ul className='absolute top-16 z-50 w-full bg-white rounded-lg shadow-img p-3'>
 					{cityResults.map((result) => (
 						<Options
-                        id={result.city_id}
+                        id={result.id}
 							city={result.city}
 							country={result.country}
 							state={result.state}

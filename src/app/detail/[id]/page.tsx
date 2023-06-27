@@ -4,7 +4,9 @@ import { Josefin_Sans, Roboto } from 'next/font/google';
 import StarRating from '@/components/StarRaiting/StarRaiting';
 import { AiOutlineMessage, } from "react-icons/ai";
 import { BsArrowLeft, BsFillHeartFill } from "react-icons/bs";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice';
+import { useEffect } from "react"
 
 const RobotoBold = Roboto({
     weight: ['700'],
@@ -56,27 +58,29 @@ const host = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 //     })
 // })
 
-const hotelId = async (id: number) => {
-    const response = await axios.get(`http://localhost:4000/hotels`);
 
-    return response.data
-}
 
 
 
 export default async function Detail({ params }) {
     const { id } = params
-    const response = await hotelId(id)
-    const hotel = response.find(h => h.hotel_id == id)
-    console.log(hotel);
 
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchinHotelId(id))
+
+    }, [])
+
+    const hotel = useSelector(state => state.hotel.hotel)
+
+    console.log(hotel)
 
     return (
 
         <div className=" ">
             <BsArrowLeft className='fixed top-5 left-5 text-4xl text-white z-40 ' />
             <BsFillHeartFill className='fixed top-7 right-5 text-2xl text-white z-40 ' />
-            <img src={hotel.photo1} alt='prueba' className=" fixed w-full -top-30" />
+            <img src={hotel.image} alt='prueba' className=" fixed w-full -top-30" />
             <div className="absolute h-3/4 bottom-0 rounded-3xl ">
                 <div className='px-5 pt-9 pb-5 bg-slate-100 rounded-3xl'>
                     <section className="">

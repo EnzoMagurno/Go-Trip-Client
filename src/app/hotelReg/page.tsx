@@ -89,20 +89,29 @@ const [form, setForm] = useState<FormState>({
 
 const handleSubmit = async (e: any) => {
   e.preventDefault()
+  const formPost = { ...form }
+  formPost.numberRooms = Number(form.numberRooms)
+
+  console.log(formPost)
   try{
    const response = await axios
-    .post("/hotel/newhotel", form)
-    .catch((err) => alert(err))
-    const id = response.data.detail.id 
+    .post("/hotel/newhotel",  formPost)
+    .then(response => {
+      return response.data
+    })
+    .catch((err) => alert(err)) 
+    const id = response.detail.id
     console.log(id)
-    setHotelId(id) 
-    await router.push(`/createRoom?id=${id}`)
+    /*setHotelId(id)  */
+    router.push(`/createRoom/?id=${id}`)
 } catch (error) {
 console.error('Error al crear el hotel:', error);
 }}
 
 const selectChange = (e: any) => {
-  if (form.destinationId.includes(e.valie)) {}else{
+
+  console.log(e.value)
+  if (form.destinationId.includes(e.value)) {}else{
   setForm({
       ...form,
       destinationId: e.value
@@ -115,6 +124,10 @@ const selectChange = (e: any) => {
 
 
 const handleChange = (e: any) => {
+
+
+
+
   setForm({
       ...form,
       [e.target.name]: e.target.value,

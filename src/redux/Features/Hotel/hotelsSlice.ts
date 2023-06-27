@@ -10,7 +10,9 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
 })
 
 export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
-    return axios.get(`http://localhost:3001/hotel/findhotel/${id}`).then(response => response.data)
+    return fetch(`http://localhost:3001/hotel/findhotel/${id}`)
+    .then(response => response.json())
+    .then(data => data)
 })
 
 
@@ -31,14 +33,15 @@ const hotelSlice = createSlice({
     },
     reducers: {
       getHotelsCoincidence: (state, action) => {
-        state.copyHotelData = state.hotelData.filter(hotel =>  hotel.city_id == action.payload)
+        state.copyHotelData = state.hotelData.filter(hotel =>  hotel.destinationId == action.payload)
+        console.log(action.payload)
       }
     },
     extraReducers: (builder) => {
         builder
         .addCase(fetchingHotel.fulfilled, (state, action) => {
             state.hotelData = action.payload
-
+            
             
         })
         .addCase(fetchinHotelId.fulfilled, (state, action) => {
@@ -47,7 +50,7 @@ const hotelSlice = createSlice({
         })
         .addCase(updateHotel.fulfilled, (state, action) => {
            state.hotel = action.payload
-            
+            console.log(action)
         })
     }
 })
