@@ -10,10 +10,6 @@ const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
 const poppins = Poppins({ weight: ['100'], subsets: ['latin'] })
 
-
-
-
-
 interface PageProps {
     params: {}
     searchParams: {}
@@ -33,9 +29,12 @@ const page = (props: PageProps): React.ReactNode => {
     const [onApprove, setOnApprove] = useState(false)
 
     const [hotel, setHotel] = useState<Hotel>()
-
+    const [perDay, setPerDay] = useState<number>(250);
+    const [stay, setStay] = useState<number>(1);
+    const [originalPerDay, setOriginalPerDay] = useState<number>(250);
+    const [taxesAndServices] = useState<number>(60)
     const id = '86491666-1669-4ee5-b467-4282b2713c7b'
-
+    const [totalAmount, setTotalAmount] = useState<number>(0);
     const paypalId = "AdlpFWNaQPd5hGxdq6ybyz16wT-vyJ4hpqPOt7bpBQgQY7sBUY1FMTiwtDvrdXeecy607N3U2JkK2D9E"
 
     const amount = '13.99'
@@ -49,6 +48,11 @@ const page = (props: PageProps): React.ReactNode => {
             .then(response => response.json())
             .then(data => setHotel(data))
     }, [])
+    useEffect(() => {
+        const subtotal = stay * originalPerDay;
+        const total = subtotal + taxesAndServices;
+        setTotalAmount(total);
+    }, [stay, originalPerDay, taxesAndServices]);
 
     return (
         <>
@@ -89,10 +93,37 @@ const page = (props: PageProps): React.ReactNode => {
             <p className={`${asap.className} text-gray-500 font-semibold pl-5 mb-4`}>
                 Summary of charges
             </p>
+            <div className={`${josefin.className} pl-5 flex justify-start`}>
+                <select value={stay} onChange={(e) => {
+                    const value = +e.target.value;
+                    const stayValue = !isNaN(value) && value !== 0 ? value : 1; // Restablecer a 1 si el valor no es válido
+                    setStay(stayValue);
+                }}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+            </div>
 
-            <div className={`${josefin.className} pl-5 grid grid-cols-2 gap-4`}>
+
+            <div className='flex justify-start pl-5'>
+                <h3>Per day: 250 USD</h3>
+            </div>
+            <div className='pl-5 grid grid-cols-2 gap-4'>
                 <p>Days of stay</p>
-                <p>{ }</p>
+                <p>{stay}</p>
                 <p>Service charges</p>
                 <p>20 USD</p>
                 <p>Taxes and fee</p>
@@ -104,7 +135,7 @@ const page = (props: PageProps): React.ReactNode => {
             </div>
             <div className='pl-5 grid grid-cols-2 gap-4'>
                 <p>Total stay</p>
-                <p>{total} {currency}</p>
+                <p>{stay * originalPerDay + taxesAndServices} {currency}</p>
             </div>
 
             <div className='flex-col justify-start pl-5 w-[90%]'>
@@ -127,7 +158,7 @@ const page = (props: PageProps): React.ReactNode => {
                 Book now!
             </h3>
             {/* PAYMENT METHOD */}
-            <div className='flex justify-center'>
+            <div className='flex justify-center -z-10'>
                 <PayPalScriptProvider options={{ clientId: paypalId }}>
                     <PayPalButtons
                         disabled={false}
@@ -140,7 +171,7 @@ const page = (props: PageProps): React.ReactNode => {
                                         {
                                             amount: {
                                                 currency_code: currency,
-                                                value: total,
+                                                value: totalAmount.toString(),
 
                                             }
                                         },
@@ -162,36 +193,6 @@ const page = (props: PageProps): React.ReactNode => {
                     />
                 </PayPalScriptProvider>
             </div>
-
-
-
-
-            {/* <button className='mb-5 mt-5 bg-[#3F0071] disabled text-white font-semibold py-4 px-4 rounded-full w-[85%]'>
-                Book now
-            </button> */}
-
-
-            {/* {paymentMethod
-                ?
-                <div>
-                    <h3 className='pl-5'>Payment information</h3>
-                    <div className='flex pl-5 mt-6'>
-                        <img className='w-10' src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1280px-Mastercard_2019_logo.svg.png" alt="mastercard" />
-                        <p className='pl-4 font-bold' >****</p>
-                        <p className='pl-4 font-bold'>8294</p>
-                    </div >
-                </div>
-                :
-                <div className='flex justify-center'>
-                    <button className='mb-5 mt-5 bg-[#3F0071] disabled text-white font-semibold py-4 px-4 rounded-full w-[60%]'>
-                        Add payment method
-                    </button></div>}
-            <p className='flex justify-center'>Or</p>
-            <div className='flex justify-center mb-4'>
-                <button className='mb-5 mt-5 bg-[#3F0071] disabled text-white font-semibold py-4 px-4 rounded-full w-[85%]'>
-                    Book now
-                </button>
-            </div> */}
 
             <div className='pl-5 mt-8'>
                 <h3 className={`${asap.className} font-semibold text-gray-500 mb-2`}>Modifying</h3>

@@ -216,7 +216,7 @@ const page = () => {
 
 			axios.post('/User/createNewUser/', form).catch((err) => alert(err));
 
-			
+			router.push('/');
 		} else {
 			alert('Please check data, and try again');
 		}
@@ -227,7 +227,7 @@ const page = () => {
 			<div className='overflow-y-auto'>
 				<div className='pl-5 flex w-full h-28'>
 					<div className=' flex justify-start items-center w-1/4'>
-						<Link href=''>
+						<Link href='/'>
 							<BsArrowLeftShort className='text-5xl' />
 						</Link>
 					</div>
