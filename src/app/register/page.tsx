@@ -27,9 +27,10 @@ const page = () => {
 	const [disabled, setDisabled] = useState<boolean>(true);
 	const [focusedField, setFocusedField] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [sessionToken, setSessionToken] = useState<string>('');
 	const [confirmShowPassword, setConfirmShowPassword] =
 		useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(false);
 
 	const [dates, setDates] = useState<string>('');
 
@@ -68,6 +69,11 @@ const page = () => {
 		thirdPartyCreated: boolean;
 	}
 
+	interface DataLogin {
+		username: string;
+		passwordlogin: string;
+	}
+
 	const [errors, setErrors] = useState<Errors>({});
 
 	const [form, setForm] = useState<FormState>({
@@ -80,7 +86,7 @@ const page = () => {
 		password: '',
 		confirmPassword: '',
 		birthday: '',
-		rol: 'user',
+		rol: 'host',
 		gender: '',
 		address: '',
 		dniPasaport: '',
@@ -205,16 +211,53 @@ const page = () => {
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		if (disabled === false) {
-			console.log(form);
+			// console.log(form);  //!Check Form
+
+			const dataLogin: DataLogin = {
+				username: form.email,
+				passwordlogin: form.password,
+			};
 
 			setLoading(true);
+
 			setTimeout(() => {
 				setLoading(false);
-				router.push('/')
 			}, 1000);
 			console.log('Petición de inicio de sesión');
 
-			axios.post('/User/createNewUser/', form).catch((err) => alert(err));
+			axios //! Petición de inicio de sesión
+				.post('User/createNewUser', form)
+				.then((response) => {
+					// console.log(response.data);
+					axios //! Peticion Info Login
+						.post('user/login', dataLogin)
+						.then((response) => {
+							console.log(response.data);
+							const tokenSession = response.data.tokenSession;
+							// console.log(tokenSession);
+							setSessionToken(tokenSession);
+							axios
+								.get('user/readUser', {
+									headers: {
+										'Content-Type': 'application/json',
+										Authorization: `Bearer ${tokenSession}`,
+									},
+								})
+								.then((response) => {
+									console.log(tokenSession);
+									console.log(response.data);
+								})
+								.catch((error) => {
+									console.log(error);
+								});
+						})
+						.catch((error) => {
+							console.log(error);
+						});
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 
 			router.push('/');
 		} else {
