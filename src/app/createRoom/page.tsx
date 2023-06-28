@@ -24,10 +24,10 @@ const josefinRegular = Josefin_Sans({
 
 function RoomCreator() {
 
-type FetchingServicesAction = ReturnType<typeof fetchingServices>;
+
 const dispatch = useDispatch()
 
-type MyDispatch = dispatch<FetchingServicesAction>;
+
 
 const searchParams = useSearchParams()
 
@@ -38,9 +38,6 @@ const [serviceName, setServiceName] = useState([]);
 
 const router = useRouter()  
 
-  const handleGoBack = () => {
-    router.back();
-  };
 
   const services = useSelector((state: MainGlobal) => state.services.dataService)
   
@@ -151,7 +148,7 @@ const handleSelect = (e: React.MouseEvent<HTMLButtonElement> ) => {
       
       <form  onSubmit={handleSubmit} className='bg-neutral-50  mt-5 flex flex-col p-4 shadow-md'>
           <div className={`${asapSemi.className} text-2xl w-screen flex pt-20`}>
-          <h1 className='mt-10'>Room details</h1>
+          <h1 className='flex text-center'>Create a room</h1>
       </div>
            <label className={`${josefinRegular.className} mt-5`} htmlFor="Type">Name</label>
                     <input className={`${josefinRegular.className}  border-2 rounded-xl my-2 pl-3 py-3 pb-3  `}
