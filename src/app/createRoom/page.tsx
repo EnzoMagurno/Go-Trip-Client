@@ -58,8 +58,8 @@ const router = useRouter()
      const response = await axios
       .post("/rooms/newRooms", form)
       .catch((err) => alert(err))
-      console.log(response)
-      await router.push(`/myHotels/${id}`)
+      console.log(response)      
+      router.push(`/myHotels/${id}`)
   } catch (error) {
   console.error('Error al crear el hotel:', error);
   }}

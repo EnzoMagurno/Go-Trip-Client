@@ -210,6 +210,7 @@ const page = () => {
 			setLoading(true);
 			setTimeout(() => {
 				setLoading(false);
+				router.push('/')
 			}, 1000);
 			console.log('Petición de inicio de sesión');
 

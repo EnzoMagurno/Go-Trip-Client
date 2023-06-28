@@ -11,6 +11,9 @@ interface OptionsObj {
 }
 
 const Options: React.FC<OptionsObj> = ({ city, state, country, id }) => {
+
+
+
 	const dispatch = useDispatch();
 	return (
 		<li onClick={() => { dispatch(getHotelsCoincidence(id)); dispatch(cleanCoincedences())}} className='h-16 flex justify-start items-center cursor-pointer border-b border-solid border-zinc-300 '>
