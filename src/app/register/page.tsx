@@ -257,14 +257,12 @@ const page = () => {
 						Full name
 					</label>
 					<input
-						className={`${
-							josefin.className
-						} border-2 rounded-xl my-2 pl-3 py-3 pb-3 ${
-							(errors.name && focusedField === 'password') ||
-							(errors.name && focusedField === 'confirmPassword')
+						className={`${josefin.className
+							} border-2 rounded-xl my-2 pl-3 py-3 pb-3 ${(errors.name && focusedField === 'password') ||
+								(errors.name && focusedField === 'confirmPassword')
 								? 'border-red-300'
 								: ''
-						}`}
+							}`}
 						type='text'
 						onChange={handleChange}
 						placeholder='Full name'
@@ -284,12 +282,11 @@ const page = () => {
 						Birthdate
 					</label>
 					<DatePicker
-						className={`${
-							(errors.birthday && focusedField === 'password') ||
-							(errors.birthday && focusedField === 'confirmPassword')
+						className={`${(errors.birthday && focusedField === 'password') ||
+								(errors.birthday && focusedField === 'confirmPassword')
 								? 'border-red-400'
 								: ''
-						}`}
+							}`}
 						name='birthday'
 						onFocus={handleDatePickerFocus}
 						onBlur={handleBlur}
@@ -306,12 +303,11 @@ const page = () => {
 						Country/Region
 					</label>
 					<select
-						className={`border-2 rounded-xl pt-2 w-1/2 my-4 pl-3 py-3 pb-3 ${
-							(errors.country && focusedField === 'password') ||
-							(errors.country && focusedField === 'confirmPassword')
+						className={`border-2 rounded-xl pt-2 w-1/2 my-4 pl-3 py-3 pb-3 ${(errors.country && focusedField === 'password') ||
+								(errors.country && focusedField === 'confirmPassword')
 								? 'border-red-300'
 								: ''
-						}`}
+							}`}
 						name='country'
 						autoComplete='off'
 						onChange={selectChange}
@@ -364,14 +360,12 @@ const page = () => {
 					<div>
 						<div>
 							<select
-								className={`${
-									josefin.className
-								} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3 ${
-									(errors.phoneCode && focusedField === 'password') ||
-									(errors.phoneCode && focusedField === 'confirmPassword')
+								className={`${josefin.className
+									} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3 ${(errors.phoneCode && focusedField === 'password') ||
+										(errors.phoneCode && focusedField === 'confirmPassword')
 										? 'border-red-300'
 										: ''
-								}`}
+									}`}
 								name='phoneCode'
 								onFocus={handleSelectFocus}
 								onBlur={handleBlur}
@@ -389,17 +383,15 @@ const page = () => {
 
 							{/* PHONE */}
 							<input
-								className={`${
-									josefin.className
-								} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2
-                                 ${
-																		(errors.phone &&
-																			focusedField === 'password') ||
-																		(errors.phone &&
-																			focusedField === 'confirmPassword')
-																			? 'border-red-300'
-																			: ''
-																	}`}
+								className={`${josefin.className
+									} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2
+                                 ${(errors.phone &&
+										focusedField === 'password') ||
+										(errors.phone &&
+											focusedField === 'confirmPassword')
+										? 'border-red-300'
+										: ''
+									}`}
 								type='number'
 								name='phone'
 								placeholder='Phone Number'
@@ -423,15 +415,13 @@ const page = () => {
 						Email address
 					</label>
 					<input
-						className={`${
-							josefin.className
-						} border-2 rounded-xl my-2 pl-3 py-3 pb-3 
-                        ${
-													(errors.email && focusedField === 'password') ||
-													(errors.email && focusedField === 'confirmPassword')
-														? 'border-red-300'
-														: ''
-												}`}
+						className={`${josefin.className
+							} border-2 rounded-xl my-2 pl-3 py-3 pb-3 
+                        ${(errors.email && focusedField === 'password') ||
+								(errors.email && focusedField === 'confirmPassword')
+								? 'border-red-300'
+								: ''
+							}`}
 						type='email'
 						name='email'
 						onChange={handleChange}
@@ -508,9 +498,8 @@ const page = () => {
 			<div className='sticky inset-x-0 bottom-0 bg-white border-t-[3px] '>
 				<div className='flex justify-center mt-5 items-center'>
 					<button
-						className={`${
-							disabled ? `bg-[#3F0071] opacity-50` : `bg-[#3F0071]`
-						} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
+						className={`${disabled ? `bg-[#3F0071] opacity-50` : `bg-[#3F0071]`
+							} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
 						name='signButton'
 						onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
 							handleClick(e);
