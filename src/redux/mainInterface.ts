@@ -8,3 +8,4 @@ export interface MainGlobal {
     city: InitialStateCity
     usersReal:InitialStateRealUser
     services : InitialStateService
+}

@@ -10,10 +10,20 @@ const DetailHotel = ({ params }) => {
 
     const dispatch = useDispatch()
     const hotel = useSelector(selectHotelIdState)
+	const rooms: String | Number | Boolean | [] = hotel.rooms
+
+	
+
     useEffect(() => {
 		dispatch(fetchinHotelId(idHotel))
 
     }, [])
+console.log(rooms);
+
+
+// hotel.rooms.map((h)=> rooms.push(h))
+// console.log(rooms);
+
 
 	return (
 		<div className='p-5 pb-24'>
