@@ -36,13 +36,10 @@ const Home = () => {
   useEffect(() => {
 
 
-  
-    dispatch(fetchingCity())
-
     dispatch(fetchingHotel())
 
 
-  }, [cityResults.length, hotelResults.length])
+  }, [])
 
 
 	return (
@@ -50,19 +47,23 @@ const Home = () => {
 
      
     
-      <div className='pt-2 pb-2 '>
+      <header className='pt-2 pb-2 '>
         <h4 className={`${josefin.className}  text-gray-500 dark:text-blueSky`}>Hello, User</h4>
         <h3 className={`${roboto.className} text-3xl dark:text-white`}>Where We Go?</h3>
-      </div>
-      <SearchBar />
-      <FiltersBar />
+        
+        
+          <FiltersBar />
+
+          
+
+        
+      </header>
+
+     
 
       <main>
-          {
-          hotelResults.length 
-          ? <ContainerResults roboto={roboto} />
-          :  <SliderMain roboto={roboto}/>
-        } 
+            <SliderMain roboto={roboto}/>
+
        
       </main>
 

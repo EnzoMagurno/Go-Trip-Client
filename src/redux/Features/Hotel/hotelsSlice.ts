@@ -1,16 +1,35 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { token } from "../Citys/CitySlice";
+ 
 
 
+
+
+/* interface InitialStateHotel {
+    hotelData: [],
+    copyHotelData: [],
+    hotel: {}
+} */
 
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
-    return await fetch("http://localhost:3001/hotel/findHotel")
+    return await fetch("http://localhost:3001/hotel/findHotel", {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
     .then(response => response.json())
     .then(data => data)
 })
 
 export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
-    return fetch(`http://localhost:3001/hotel/findhotel/${id}`)
+    return fetch(`http://localhost:3001/hotel/findhotel/${id}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
     .then(response => response.json())
     .then(data => data)
 })
@@ -27,14 +46,11 @@ const hotelSlice = createSlice({
     initialState: {
         hotelData: [],
         copyHotelData: [],
-        hotel: {},
-        status: "idle",
-        error: null
+        hotel: {}
     },
     reducers: {
       getHotelsCoincidence: (state, action) => {
-        state.copyHotelData = state.hotelData.filter(hotel =>  hotel.destinationId == action.payload)
-        console.log(action.payload)
+        
       }
     },
     extraReducers: (builder) => {
@@ -50,7 +66,7 @@ const hotelSlice = createSlice({
         })
         .addCase(updateHotel.fulfilled, (state, action) => {
            state.hotel = action.payload
-            console.log(action)
+            
         })
     }
 })
