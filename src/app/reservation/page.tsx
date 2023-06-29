@@ -5,6 +5,9 @@ import { BsArrowLeftShort } from 'react-icons/bs'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
+import { DatePicker } from 'antd'
+import { Dayjs } from 'dayjs'
+import axios from 'axios'
 
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
@@ -24,6 +27,11 @@ interface Hotel {
     }
 }
 
+
+
+const handleDateChange = (value: Dayjs | null, fieldName: string) => {
+    const dateValue = value?.format('DD-MM-YYYY');
+};
 const page = (props: PageProps): React.ReactNode => {
 
     const [onApprove, setOnApprove] = useState(false)
@@ -33,7 +41,7 @@ const page = (props: PageProps): React.ReactNode => {
     const [stay, setStay] = useState<number>(1);
     const [originalPerDay, setOriginalPerDay] = useState<number>(250);
     const [taxesAndServices] = useState<number>(60)
-    const id = '86491666-1669-4ee5-b467-4282b2713c7b'
+    const id = 'fd150709-4c7f-4033-bcbd-d5b4e1a858ff'
     const [totalAmount, setTotalAmount] = useState<number>(0);
     const paypalId = "AdlpFWNaQPd5hGxdq6ybyz16wT-vyJ4hpqPOt7bpBQgQY7sBUY1FMTiwtDvrdXeecy607N3U2JkK2D9E"
 
@@ -41,18 +49,42 @@ const page = (props: PageProps): React.ReactNode => {
     const total = '1'
     const currency = hotel?.destination.moneyType || ''
 
-
-    console.log(hotel);
+    console.log(totalAmount);
     useEffect(() => {
         fetch(`http://localhost:3001/hotel/findhotel/${id}`)
             .then(response => response.json())
             .then(data => setHotel(data))
     }, [])
     useEffect(() => {
-        const subtotal = stay * originalPerDay;
+        const subtotal = stay * perDay;
         const total = subtotal + taxesAndServices;
         setTotalAmount(total);
-    }, [stay, originalPerDay, taxesAndServices]);
+    }, [stay, perDay, taxesAndServices]);
+    const pago = stay * perDay + taxesAndServices;
+
+
+    const handlePayment = () => {
+        axios.post('/urlPago/mercadoPago',
+            {
+                "carrito": [
+                    {
+                        "nombre": "Compu re buena",
+                        "precio": 1,
+                        "cantidad": 1
+                    }
+                ],
+                // "bookingId": "ABC123",
+                // "userId": "12345"
+            },
+        )
+            .then((response) => {
+                console.log(response.data);
+                window.location.href = `${response.data}`;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     return (
         <>
@@ -77,14 +109,6 @@ const page = (props: PageProps): React.ReactNode => {
                     </div>
                 </div>
 
-                {/* <div className={`${josefin.className} mt-4 flex flex-col pl-5`}>
-                    <p className={`${asap.className} mb-2 mt-2 text-gray-500 font-semibold `}>
-                        Stay information
-                    </p>
-                    <p>Dec 11-15 (4 nights)</p>
-                    <p>1 Room, 2 Guests</p>
-                    <p>1 King bed, gest room, Non-Smoking</p>
-                </div> */}
             </div>
 
             <div className='flex justify-center'>
@@ -96,7 +120,7 @@ const page = (props: PageProps): React.ReactNode => {
             <div className={`${josefin.className} pl-5 flex justify-start`}>
                 <select value={stay} onChange={(e) => {
                     const value = +e.target.value;
-                    const stayValue = !isNaN(value) && value !== 0 ? value : 1; // Restablecer a 1 si el valor no es válido
+                    const stayValue = !isNaN(value) && value !== 0 ? value : 1;
                     setStay(stayValue);
                 }}>
                     <option value="1">1</option>
@@ -109,14 +133,16 @@ const page = (props: PageProps): React.ReactNode => {
                     <option value="8">8</option>
                     <option value="9">9</option>
                     <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
+
                 </select>
             </div>
 
+            <form className=''>
+                <DatePicker
+                    onChange={value => handleDateChange(value, 'birthday')}
+                    name='check-in'
+                />
+            </form>
 
             <div className='flex justify-start pl-5'>
                 <h3>Per day: 250 USD</h3>
@@ -135,8 +161,14 @@ const page = (props: PageProps): React.ReactNode => {
             </div>
             <div className='pl-5 grid grid-cols-2 gap-4'>
                 <p>Total stay</p>
-                <p>{stay * originalPerDay + taxesAndServices} {currency}</p>
+                <p>{pago} {currency}</p>
             </div>
+
+
+            <div>
+                <button onClick={handlePayment}>Pagar con MercadoPago</button>
+            </div>
+
 
             <div className='flex-col justify-start pl-5 w-[90%]'>
                 <h3 className={`${asap.className} mb-2 text-gray-500 mt-6 font-semibold`}>
@@ -159,39 +191,38 @@ const page = (props: PageProps): React.ReactNode => {
             </h3>
             {/* PAYMENT METHOD */}
             <div className='flex justify-center -z-10'>
-                <PayPalScriptProvider options={{ clientId: paypalId }}>
+                {/* <PayPalScriptProvider options={{ clientId: paypalId }}>
                     <PayPalButtons
                         disabled={false}
                         forceReRender={[amount, currency]}
                         fundingSource={undefined}
                         createOrder={(data, actions) => {
-                            return actions.order
-                                .create({
-                                    purchase_units: [
-                                        {
-                                            amount: {
-                                                currency_code: currency,
-                                                value: totalAmount.toString(),
-
-                                            }
+                            return axios.post('/urlPaypal/newOrder', {
+                                purchase_units: [
+                                    {
+                                        amount: {
+                                            currency: currency,
+                                            value: pago.toString(),
                                         },
-                                    ]
-                                })
+                                    },
+                                ],
+                                paymentStatus: 'pending',
+                            })
                                 .then((orderId) => {
-                                    // Your code here after create the order
+                                    // Tu código aquí después de crear la orden
                                     return orderId;
                                 });
                         }}
-                        onApprove={function (data: Record<string, unknown>, actions) {
-                            return actions.order?.capture?.().then(function () {
-                                // Your code here after capture the order
-                                setOnApprove(true)
+                        onApprove={(data, actions) => {
+                            return actions.order?.capture?.().then(() => {
+                                // Tu código aquí después de capturar la orden
+                                setOnApprove(true);
                             });
-                        }
-                        } onCancel={function (data: Record<string, unknown>, actions) {
                         }}
                     />
-                </PayPalScriptProvider>
+                </PayPalScriptProvider> */}
+
+
             </div>
 
             <div className='pl-5 mt-8'>

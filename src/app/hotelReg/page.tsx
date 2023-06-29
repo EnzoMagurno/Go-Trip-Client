@@ -115,12 +115,12 @@ console.error('Error al crear el hotel:', error);
 
 const selectChange = (e: any) => {
 
-  console.log(e.value)
   if (form.destinationId.includes(e.value)) {}else{
   setForm({
       ...form,
       destinationId: e.value
   });
+  console.log(e.value)
   setErrors(validation({
     ...form,
     destinationId: e.value

@@ -1,4 +1,11 @@
 "use client"
+import React from 'react'
+import axios from '../../utils/axios';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Select from 'react-select';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { fetchingHotel } from '@/redux/Features/Hotel/hotelsSlice';
 
 
 const vegas =
@@ -18,11 +25,19 @@ export interface Fonts {
 
 const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+    
+		dispatch(fetchingHotel())
+	
+	  },[])
 
 
 
 
 	return (
+
 		<div className='grid grid-cols-2 gap-5 h-56 mt-3'>
 			<div className={`w-full relative shadow-img rounded-3xl`}>
                 <div className='bg-black absolute z-10 w-full h-full opacity-30 rounded-3xl'></div>

@@ -9,12 +9,15 @@ import { useState } from 'react';
 import { Errors } from './validation';
 import validation from './validation';
 import spinner from './loading.module.css';
+import axios from '../../utils/axios';
+import { useRouter } from 'next/navigation';
 
 const asap = Asap({ subsets: ['latin'] });
 const josefin = Josefin_Sans({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] });
 
 const page = () => {
+	const router = useRouter();
 	interface FormState {
 		email: string;
 		password: string;
@@ -50,6 +53,34 @@ const page = () => {
 				[e.target.name]: e.target.value,
 			})
 		);
+	};
+
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		const newOriginalForm = { ...form };
+
+		const newForm = {
+			passwordlogin: newOriginalForm.password,
+			username: newOriginalForm.email,
+		};
+
+		console.log(newForm);
+
+		setLoading(true);
+		setTimeout(() => {
+			setLoading(false);
+		}, 1000);
+		console.log('Petición de inicio de sesión');
+
+		axios
+			.post('user/login', newForm)
+			.then((response) => {
+				console.log(response.data); // Muestra la respuesta en la consola
+			})
+			.catch((error) => {
+				console.log(error); // Muestra el error en la consola
+			});
+
+		router.push('/');
 	};
 
 	return (
@@ -137,16 +168,16 @@ const page = () => {
 			<div className=''>
 				<div className='flex justify-center mt-8 items-center'>
 					<button
-						onClick={() => {
+						onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
 							if (errors.email !== '' || errors.password !== '') {
 								// Mostrar alerta de que no se puede iniciar sesión debido a errores
 								alert('No se puede iniciar sesión debido a errores.');
 							} else {
+								handleClick(e);
 								setLoading(true);
 								setTimeout(() => {
 									setLoading(false);
 								}, 2000);
-								console.log(form);
 								console.log('Petición de inicio de sesión');
 							}
 						}}
