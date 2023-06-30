@@ -12,6 +12,8 @@ import { fetchingCities } from "../../redux/Features/Citys/CitySlice";
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
 import { token } from "../../redux/Features/Citys/CitySlice";
 import { MainGlobal } from '@/redux/mainInterface';
+import { Loader } from '@googlemaps/js-api-loader';
+import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 
 const asapSemi = Asap({
   weight: ['600'],
@@ -27,21 +29,28 @@ const listOfCountries = Object.values(countries)
 
 function HotelRegister() {
 
+  // const { isLoaded } = useLoadScript({
+  //   googleMapsApiKey: process.env.GOOGLEMAPS_API_KEY
+  // })
+
+  
+
   const selectCities: object[] = []
 
   const router = useRouter()
 
-  
-
   const dispatch = useDispatch()
   const cities = useSelector((state: MainGlobal) => state.city.dataCity)
-
+ 
   const [phoneCode, setPhoneCode] = useState<string[]>([]) 
   const [hotelId, setHotelId] = useState(null);
   const [lada, setLada] = useState('')
   const [completePhone, setCompletePhone] = useState('')
 
   // const [file, setFile] = useState()
+
+console.log(cities);
+
 
   cities.map(e => selectCities.push({label:e.city, value: e.id}))
   
@@ -53,7 +62,7 @@ function HotelRegister() {
     const phoneSet: string[] = [...new Set(optionsPhone)].sort((a: string, b: string) => parseInt(a, 10) - parseInt(b, 10));
     setPhoneCode(phoneSet)
 
-  },[cities.length])
+  },[])
 
   
 
@@ -88,30 +97,27 @@ const [form, setForm] = useState<FormState>({
 });
 
 const handleSubmit = async (e: any) => {
-  e.preventDefault()
-  const formPost = { ...form }
-  formPost.numberRooms = Number(form.numberRooms)
-
-  console.log(formPost)
-  try{
-   const response = await axios
-    .post("/hotel/newhotel",  formPost, {
-      method: "GET",
+  e.preventDefault();
+  const formPost = { ...form };
+  formPost.numberRooms = Number(form.numberRooms);
+  
+  console.log(formPost);
+  try {
+    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+    const response = await axios.post("/hotel/newhotel", formPost, {
       headers: {
-          "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
-  })
-    .then(response => {
-      return response.data
-    })
-    .catch((err) => alert(err)) 
-    const id = response.detail.id
-    console.log(id)
+    });
+
+    const id = response.data.detail.id;
+    console.log(id);
     /*setHotelId(id)  */
-    router.push(`/createRoom/?id=${id}`)
-} catch (error) {
-console.error('Error al crear el hotel:', error);
-}}
+    router.push(`/createRoom/?id=${id}`);
+  } catch (error) {
+    console.error('Error al crear el hotel:', error);
+  }
+};
 
 const selectChange = (e: any) => {
 
@@ -201,8 +207,13 @@ const selectLadaChange = (e: any) => {
                         id='hotelAddressInput'
                         name='address'
                         value={form.address}
-                        autoComplete='off' />    
+                        autoComplete='off' />     
                     <span className='text-red-400'>{errors.address && <p>{errors.address}</p>}</span>
+                    
+                    {/* {isLoaded && isLoaded
+                    ? <GoogleMap zoom={10} center={{lat: 44, lng: -80}} mapContainerStyle={{height: "300px", width:"330px"}}></GoogleMap> 
+                    : <div>Loading...</div>}
+                     */}
          
           <label className={`${josefinRegular.className} mt-2.5`} htmlFor="hotelToomsInput">Rooms</label>
                     <input className={`${josefinRegular.className} border-2 rounded-xl my-2 h-14 pl-4`}

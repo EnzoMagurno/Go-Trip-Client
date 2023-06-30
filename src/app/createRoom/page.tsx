@@ -40,6 +40,7 @@ const router = useRouter()
 
 
   const services = useSelector((state: MainGlobal) => state.services.dataService)
+  console.log(services);
   
   services.map(e => selectServices.push({label:e.name, value: [e.id, e.name]}))
 
@@ -50,16 +51,21 @@ const router = useRouter()
   },[])
   
   const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    try{
-     const response = await axios
-      .post("/rooms/newRooms", form)
-      .catch((err) => alert(err))
-      console.log(response)      
-      router.push(`/myHotels/${id}`)
-  } catch (error) {
-  console.error('Error al crear el hotel:', error);
-  }}
+    e.preventDefault();
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH  
+       const response = await axios.post("/rooms/newRooms", form, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      console.log(response);
+      router.push(`/myHotels/${id}`);
+    } catch (error) {
+      console.error('Error al crear la habitación:', error);
+    }
+  };
 
 interface FormState {
   room: string;
@@ -146,7 +152,7 @@ const handleSelect = (e: React.MouseEvent<HTMLButtonElement> ) => {
 
       
       
-      <form  onSubmit={handleSubmit} className='bg-neutral-50  mt-5 flex flex-col p-4 shadow-md'>
+      <form  onSubmit={handleSubmit} className='bg-neutral-50  mt-5 mb-32 flex flex-col p-4 shadow-md'>
           <div className={`${asapSemi.className} text-2xl w-screen flex pt-20`}>
           <h1 className='flex text-center'>Create a room</h1>
       </div>

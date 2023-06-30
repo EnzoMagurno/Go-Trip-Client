@@ -6,7 +6,6 @@ import { City } from '../../redux/Features/Citys/CitySlice';
 const Select = ({toggleOpen}) => {
 	const cityResults: City[] = useSelector(selectCityState);
 
-	console.log(cityResults);
 	return (
 		<div>
 			{cityResults.length ? (

@@ -4,10 +4,15 @@ import Logo_GoTrip_Dark from "./images/Go-Trip-logo_Dark.svg"
 import Image from "next/image";
 import { useState } from "react";
 import UserOptions from "../UserOptions/UserOptions";
+import { useRouter } from "next/navigation";
 
 const NavBarTop = () => {
 
+    const router = useRouter();
 
+    const handleReload = () => {
+        router.push('/');
+      };
 
     const [ themeIsDark, setThemeIsDark ] = useState(false)
 
@@ -37,13 +42,13 @@ const NavBarTop = () => {
     return (
         <nav className=" relative z-30 left-0 shadow-input top-0 w-full h-24 flex justify-between items-end p-5 pb-3 dark:bg-neutral-900 dark:shadow-Orange ">
 
-            <div className=" inline-block w-sizeLogo">
+            <button onClick={handleReload} className=" inline-block w-sizeLogo">
                 <Image 
                 src={ !themeIsDark ? Logo_GoTrip : Logo_GoTrip_Dark} 
                 alt="Logo_GoTrip"
                 className=""
                 />
-            </div>
+            </button>
 
 
             <button onClick={closeWindow} className=" h-6 w-6 flex flex-col justify-evenly">

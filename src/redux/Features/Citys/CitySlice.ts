@@ -12,12 +12,12 @@ interface CityName {
 
 
 export interface City {
-	id: number;
-	country: string;
-	state: string;
-	city: string;
-	moneyType: string;
-	status: boolean;
+    id: number
+    country: string,
+    state: string
+    city: string,
+    moneyType: string
+    status: boolean
 }
 
 export interface InitialStateCity {
@@ -27,28 +27,14 @@ export interface InitialStateCity {
 	error: string | null;
 }
 
-export const fetchingCities = createAsyncThunk('getCities', async () => {
-	return await fetch(`http://localhost:3001/destination`, {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH }`
-        }
-    })
-		.then((response) => response.json())
-		.then((data) => {
-			console.log(data)
-			return data;
-		})
-		.catch((error) => console.log(error.message));
-});
 
-export const fetchingCity = createAsyncThunk('getCity', async (city) => {
-	console.log(TOKEN_FETCH)
-	return await fetch(`http://localhost:3001/destination/?city=${city}`, {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH }`
-        }
+
+export const fetchingCity = createAsyncThunk("getCity", async () => {
+    return await fetch("http://localhost:3001/destination")
+    .then(response => response.json())
+    .then(data => {
+        
+        return data
     })
 		.then((response) => response.json())
 		.then((data) => {
