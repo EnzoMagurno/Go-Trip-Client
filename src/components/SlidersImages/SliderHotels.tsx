@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { City } from '../../redux/Features/Citys/CitySlice';
 import { getHotelsCoincidence } from "../../redux/Features/Hotel/hotelsSlice";
-import { fetchingCity } from "../../redux/Features/Citys/CitySlice";
+import { fetchingCities } from "../../redux/Features/Citys/CitySlice";
 import { MainGlobal } from '@/redux/mainInterface';
 
 
@@ -27,7 +27,7 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 	useEffect(() => {
     
     
-		dispatch(fetchingCity())
+		dispatch(fetchingCities())
 	},[])
 
 	
