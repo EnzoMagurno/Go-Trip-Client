@@ -1,7 +1,7 @@
 'use client';
 import { IoIosArrowForward } from 'react-icons/io';
 import { CiLogout } from 'react-icons/ci';
-import { RiHotelLine } from 'react-icons/ri';
+import { RiHotelLine, RiAdminLine } from 'react-icons/ri';
 import { AiOutlineSetting } from 'react-icons/ai';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -57,7 +57,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 
 	return (
 		<div
-			className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5 h-60 pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`}
+			className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5  pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`}
 		>
 			<button
 				onClick={closeWindow}
@@ -118,8 +118,20 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 						<IoIosArrowForward className=' text-blueSky' />
 					</Link>
 				</li>
+				<li className='bg-white h-10 '>
+					<Link
+						href='/admin'
+						className='w-full flex justify-between items-center p-3'
+					>
+						<div className='flex items-center justify-between'>
+							<RiAdminLine className='inline text-2xl mr-3 text-blueSky' />{' '}
+							Admin
+						</div>
+						<IoIosArrowForward className=' text-blueSky' />
+					</Link>
+				</li>
 			</ul>
-			<ul className='pl-5 pr-5'>
+			<ul className=' pt-5 pl-5 pr-5'>
 				<li className='flex justify-end items-center text-red-400 '>
 					<a
 						onClick={() => {

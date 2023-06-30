@@ -41,7 +41,7 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 		status,
 	} = hotel;
 
-	console.log(address);
+	
 	const dispatch = useDispatch();
 
 	const [editData, setEditData] = useState({
@@ -332,6 +332,7 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 			</button>
 
 			<h5 className='text-lg font-bold mt-3 mb-3 text-iconsPurple'>Photos</h5>
+			<hr />
 		</div>
 	);
 };

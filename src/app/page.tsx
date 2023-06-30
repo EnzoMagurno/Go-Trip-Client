@@ -40,11 +40,6 @@ const Home = () => {
 	const hotelResults = useSelector(selectHotelState);
 	const router = useRouter();
 
-	useEffect(() => {
-		// dispatch(fetchingCity());
-		// dispatch(fetchingHotel());
-	}, [cityResults.length, hotelResults.length]);
-
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
 
@@ -53,11 +48,13 @@ const Home = () => {
 		localStorage.getItem('username');
 	}, [userNameSession]); //! MANTENER CODE
 
-	console.log(userNameSession);
+	useEffect(() => {
+		dispatch(fetchingHotel());
+	}, []);
 
 	return (
 		<div className={`p-5 pb-24 dark:bg-neutral-900`}>
-			<div className='pt-2 pb-2 '>
+			<header className='pt-2 pb-2 '>
 				<h4 className={`${josefin.className}  text-gray-500 dark:text-blueSky`}>
 					{/* MANTENER CODE */}
 					{tokenSession ? userNameSession : 'Hello, User'}
@@ -65,17 +62,11 @@ const Home = () => {
 				<h3 className={`${roboto.className} text-3xl dark:text-white`}>
 					Where We Go?
 				</h3>
-			</div>
-			<SearchBar />
-			<FiltersBar />
 
-			<main>
-				{hotelResults.length ? (
-					<ContainerResults roboto={roboto} />
-				) : (
-					<SliderMain roboto={roboto} />
-				)}
-			</main>
+				<FiltersBar />
+			</header>
+
+			<main>{/* <SliderMain roboto={roboto} /> */}</main>
 
 			<footer className=' bg-slate-600'></footer>
 		</div>

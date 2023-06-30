@@ -1,38 +1,95 @@
-
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from 'react';
 import { MdOutlineBedroomParent, MdPeopleOutline } from 'react-icons/md';
 import { BsKey } from 'react-icons/bs';
 import { TfiGallery } from 'react-icons/tfi';
-import { roboto } from '../../app/page';
 import { HiOutlineDocumentText } from 'react-icons/hi';
+import { fetchingServices } from '@/redux/Features/Services/servicesSlice';
+import { MainGlobal } from '@/redux/mainInterface';
 
-import { useRouter } from "next/navigation"
-const ContainerTypesRooms = () => {
 
-    const router = useRouter()
+export interface MyRoom {
+	id: string
+		room: string
+		price: number
+		numRooms: number
+		roomsInUse: number
+		description: string
+		status: boolean
+		ServicesRoom: string[]
+		hotelId: string
+}
+
+export interface RoomProps {
+	roomType: MyRoom
+}
+
+const ContainerTypesRooms = ({ roomType }: RoomProps) => {
+
+	
+	const dispatch = useDispatch()
+	const [serviceName, setServiceName] = useState<string[]>([]);
+
+	const services = useSelector((state: MainGlobal) => state.services.dataService)
+	
+	
+
+	const {
+		id, 
+		room, 
+		price, 
+		numRooms, 
+		roomsInUse, 
+		description, 
+		status, 
+		ServicesRoom, 
+		hotelId, 
+	} = roomType
+
+    
+
+	useEffect(() => {
+    
+    
+		dispatch(fetchingServices())
+		const getMatchingServices = () => {
+			const matchingServices = ServicesRoom.map((serviceId) => {
+			  return services.find((service) => service.id === serviceId);
+			});
+		
+			setServiceName(matchingServices);
+		  };
+		
+		  if (ServicesRoom.length > 0 && services.length > 0) {
+			getMatchingServices();
+		  }
+		}, [services.length]);
+
+	
+	
+	console.log(services)
+	console.log(ServicesRoom)
+	console.log(serviceName)
+
 
     //DAR TRANSITION PARA QUE EL CARD DE UN TYPO DE CUARTO SE HAGA GRANDE CUANDO SE APRETE EN VER MAS
 
 	return (
-		<div
-			className={`${roboto.className} border-t border-zinc-400 border-solid`}
-		>
-			<h3 className='mt-3 mb-3 text-lg font-bold text-iconsPurple'>
-				Types Rooms
-			</h3>
-
-			<div className=' shadow-insetContainerTypeRooms pb-5 rounded-2xl h w-ful grid grid-cols-1 gap-3'>
+		<div>
+			
+			
 				<div className='p-3 shadow-cardTypeRoom  rounded-2xl'>
 					<div>
 						<div className='flex items-center text-center pb-2'>
 							<h5 className=' text-lg font-bold w-full'>
-								Familiar Sencilla
+								{room}
 								<BsKey className='inline text-xl text-yellow-600 ml-2' />
 							</h5>
 						</div>
 						<div className='grid grid-cols-2 text-center pt-2 pb-2'>
 							<div className='flex items-center'>
 								<h5 className='w-full text-sm'>
-									<MdOutlineBedroomParent className='inline text-xl' /> Rooms 30
+									<MdOutlineBedroomParent className='inline text-xl' /> Rooms {numRooms}
 								</h5>
 							</div>
 							<div className='flex items-center'>
@@ -44,33 +101,22 @@ const ContainerTypesRooms = () => {
 						<div>
 							<h5 className='text-center font-medium'>Services</h5>
 
-							<div className='grid grid-cols-2 pt-2 pb-2 text-sm'>
-								<ul className='flex flex-col'>
-									<li className=''>- Clima</li>
-									<li className=''>- 2 bathrooms</li>
-									<li className=''>- Parking</li>
-									<li className=''>- Tv 75 inches</li>
+							
+								<ul className='px-10 grid grid-cols-2 justify-between'>
+									{serviceName && serviceName?.map(c => (<li className=''>- {c.name}</li>))}
+									
 								</ul>
-								<ul className='flex flex-col'>
-									<li className=''>- Clima</li>
-									<li className=''>- 2 bathrooms</li>
-									<li className=''>- Parking</li>
-									<li className=''>- Tv 75 inches</li>
-								</ul>
-							</div>
+							
 						</div>
 					</div>
-					<div className='pb-2'>
+					<div className='py-2'>
 						<div className='flex items-center pb-2 '>
 							<h5 className=' font-medium '>Description</h5>
 							<HiOutlineDocumentText className='text-xl ' />
 						</div>
 
 						<p className=' h-20 overflow-auto text-sm'>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit.
-							Dignissimos at repudiandae quos, porro consequatur eos culpa
-							expedita molestiae repellat molestias, quis necessitatibus
-							obcaecati inventore blanditiis. Earum hic rerum asperiores at?
+							{description}
 						</p>
 					</div>
 					<div>
@@ -85,16 +131,8 @@ const ContainerTypesRooms = () => {
 						/>
 					</div>
 				</div>
-				<div className='flex justify-center items-center'>
-					<div className=" flex flex-wrap justify-center items-center">
-						<button onClick={() => router.push("/createRoom")} className='relative border-2 border-green-600 w-10 h-10 flex justify-center items-center rounded-full shadow-buttonAdd'>
-							<div className='absolute border border-green-600 h-6 inline'></div>
-							<div className='absolute border border-green-600 h-6 inline transform rotate-90'></div>
-						</button>
-                        <h5 className='w-full text-center text-sm pt-2'>Add new room</h5>
-					</div>
-				</div>
-			</div>
+				
+			
 		</div>
 	);
 };
