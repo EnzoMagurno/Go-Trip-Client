@@ -1,12 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MainGlobal } from '@/redux/mainInterface';
+const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
+
+
+
 
 interface CityName {
 	name: string;
 	id: string;
 }
 
-export const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5MjFkYWVlNC03Y2IxLTRjODUtOWFmMy1kZGNlYTZlNjVmYjAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2ODgwNjc3NzYsImV4cCI6MTY4ODA3NDk3Nn0.QWfEDG44Xk2qPoS3oPuCatNyBYlws99dhOK_-KJTM2M"
 
 export interface City {
 	id: number;
@@ -28,7 +31,7 @@ export const fetchingCities = createAsyncThunk('getCities', async () => {
 	return await fetch(`http://localhost:3001/destination`, {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
 		.then((response) => response.json())
@@ -40,10 +43,11 @@ export const fetchingCities = createAsyncThunk('getCities', async () => {
 });
 
 export const fetchingCity = createAsyncThunk('getCity', async (city) => {
+	console.log(TOKEN_FETCH)
 	return await fetch(`http://localhost:3001/destination/?city=${city}`, {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
 		.then((response) => response.json())
@@ -61,7 +65,7 @@ export const getHotelsCoincidencesByCityId = createAsyncThunk('getHotelsByCity',
 	return await fetch(`http://localhost:3001/destination/${id}`, {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
 		.then((response) => response.json())
