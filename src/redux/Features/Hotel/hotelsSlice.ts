@@ -12,57 +12,58 @@ const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 } */
 
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
-    return await fetch("http://localhost:3001/hotel/findHotel", {
-        method: "GET",
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await fetch("http://localhost:3001/hotel/findHotel", {
         headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH}`
+          Authorization: `Bearer ${token}`
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        return data})
-})
+      });
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al obtener los hoteles:', error);
+      throw error;
+    }
+  });
 
-export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
-    return fetch(`http://localhost:3001/hotel/findhotel/${id}`, {
-        method: "GET",
+  export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await fetch(`http://localhost:3001/hotel/findhotel/${id}`, {
         headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH}`
+          Authorization: `Bearer ${token}`
         }
-    })
-    .then(response => response.json())
-    .then(data => data)
-})
+      });
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al obtener el hotel:', error);
+      throw error;
+    }
+  });
 
-
-export const deleteHotel = createAsyncThunk("deleteHotel", async (id) => {
-    return fetch(`http://localhost:3001/hotel/delHotel/${id}`, {
-        method: "DELETE",
+  export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await axios.put("http://localhost:3001/hotel/updhotel", updatedData, {
         headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH}`
+          Authorization: `Bearer ${token}`
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        return data
-    })
-})
-
-
-export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
-    
-
-    return axios.put(`http://localhost:3001/hotel/updhotel`, updatedData, {
-        method: "PUT",
-        headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH}`
-        }
-    }).then(response => {
-        console.log(response.data)
-        return response.data.detail
-    })
-})
+      });
+  
+      const data = response.data.detail;
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al actualizar el hotel:', error);
+      throw error;
+    }
+  });
 
 
 const hotelSlice = createSlice({

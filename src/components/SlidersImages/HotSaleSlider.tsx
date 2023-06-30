@@ -1,6 +1,57 @@
+import React from 'react'
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { getHotelsCoincidence } from "../../redux/Features/Hotel/hotelsSlice";
 import { Fonts } from './SliderHotels';
 
 const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
+
+	const [paris, setParis] = useState(null);
+	const [bali, setBali] = useState(null);
+
+	
+
+	
+
+	useEffect(() => {
+		const fetchParis = async () => {
+		  try {
+			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+	
+			const response = await axios.get('http://localhost:3001/hotel/findhotel?name=Hotel du Collectionneur', {
+			  headers: {
+				Authorization: `Bearer ${token}`
+			  }
+			});
+			setParis(response.data[0]); 
+		  } catch (error) {
+			console.error('Error en la petición:', error);
+		  }
+		};
+	
+		const fetchBali = async () => {
+		  try {
+			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+	
+			const response = await axios.get('http://localhost:3001/hotel/findhotel?name=The Kayon Valley Resort', {
+			  headers: {
+				Authorization: `Bearer ${token}`
+			  }
+			});
+			setBali(response.data[0]); 
+		  } catch (error) {
+			console.error('Error en la petición:', error);
+		  }
+		};
+	
+		fetchParis();
+		fetchBali();
+	  }, []);
+
+	
+	  
+
+
 	return (
 		<div className=' grid grid-cols-2 mt-5 gap-5'>
 			<div className='flex flex-col justify-between'>
@@ -8,23 +59,23 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 
 				<div className='relative h-56 shadow-img rounded-3xl'>
 					<img
-						src='https://atomarpormundo.com/wp-content/uploads/2021/12/alojamiento-en-paris-citadines-1-1.jpg'
+						src={paris?.image}
 						alt=''
                         className=' rounded-3xl h-full object-cover'
 					/>
-					<div className={` text-white absolute bottom-0 w-full p-3 pb-0 h-20 leading-4`}>
-						<h2 className={`${roboto.className} tracking-wide  text-sm `}>Paris Hob</h2>
+					<div className={` text-white absolute bottom-3 w-full p-3 pb-0 h-20 leading-4`}>
+						<h2 className={`${roboto.className} tracking-wide  text-sm `}>{paris?.name}</h2>
 						<div className='flex justify-between items-center'>
 							<h2 className={`${roboto.className} tracking-wider text-sm`}>Paris</h2>
-							<h3>$100</h3>
+							<h3>$400</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>
-							<p className=''>Francia</p>
+							<p className=''>France</p>
 							<p className=''>/per night</p>
 						</div>
 					</div>
-                    
-				</div>
+                </div>
+				
                 <div className=' bg-orangeBg w-full text-white h-24 mt-5 rounded-3xl shadow-img flex justify-center items-center'>
                    
                    <div className='w-full text-center text-sm'>
@@ -43,18 +94,18 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 
 				<div className='relative  h-56 shadow-img rounded-3xl'>
 					<img
-						src='https://www.mexicodestinos.com/blog/wp-content/uploads/2013/07/ventanas-al-paraiso-los-cabos.jpeg'
+						src={bali?.image}
 						alt=''
                         className=' rounded-3xl h-full object-cover'
 					/>
-					<div className={` text-white absolute bottom-0 w-full p-3 pb-0 h-20 leading-4`}>
-						<h2 className={`${roboto.className} tracking-wide  text-sm `}>Pink Coco</h2>
+					<div className={` text-white absolute bottom-3 w-full p-3 pb-0 h-20 leading-4`}>
+						<h2 className={`${roboto.className} tracking-wide  text-sm `}>The Kayon Valley Resort</h2>
 						<div className='flex justify-between items-center  '>
 							<h2 className={`${roboto.className} tracking-wider text-sm`}>Bali</h2>
-							<h3>$92</h3>
+							<h3>$200</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>
-							<p className=''>Bali</p>
+							<p className=''>Indonesia</p>
 							<p className=''>/per night</p>
 						</div>
 					</div>
