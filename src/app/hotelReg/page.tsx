@@ -8,8 +8,9 @@ import { Errors } from './validation'
 import { countries } from 'countries-list'
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchingCity } from "../../redux/Features/Citys/CitySlice";
+import { fetchingCities } from "../../redux/Features/Citys/CitySlice";
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
+import { token } from "../../redux/Features/Citys/CitySlice";
 import { MainGlobal } from '@/redux/mainInterface';
 import { Loader } from '@googlemaps/js-api-loader';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
@@ -56,7 +57,7 @@ console.log(cities);
 
   useEffect(() => {
     
-    dispatch(fetchingCity())
+    dispatch(fetchingCities())
     const optionsPhone: string[] = listOfCountries.map(country => country.phone)
     const phoneSet: string[] = [...new Set(optionsPhone)].sort((a: string, b: string) => parseInt(a, 10) - parseInt(b, 10));
     setPhoneCode(phoneSet)
