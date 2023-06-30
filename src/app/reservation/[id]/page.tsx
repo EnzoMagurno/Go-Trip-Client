@@ -8,6 +8,9 @@ import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
 import { DatePicker } from 'antd'
 import { Dayjs } from 'dayjs'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice'
+
 
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
@@ -28,32 +31,32 @@ interface Hotel {
 }
 
 
-
 const handleDateChange = (value: Dayjs | null, fieldName: string) => {
     const dateValue = value?.format('DD-MM-YYYY');
 };
-const page = (props: PageProps): React.ReactNode => {
 
+
+
+const page = (props: PageProps): React.ReactNode => {
+    const dispatch = useDispatch()
+    const { params } = props
+    console.log(params, 'esto es params');
     const [onApprove, setOnApprove] = useState(false)
 
-    const [hotel, setHotel] = useState<Hotel>()
+    const hotel = useSelector(state => state.hotel.hotel)
     const [perDay, setPerDay] = useState<number>(250);
     const [stay, setStay] = useState<number>(1);
     const [originalPerDay, setOriginalPerDay] = useState<number>(250);
     const [taxesAndServices] = useState<number>(60)
     const id = 'fd150709-4c7f-4033-bcbd-d5b4e1a858ff'
     const [totalAmount, setTotalAmount] = useState<number>(0);
-    const paypalId = "AdlpFWNaQPd5hGxdq6ybyz16wT-vyJ4hpqPOt7bpBQgQY7sBUY1FMTiwtDvrdXeecy607N3U2JkK2D9E"
+    // const paypalId = "AdlpFWNaQPd5hGxdq6ybyz16wT-vyJ4hpqPOt7bpBQgQY7sBUY1FMTiwtDvrdXeecy607N3U2JkK2D9E"
 
-    const amount = '13.99'
-    const total = '1'
-    const currency = hotel?.destination.moneyType || ''
-
-    console.log(totalAmount);
+    const currency = hotel?.destination?.moneyType || ''
+    console.log(hotel);
+    // console.log(totalAmount);
     useEffect(() => {
-        fetch(`http://localhost:3001/hotel/findhotel/${id}`)
-            .then(response => response.json())
-            .then(data => setHotel(data))
+        dispatch(fetchinHotelId(params.id))
     }, [])
     useEffect(() => {
         const subtotal = stay * perDay;
@@ -105,10 +108,9 @@ const page = (props: PageProps): React.ReactNode => {
                     {/* {hotel?.image && <Image className='w-1/6 rounded-3xl' src={hotel.image} alt={hotel.name} width={500} height={300} />} */}
                     <div className='pl-3'>
                         <h1 className='font-semibold text-2xl'>{hotel?.name}</h1>
-                        <p className='font-semibold'>{hotel?.destination.city}</p>
+                        <p className='font-semibold'>{hotel?.destination?.city}</p>
                     </div>
                 </div>
-
             </div>
 
             <div className='flex justify-center'>
@@ -165,11 +167,6 @@ const page = (props: PageProps): React.ReactNode => {
             </div>
 
 
-            <div>
-                <button onClick={handlePayment}>Pagar con MercadoPago</button>
-            </div>
-
-
             <div className='flex-col justify-start pl-5 w-[90%]'>
                 <h3 className={`${asap.className} mb-2 text-gray-500 mt-6 font-semibold`}>
                     Additional charges
@@ -189,6 +186,10 @@ const page = (props: PageProps): React.ReactNode => {
             <h3 className={`${asap.className} flex justify-center mb-4 text-gray-500 mt-6 font-semibold`}>
                 Book now!
             </h3>
+            <div className='flex justify-center'>
+                <button onClick={handlePayment}>Pagar con MercadoPago</button>
+            </div>
+
             {/* PAYMENT METHOD */}
             <div className='flex justify-center -z-10'>
                 {/* <PayPalScriptProvider options={{ clientId: paypalId }}>

@@ -1,12 +1,15 @@
 'use client'
-import axios from 'axios';
+
 import { Josefin_Sans, Roboto } from 'next/font/google';
 import StarRating from '@/components/StarRaiting/StarRaiting';
 import { AiOutlineMessage, } from "react-icons/ai";
-import { BsArrowLeft, BsFillHeartFill } from "react-icons/bs";
+import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice';
-import { useEffect } from "react"
+import React, { useEffect } from "react"
+import { useRouter } from 'next/navigation';
+import { TbHomeCancel } from 'react-icons/tb'
+
 
 const RobotoBold = Roboto({
     weight: ['700'],
@@ -30,91 +33,84 @@ const josefinLight = Josefin_Sans({
     subsets: ['latin'],
 });
 
-const rating = 4
+const Rooms = (room) =>
+    <div className='bg-gray-400 border rounded-lg overflow-hidden'>
+        {/* <img src="" alt="Hotel Image" className='flex justify-start items-start' /> */}
+        <h2>Room </h2>
+        <div>
+            <p>Room description</p>
+            <p>Room $Price</p>
+            <p>Room Amount</p>
+        </div>
+    </div>
 
 
-const host = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+const NoRooms = () =>
+    <div className='pl-5 flex'>
+        <TbHomeCancel /><p>No rooms available</p>
+    </div>
 
 // type Hotel = {
 //     id: string
 //     name: string,
 //     destination: object
 //     overview: string
-
+//     state: { hotel: {} }
 // }
+interface Params {
+    id: string
+}
 
-// export const hotelApi = createApi({
-//     reducerPath: 'userApi',
-//     baseQuery: fetchBaseQuery({
-//         baseUrl: 'http://localhost:3001/hotel/'
-//     }),
-//     endpoints:(builder)=> ({
-//         getHotel: builder.query<Hotel[], null>({
-//             query: () => 'findhotel'
-//         }),
-//         getHotelById: builder.query<Hotel, {id:string}>({
-//             query: ({id}) => `findhotel/${id}`
-//         })
-//     })
-// })
-
-
-
-
-
-export default async function Detail({ params }) {
+const Detail = ({ params }: { params: Params }) => {
     const { id } = params
+    const router = useRouter()
+    // console.log(router);
+    console.log(id);
+    const dispatch: Dispatch = useDispatch()
 
-    const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(fetchinHotelId(id))
-
+        // dispatch(fetchinHotelId(id))
+        fetch(`http://localhost:3001/hotel/findHotel/${id}`, {
+            headers: {
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5YzQxYzYzYS1hNDA5LTQwZTQtYjJkYi1kZjQ2MjRiYjdiYmYiLCJyb2xlIjoiaG9zdCIsImlhdCI6MTY4ODEzNzg1NCwiZXhwIjoxNjg4MTQ1MDU0fQ.ygSfrif326u09F3-PCm9c3kGM4no5KSE7sLcRnBiTD4`,
+                'Content-Type': 'application/json',
+            },
+            // Resto de los parámetros de la solicitud...
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }, [])
 
     const hotel = useSelector(state => state.hotel.hotel)
-
     console.log(hotel)
 
     return (
-
-        <div className=" ">
-            <BsArrowLeft className='fixed top-5 left-5 text-4xl text-white z-40 ' />
-            <BsFillHeartFill className='fixed top-7 right-5 text-2xl text-white z-40 ' />
-            <img src={hotel.image} alt='prueba' className=" fixed w-full -top-30" />
-            <div className="absolute h-3/4 bottom-0 rounded-3xl ">
-                <div className='px-5 pt-9 pb-5 bg-slate-100 rounded-3xl'>
-                    <section className="">
-                        <h1 className={`${josefinBold.className} text-2xl`}>{hotel.hotel_name}</h1>
-                        <h2 className={`${josefinRegular.className} text-xs`}>des</h2>
-
-                        <div>
-                            <StarRating rating={rating} />
-                        </div>
-                        <div className='absolute top-16 pt-1 pr-5 right-0'>
-                            <h1 className={`${RobotoBold.className} text-3xl`}>{`$${hotel.rates_from}`}</h1>
-                            <h1 className={`${josefinRegular.className} -mt-2 text-base`}>/per night</h1>
-                        </div>
-                    </section>
-                    <hr className='mt-4 ' />
-                    <section className=''>
-                        <p className={`${josefinLight.className} text-base mt-4  leading-4`}>{hotel.overview}</p>
-                    </section>
-                    <section className='mt-3'>
-                        <h1 className={`${josefinBold.className} text-lg`}>Hosted by</h1>
-                        <div className='flex flex-wrap gap-3 w-full '>
-                            <img src={host} alt='prueba' className="mt-2 h-16 w-16 rounded-full" />
-                            <div>
-                                <h1 className={`${josefinSemiBold.className} mt-5`}>Alber Smith</h1>
-                                <h1 className={`${josefinLight.className}`}>Chain name</h1>
-                            </div>
-                            <div className='absolute  bg-iconsPurple w-10 h-10 rounded-2xl mt-4 right-5' >
-                                <AiOutlineMessage className='m-auto mt-2 h-5 w-5 text-white' />
-                            </div>
-                        </div>
-                    </section>
-                    <button className='mt-5 h-10 rounded-full w-full bg-iconsPurple text-white '>Book now</button>
+        <>
+            <div className='relative flex items-center justify-center'>
+                <div className="flex justify-center">
+                </div>
+                <img src={hotel.image} alt='Hotel' className={`${hotel.image ? 'w-full' : 'hidden'}`} />
+                <div className='bg-gray-900 opacity-80 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 w-full'>
+                    <h3 className="text-center">{hotel.name}</h3>
+                    <h4 className="text-center">{hotel.destination && hotel.destination.city}</h4>
+                    <p className="text-center">{hotel.destination && hotel.destination.country}</p>
                 </div>
             </div>
-        </div>
+
+            <h2 className='flex justify-center text-2xl mt-3'>Book now</h2>
+            {hotel.rooms && hotel.rooms.length ? (<Rooms />) : (<NoRooms />)}
+            <a onClick={() => router.push(`http://localhost:3000/reservation/${id}`)}></a>
+
+            <div className='flex flex-col justify-center pl-5 mt-6'>
+                <h3>About hotel</h3>
+                <p className=''>{hotel.overview}</p>
+            </div>
+        </>
     )
 }
+export default Detail

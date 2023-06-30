@@ -4,21 +4,33 @@ import axios from "axios";
 
 
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
-    return await fetch("http://localhost:3001/hotel/findHotel")
-    .then(response => response.json())
-    .then(data => data)
+    const TOKEN = process.env.NEXT_PUBLIC_TOKEN_FETCH
+    return await fetch("http://localhost:3001/hotel/findHotel", {
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => data)
 })
 
 export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
-    return fetch(`http://localhost:3001/hotel/findhotel/${id}`)
-    .then(response => response.json())
-    .then(data => data)
+    const TOKEN = process.env.NEXT_PUBLIC_TOKEN_FETCH
+    return fetch(`http://localhost:3001/hotel/findHotel/${id}`, {
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => response.json())
+        .then(data => data)
 })
 
 
 export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
 
-    return axios.put(`http://localhost:3001/hotel/updhotel`, updatedData).then(response =>  response.data.detail)
+    return axios.put(`http://localhost:3001/hotel/updhotel`, updatedData).then(response => response.data.detail)
 })
 
 
@@ -32,26 +44,26 @@ const hotelSlice = createSlice({
         error: null
     },
     reducers: {
-      getHotelsCoincidence: (state, action) => {
-        state.copyHotelData = state.hotelData.filter(hotel =>  hotel.destinationId == action.payload)
-        console.log(action.payload)
-      }
+        getHotelsCoincidence: (state, action) => {
+            state.copyHotelData = state.hotelData.filter(hotel => hotel.destinationId == action.payload)
+            console.log(action.payload)
+        }
     },
     extraReducers: (builder) => {
         builder
-        .addCase(fetchingHotel.fulfilled, (state, action) => {
-            state.hotelData = action.payload
-            
-            
-        })
-        .addCase(fetchinHotelId.fulfilled, (state, action) => {
-            state.hotel = action.payload;
-            
-        })
-        .addCase(updateHotel.fulfilled, (state, action) => {
-           state.hotel = action.payload
-            console.log(action)
-        })
+            .addCase(fetchingHotel.fulfilled, (state, action) => {
+                state.hotelData = action.payload
+
+
+            })
+            .addCase(fetchinHotelId.fulfilled, (state, action) => {
+                state.hotel = action.payload;
+
+            })
+            .addCase(updateHotel.fulfilled, (state, action) => {
+                state.hotel = action.payload
+                console.log(action)
+            })
     }
 })
 
@@ -59,6 +71,6 @@ const hotelSlice = createSlice({
 
 export default hotelSlice;
 export const selectHotelIdState = (state) => state.hotel.hotel
-export const selectOriginalHotelState = (state) => state.hotel.hotelData 
+export const selectOriginalHotelState = (state) => state.hotel.hotelData
 export const selectHotelState = (state) => state.hotel.copyHotelData
 export const { getHotelsCoincidence } = hotelSlice.actions 
