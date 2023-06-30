@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { token } from "../Citys/CitySlice";
- 
+const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
 
 
@@ -16,18 +15,19 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
     return await fetch("http://localhost:3001/hotel/findHotel", {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${TOKEN_FETCH}`
         }
     })
     .then(response => response.json())
-    .then(data => data)
+    .then(data => {
+        return data})
 })
 
 export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
     return fetch(`http://localhost:3001/hotel/findhotel/${id}`, {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${TOKEN_FETCH}`
         }
     })
     .then(response => response.json())
@@ -35,9 +35,33 @@ export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
 })
 
 
-export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
+export const deleteHotel = createAsyncThunk("deleteHotel", async (id) => {
+    return fetch(`http://localhost:3001/hotel/delHotel/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${TOKEN_FETCH}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return data
+    })
+})
 
-    return axios.put(`http://localhost:3001/hotel/updhotel`, updatedData).then(response =>  response.data.detail)
+
+export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
+    
+
+    return axios.put(`http://localhost:3001/hotel/updhotel`, updatedData, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${TOKEN_FETCH}`
+        }
+    }).then(response => {
+        console.log(response.data)
+        return response.data.detail
+    })
 })
 
 
@@ -68,6 +92,10 @@ const hotelSlice = createSlice({
            state.hotel = action.payload
             
         })
+        .addCase(deleteHotel.fulfilled, (state, action) => {
+            state.hotel = action.payload
+             
+         })
     }
 })
 
