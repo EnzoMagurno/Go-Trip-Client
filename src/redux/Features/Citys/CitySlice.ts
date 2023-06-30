@@ -11,6 +11,7 @@ export interface City {
     city: string,
     moneyType: string
     status: boolean
+    hotel: []
 }
 
 export interface InitialStateCity {
@@ -23,7 +24,13 @@ export interface InitialStateCity {
 
 
 export const fetchingCity = createAsyncThunk("getCity", async () => {
-    return await fetch("http://localhost:3001/destination")
+    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
+    return await fetch("http://localhost:3001/destination", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
     .then(response => response.json())
     .then(data => {
         

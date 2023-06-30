@@ -6,7 +6,6 @@ import { City } from '../../redux/Features/Citys/CitySlice';
 const Select = () => {
 	const cityResults: City[] = useSelector(selectCityState);
 
-	console.log(cityResults)
 	return (
 		<>
 			{
