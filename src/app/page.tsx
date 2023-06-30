@@ -40,10 +40,14 @@ const Home = () => {
 	const hotelResults = useSelector(selectHotelState);
 	const router = useRouter();
 
-	useEffect(() => {
-		// dispatch(fetchingCity());
-		// dispatch(fetchingHotel());
-	}, [cityResults.length, hotelResults.length]);
+useEffect(() => {
+
+
+    dispatch(fetchingHotel())
+
+
+  }, [])
+
 
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
@@ -53,33 +57,42 @@ const Home = () => {
 		localStorage.getItem('username');
 	}, [userNameSession]); //! MANTENER CODE
 
-	console.log(userNameSession);
 
-	return (
+	console.log(userNameSession); 
+
+return (
 		<div className={`p-5 pb-24 dark:bg-neutral-900`}>
-			<div className='pt-2 pb-2 '>
-				<h4 className={`${josefin.className}  text-gray-500 dark:text-blueSky`}>
-					{/* MANTENER CODE */}
+
+      <header className='pt-2 pb-2 '>
+        <h4 className={`${josefin.className}  text-gray-500 dark:text-blueSky`}>
+        					{/* MANTENER CODE */}
 					{tokenSession ? userNameSession : 'Hello, User'}
-				</h4>
-				<h3 className={`${roboto.className} text-3xl dark:text-white`}>
-					Where We Go?
-				</h3>
-			</div>
-			<SearchBar />
-			<FiltersBar />
+        </h4>
+        <h3 className={`${roboto.className} text-3xl dark:text-white`}>Where We Go?</h3>
+        
+        
+          <FiltersBar />
 
-			<main>
-				{hotelResults.length ? (
-					<ContainerResults roboto={roboto} />
-				) : (
-					<SliderMain roboto={roboto} />
-				)}
-			</main>
+          
 
-			<footer className=' bg-slate-600'></footer>
-		</div>
-	);
-};
+        
+      </header>
+
+     
+
+      <main>
+            <SliderMain roboto={roboto}/>
+
+       
+      </main>
+
+      <footer className=' bg-slate-600'>
+        
+      </footer>
+
+    </div>
+  );
+}
+
 
 export default Home;

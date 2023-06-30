@@ -1,16 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['pix2.agoda.net'],
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'assets.example.com',
-                port: '',
-                pathname: '/account123/**',
-            },
-        ],
-    }
-}
+	images: {
+		domains: ['pix2.agoda.net'],
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'assets.example.com',
+				port: '',
+				pathname: '/account123/**',
+			},
+		],
+	},
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

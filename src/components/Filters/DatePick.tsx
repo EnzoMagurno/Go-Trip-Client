@@ -12,7 +12,7 @@ const DatePick= () => {
     const {RangePicker} = DatePicker
 
     const [dates, setDates] = useState<string[]>([])
-    console.log(dates)
+    
 
     const handleDateChange = (values: any)=>{
 

@@ -1,25 +1,69 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
 
+
+
+/* interface InitialStateHotel {
+    hotelData: [],
+    copyHotelData: [],
+    hotel: {}
+} */
 
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
-    return await fetch("http://localhost:3001/hotel/findHotel")
-    .then(response => response.json())
-    .then(data => data)
-})
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await fetch("http://localhost:3001/hotel/findHotel", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al obtener los hoteles:', error);
+      throw error;
+    }
+  });
 
-export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
-    return fetch(`http://localhost:3001/hotel/findhotel/${id}`)
-    .then(response => response.json())
-    .then(data => data)
-})
+  export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await fetch(`http://localhost:3001/hotel/findhotel/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al obtener el hotel:', error);
+      throw error;
+    }
+  });
 
-
-export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
-
-    return axios.put(`http://localhost:3001/hotel/updhotel`, updatedData).then(response =>  response.data.detail)
-})
+  export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await axios.put("http://localhost:3001/hotel/updhotel", updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const data = response.data.detail;
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al actualizar el hotel:', error);
+      throw error;
+    }
+  });
 
 
 const hotelSlice = createSlice({
@@ -27,14 +71,11 @@ const hotelSlice = createSlice({
     initialState: {
         hotelData: [],
         copyHotelData: [],
-        hotel: {},
-        status: "idle",
-        error: null
+        hotel: {}
     },
     reducers: {
       getHotelsCoincidence: (state, action) => {
-        state.copyHotelData = state.hotelData.filter(hotel =>  hotel.destinationId == action.payload)
-        console.log(action.payload)
+        
       }
     },
     extraReducers: (builder) => {
@@ -50,8 +91,12 @@ const hotelSlice = createSlice({
         })
         .addCase(updateHotel.fulfilled, (state, action) => {
            state.hotel = action.payload
-            console.log(action)
+            
         })
+        .addCase(deleteHotel.fulfilled, (state, action) => {
+            state.hotel = action.payload
+             
+         })
     }
 })
 

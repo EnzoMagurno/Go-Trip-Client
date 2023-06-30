@@ -1,35 +1,61 @@
 "use client"
 import { BsSearch } from "react-icons/bs"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector  } from "react-redux";
 import Select from "../Select/Select";
-import { fetchingCity, searchCoincidences } from "../../redux/Features/Citys/CitySlice";
-import { useState } from "react";
+import { getHotelsCoincidencesByCityId, cleanCoincedences, fetchingCity } from "../../redux/Features/Citys/CitySlice";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 
-const SearchBar = () => {
+interface PropsSearchBar {
+	showFilters: any
+	inputIsDisabled: boolean
+}
+
+const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) => {
 	const dispatch = useDispatch()
 	
-	const [ searchInput, setSearchInput ] = useState("")
+	const cityData = useSelector(state => state.city.city)
+	const [ cityName, setCityName ] = useState("")
 
+
+	const router = useRouter();
 	const handlerSearch = (e) => {
-		setSearchInput(e.target.value)
-		dispatch(searchCoincidences(e.target.value))
+		
+		const nameCity = e.target.value
+
+		setCityName(nameCity)
+		if(nameCity) dispatch(fetchingCity(nameCity))
+		if (!nameCity) dispatch(cleanCoincedences())
 
 	};
+
+
+	useEffect(() => {
+		if (cityData.city) setCityName(`${cityData.city}${cityData.state ? `, ${cityData.state}` : "" }, ${cityData.country}`)
+		console.log(cityData)
+	}, [cityData])
 
 	return (
 		<div className="relative">
 			<input
 				type='text'
 				placeholder='Search'
-				className={`w-full h-12 rounded-full shadow-input outline-none pl-3 mt-2 mb-2 dark:bg-neutral-900  dark:placeholder:text-orangeBg dark:shadow-inset_orange dark:text-white`}
+				className={`w-full h-11 rounded-full shadow-input text-iconsPurple outline-none pl-3 mb-2 dark:bg-neutral-900  dark:placeholder:text-orangeBg dark:shadow-inset_orange dark:text-white`}
 				onChange={handlerSearch}
-				value={searchInput}
+				value={cityName}
+				disabled={false}
+				spellCheck={false}
 			/>
-            <button onClick={() => dispatch(fetchingCity())} className="absolute top-5 right-4 text-2xl text-iconsPurple dark:text-orangeBg">
-            <BsSearch  style={{pointerEvents: "none"}} />
+            <button onClick={() => { 
+				
+				router.push(`/resultsHotels?city=${cityData.id}`)
+			
+			}} 
+			className="absolute top-1 flex items-center justify-center bg-zinc-200 w-9 h-9 rounded-full right-1 text-2xl text-iconsPurple dark:text-orangeBg">
+            <BsSearch  style={{pointerEvents: "none"}} className=" text-xl"/>
             </button>
-			<Select />
+			<Select toggleOpen={toggleOpen} />
 		</div>
 	);
 };

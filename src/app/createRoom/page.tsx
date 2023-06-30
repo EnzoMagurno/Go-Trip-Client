@@ -25,44 +25,47 @@ const josefinRegular = Josefin_Sans({
 function RoomCreator() {
 
 
+const dispatch = useDispatch()
+
+
 
 const searchParams = useSearchParams()
 
-const id = searchParams.get('id')
+const id: string | null = searchParams.get('id')
 
 const selectServices: object[] = []
+const [serviceName, setServiceName] = useState([]);
 
 const router = useRouter()  
 
-  const handleGoBack = () => {
-    router.back();
-  };
 
-  const dispatch = useDispatch()
   const services = useSelector((state: MainGlobal) => state.services.dataService)
-  console.log(services) 
-
+  console.log(services);
   
-  services.map(e => selectServices.push({label:e.name, value: e.id}))
+  services.map(e => selectServices.push({label:e.name, value: [e.id, e.name]}))
 
   useEffect(() => {
     
-    dispatch(fetchingServices())
-
+    
+      dispatch(fetchingServices())
   },[])
   
   const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    try{
-     const response = await axios
-      .post("/rooms/newRooms", form)
-      .catch((err) => alert(err))
-      console.log(response)
-      
-      router.push(`/myHotels/${id}`)
-  } catch (error) {
-  console.error('Error al crear el hotel:', error);
-  }}
+    e.preventDefault();
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH  
+       const response = await axios.post("/rooms/newRooms", form, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      console.log(response);
+      router.push(`/myHotels/${id}`);
+    } catch (error) {
+      console.error('Error al crear la habitación:', error);
+    }
+  };
 
 interface FormState {
   room: string;
@@ -72,7 +75,7 @@ interface FormState {
   roomsInUse: number;
   description: string
   ServicesRoom: [];
-  hotelId: string;
+  hotelId: string | null;
   
 }
 
@@ -101,18 +104,25 @@ const handleChange = (e: any) => {
     ...form,
     [e.target.name]: e.target.value
 }))
-  console.log(e.target.value);
+ 
 }
 
-const handleSelect = (e) => {
-  if (form.ServicesRoom.includes(e.value))
+const handleSelect = (e: React.MouseEvent<HTMLButtonElement> ) => {
+  
+  
+  if (form.ServicesRoom.includes(e.value[0]))
       {
       
       } else {
   setForm({
       ...form,
-      ServicesRoom: [...form.ServicesRoom, e.value]
+      ServicesRoom: [...form.ServicesRoom, e.value[0]]
   })
+  setServiceName((prevServiceName) => [...prevServiceName, e.value]);
+  
+  console.log(form.ServicesRoom);
+  
+
 
   setErrors(
       validation({
@@ -120,13 +130,20 @@ const handleSelect = (e) => {
           ServicesRoom: [...form.ServicesRoom, e.value]
       })
   )
-  console.log(form.ServicesRoom)
+  
   }}
 
-  const handleDelete = (e) => {
-    setForm({...form, ServicesRoom: form.ServicesRoom.filter((c) => c !== e.target.value)})
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     
+    
+    const updatedServiceName = serviceName.filter((c) => c[0] !== e.target.value);
+    setServiceName(updatedServiceName);
+    setForm({
+      ...form,
+      ServicesRoom: form.ServicesRoom.filter((c) => c !== e.target.value)
+  })
    }
+   console.log(form.ServicesRoom)
 
   return (
     
@@ -135,9 +152,9 @@ const handleSelect = (e) => {
 
       
       
-      <form  onSubmit={handleSubmit} className='bg-neutral-50  mt-5 flex flex-col p-4 shadow-md'>
+      <form  onSubmit={handleSubmit} className='bg-neutral-50  mt-5 mb-32 flex flex-col p-4 shadow-md'>
           <div className={`${asapSemi.className} text-2xl w-screen flex pt-20`}>
-          <h1 className='mt-10'>Room details</h1>
+          <h1 className='flex text-center'>Create a room</h1>
       </div>
            <label className={`${josefinRegular.className} mt-5`} htmlFor="Type">Name</label>
                     <input className={`${josefinRegular.className}  border-2 rounded-xl my-2 pl-3 py-3 pb-3  `}
@@ -199,11 +216,12 @@ const handleSelect = (e) => {
                         id="cityInput"
                         placeholder='Services'
                         />
-                    {form.ServicesRoom.map(c => (<span>{c}<button onClick={handleDelete} value={c}>x</button></span>))}
-               
+                        <div className='grid bg-neutral-50 grid-cols-3 rounded-xl my-2 gap-4 border border-2 justify-between p-2'>
+                    {serviceName.map(c => (<span className={`${josefinRegular.className} flex items-center h-full text-center relative  text-md text-white bg-[#7533ac] rounded-xl p-2`}>{c[1]}<button type='button' className='w-2 text-lg p-0 absolute -top-0.5 right-0 mr-2' onClick={handleDelete} value={c[0]}>x</button></span>))}
+                    </div>
                 {(!form.room || !form.price || !form.description )               
-                   ? <button  className={`${josefinRegular.className} bg-[#929292] text-white mt-10 h-10 mx-auto rounded-full w-3/4`} disabled >Create room</button>
-                   :  <button type="submit" className={`${josefinRegular.className} bg-[#7533ac] text-white mt-10 h-10 mx-auto rounded-full w-3/4`}>Create room</button>
+                   ? <button  className={`${josefinRegular.className} bg-[#929292]  text-white mt-10 h-10 mx-auto rounded-full w-3/4`} disabled >Create room</button>
+                   :  <button onClick={handleSubmit} type="submit" className={`${josefinRegular.className} bg-[#7533ac] text-white mt-10 h-10 mx-auto rounded-full w-3/4`}>Create room</button>
                  }
       </form>
       
