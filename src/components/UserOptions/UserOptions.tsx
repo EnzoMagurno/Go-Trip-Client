@@ -23,20 +23,6 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 	const [avatarSession, setAvatarSession] = useLocalStorage('avatar', ['']);
 	const [rolSession, setRolSession] = useLocalStorage('rol', '');
 
-	useEffect(() => {
-		// Obtener los valores del LocalStorage
-		const storedUserName = JSON.parse(localStorage.getItem('username') || '');
-		const storedAvatar = JSON.parse(localStorage.getItem('avatar') || '');
-
-		// Actualizar los estados solo si los valores son diferentes a los actuales
-		if (storedUserName !== userNameSession) {
-			setUserNameSession(storedUserName);
-		}
-		if (storedAvatar !== avatarSession[0]) {
-			setAvatarSession(storedAvatar);
-		}
-	}, []); //!Mantener Codigo
-
 	// console.log(tokenSession);
 	// console.log(idSession);
 	// console.log(userNameSession);
@@ -72,7 +58,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 				<li className=' text-black h-16 flex justify-between items-center p-3'>
 					{/* MANTENER CODIGO */}
 					<img
-						src={avatarSession[0]}
+						// src={avatarSession[0]}
 						alt={userNameSession}
 						className='w-14 h-14 object-cover rounded-full'
 					/>

@@ -17,13 +17,13 @@ const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) =>
 	
 	const cityData = useSelector(state => state.city.city)
 	const [ cityName, setCityName ] = useState("")
-
+	console.log(cityData)
 
 	const router = useRouter();
 	const handlerSearch = (e) => {
 		
 		const nameCity = e.target.value
-
+		
 		setCityName(nameCity)
 		if(nameCity) dispatch(fetchingCity(nameCity))
 		if (!nameCity) dispatch(cleanCoincedences())

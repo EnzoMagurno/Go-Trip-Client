@@ -27,14 +27,12 @@ export interface InitialStateCity {
 	error: string | null;
 }
 
-
-
-export const fetchingCity = createAsyncThunk("getCity", async () => {
-    return await fetch("http://localhost:3001/destination")
-    .then(response => response.json())
-    .then(data => {
-        
-        return data
+export const fetchingCities = createAsyncThunk('getCities', async () => {
+	return await fetch(`http://localhost:3001/destination`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${TOKEN_FETCH }`
+        }
     })
 		.then((response) => response.json())
 		.then((data) => {
@@ -42,6 +40,22 @@ export const fetchingCity = createAsyncThunk("getCity", async () => {
 			return data;
 		})
 		.catch((error) => console.log(error.message));
+});
+
+export const fetchingCity = createAsyncThunk("getCity", async (cityName) => {
+	
+    return await fetch(`http://localhost:3001/destination/?city=${cityName}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${TOKEN_FETCH }`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return data
+    })
+	.catch(error => console.log(error.message))
 });
 
 
@@ -106,6 +120,6 @@ const citySlice = createSlice({
 	},
 });
 
-export const selectCityState = (state: MainGlobal) => state.city.copyDataCity;
+export const selectCityState = (state: MainGlobal) => state.city.dataCity;
 export const { searchCoincidences, cleanCoincedences, getNameAndIdCity } = citySlice.actions;
 export default citySlice;
