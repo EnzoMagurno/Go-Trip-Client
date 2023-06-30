@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+//! SI existen hydratation problems colocar lo que esta dentro de la funcion en un useEffect excepto el useState
+
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {

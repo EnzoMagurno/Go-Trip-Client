@@ -6,8 +6,9 @@ import SearchBar from '../components/SearchBar/SearchBar';
 import SliderMain from '../components/SlidersImages/SliderMain';
 import FiltersBar from '../components/Filters/FiltersBar';
 import ContainerResults from '../components/ContainerResults/ContainersResults';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+
 import {
-	fetchingCities,
 	fetchingCity,
 	selectCityState,
 } from '../redux/Features/Citys/CitySlice';
@@ -16,7 +17,7 @@ import {
 	fetchingHotel,
 	selectHotelState,
 } from '../redux/Features/Hotel/hotelsSlice';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useRouter } from 'next/navigation';
 
 const josefin = Josefin_Sans({
 	weight: ['400'],
@@ -37,6 +38,7 @@ const Home = () => {
 	const dispatch = useDispatch();
 	const cityResults = useSelector(selectCityState);
 	const hotelResults = useSelector(selectHotelState);
+	const router = useRouter();
 
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
@@ -64,9 +66,7 @@ const Home = () => {
 				<FiltersBar />
 			</header>
 
-			<main>
-				<SliderMain roboto={roboto} />
-			</main>
+			<main>{/* <SliderMain roboto={roboto} /> */}</main>
 
 			<footer className=' bg-slate-600'></footer>
 		</div>
