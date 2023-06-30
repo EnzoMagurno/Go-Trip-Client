@@ -4,15 +4,61 @@ import { CiLogout } from 'react-icons/ci';
 import { RiHotelLine } from 'react-icons/ri';
 import { AiOutlineSetting } from 'react-icons/ai';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 interface UserOptionsProps {
-	window: string
-	closeWindow: never
+	window: string;
+	closeWindow: never;
 }
 
 const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
+	const router = useRouter();
+
+	//!Matener Codigo
+	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
+	const [idSession, setIdSession] = useLocalStorage('idSession', '');
+	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
+	const [avatarSession, setAvatarSession] = useLocalStorage('avatar', ['']);
+	const [rolSession, setRolSession] = useLocalStorage('rol', '');
+
+	useEffect(() => {
+		// Obtener los valores del LocalStorage
+		const storedUserName = JSON.parse(localStorage.getItem('username') || '');
+		const storedAvatar = JSON.parse(localStorage.getItem('avatar') || '');
+
+		// Actualizar los estados solo si los valores son diferentes a los actuales
+		if (storedUserName !== userNameSession) {
+			setUserNameSession(storedUserName);
+		}
+		if (storedAvatar !== avatarSession[0]) {
+			setAvatarSession(storedAvatar);
+		}
+	}, []); //!Mantener Codigo
+
+	// console.log(tokenSession);
+	// console.log(idSession);
+	// console.log(userNameSession);
+	// console.log(avatarSession[0]);
+	// console.log(rolSession);
+
+	//!Mantener codigo
+	const handleClick = () => {
+		setTokenSession('');
+		setIdSession('');
+		setUserNameSession('');
+		setAvatarSession(['']);
+		setRolSession('');
+		localStorage.removeItem('userData');
+		router.push('/');
+		closeWindow; //! No esta funcionando
+	};
+
 	return (
-		<div className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5 h-60 pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`} >
+		<div
+			className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5 h-60 pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`}
+		>
 			<button
 				onClick={closeWindow}
 				className='absolute top-4 right-4 w-6 h-6 flex justify-center items-center '
@@ -24,33 +70,50 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 			</button>
 			<ul>
 				<li className=' text-black h-16 flex justify-between items-center p-3'>
+					{/* MANTENER CODIGO */}
 					<img
-						src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR3RpnZuPp1mC_m2jzHSm1KNs9LUQY3YA7Ow&usqp=CAU'
-						alt='persona'
+						src={avatarSession[0]}
+						alt={userNameSession}
 						className='w-14 h-14 object-cover rounded-full'
 					/>
 					<h2 className=' w-full flex justify-center items-center h-full'>
-						Chris Patterson Rollwick
+						{userNameSession}
 					</h2>
 				</li>
 				<li className='bg-white h-10 '>
-					<Link
-						href='/beAHoteiler'
+					{/* MANTENER CODIGO */}
+					<a
+						onClick={() => {
+							tokenSession && rolSession === 'admin'
+								? router.push(`/myHotels/${idSession}`)
+								: router.push('/beAHoteiler');
+						}}
+						// MANTENER CODIGO
 						className='w-full flex justify-between items-center p-3'
 					>
-						<div className='flex items-center justify-between'>
-							<RiHotelLine className='inline text-2xl mr-3 text-blueSky'/> Be a hotelier
-						</div>
+						{tokenSession && rolSession === 'admin' ? (
+							<div className='flex items-center justify-between'>
+								<RiHotelLine className='inline text-2xl mr-3 text-blueSky' /> My
+								Hotels
+							</div>
+						) : (
+							<div className='flex items-center justify-between'>
+								<RiHotelLine className='inline text-2xl mr-3 text-blueSky' />
+								Be a hotelier
+							</div>
+						)}
+
 						<IoIosArrowForward className=' text-blueSky' />
-					</Link>
+					</a>
 				</li>
 				<li className='bg-white h-10'>
 					<Link
 						href='/settings'
 						className='w-full flex justify-between items-center p-3'
 					>
-						<div className='flex items-center justify-between' >
-							<AiOutlineSetting className='inline text-2xl mr-3 text-blueSky' /> Settings
+						<div className='flex items-center justify-between'>
+							<AiOutlineSetting className='inline text-2xl mr-3 text-blueSky' />{' '}
+							Settings
 						</div>
 						<IoIosArrowForward className=' text-blueSky' />
 					</Link>
@@ -58,7 +121,13 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 			</ul>
 			<ul className='pl-5 pr-5'>
 				<li className='flex justify-end items-center text-red-400 '>
-					Log out
+					<a
+						onClick={() => {
+							handleClick();
+						}}
+					>
+						Log out
+					</a>
 					<CiLogout className='inline text-2xl ml-3' />
 				</li>
 			</ul>
