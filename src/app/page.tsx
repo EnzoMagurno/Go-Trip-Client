@@ -6,10 +6,9 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import SliderMain from "../components/SlidersImages/SliderMain";
 import FiltersBar from "../components/Filters/FiltersBar";
 import ContainerResults from "../components/ContainerResults/ContainersResults";
-import { fetchingCity, selectCityState } from "../redux/Features/Citys/CitySlice";
+import { fetchingCities, fetchingCity, selectCityState } from "../redux/Features/Citys/CitySlice";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchingHotel, selectHotelState } from '../redux/Features/Hotel/hotelsSlice';
-
 
 const josefin = Josefin_Sans({
   weight: ['400'],
@@ -34,6 +33,7 @@ const Home = () => {
   const hotelResults = useSelector(selectHotelState)
 
   useEffect(() => {
+
 
 
     dispatch(fetchingHotel())

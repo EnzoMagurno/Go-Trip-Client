@@ -66,6 +66,21 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
   });
 
 
+  export const deleteHotel = createAsyncThunk("deleteHotel", async (id) => {
+    return fetch(`http://localhost:3001/hotel/delHotel/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${TOKEN_FETCH}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return data
+    })
+})
+
+
 const hotelSlice = createSlice({
     name: "hotel",
     initialState: {
