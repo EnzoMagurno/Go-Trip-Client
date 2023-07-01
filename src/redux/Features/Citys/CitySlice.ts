@@ -1,20 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MainGlobal } from '@/redux/mainInterface';
+const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
+
+
+
 
 interface CityName {
 	name: string;
 	id: string;
 }
 
-export const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5MjFkYWVlNC03Y2IxLTRjODUtOWFmMy1kZGNlYTZlNjVmYjAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2ODgwNjc3NzYsImV4cCI6MTY4ODA3NDk3Nn0.QWfEDG44Xk2qPoS3oPuCatNyBYlws99dhOK_-KJTM2M"
 
 export interface City {
-	id: number;
-	country: string;
-	state: string;
-	city: string;
-	moneyType: string;
-	status: boolean;
+    id: number
+    country: string,
+    state: string
+    city: string,
+    moneyType: string
+    status: boolean
 }
 
 export interface InitialStateCity {
@@ -28,7 +31,7 @@ export const fetchingCities = createAsyncThunk('getCities', async () => {
 	return await fetch(`http://localhost:3001/destination`, {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
 		.then((response) => response.json())
@@ -39,19 +42,20 @@ export const fetchingCities = createAsyncThunk('getCities', async () => {
 		.catch((error) => console.log(error.message));
 });
 
-export const fetchingCity = createAsyncThunk('getCity', async (city) => {
-	return await fetch(`http://localhost:3001/destination/?city=${city}`, {
+export const fetchingCity = createAsyncThunk("getCity", async (cityName) => {
+	
+    return await fetch(`http://localhost:3001/destination/?city=${cityName}`, {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
-		.then((response) => response.json())
-		.then((data) => {
-			console.log(data)
-			return data;
-		})
-		.catch((error) => console.log(error.message));
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return data
+    })
+	.catch(error => console.log(error.message))
 });
 
 
@@ -61,7 +65,7 @@ export const getHotelsCoincidencesByCityId = createAsyncThunk('getHotelsByCity',
 	return await fetch(`http://localhost:3001/destination/${id}`, {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
 		.then((response) => response.json())
@@ -116,6 +120,6 @@ const citySlice = createSlice({
 	},
 });
 
-export const selectCityState = (state: MainGlobal) => state.city.copyDataCity;
+export const selectCityState = (state: MainGlobal) => state.city.dataCity;
 export const { searchCoincidences, cleanCoincedences, getNameAndIdCity } = citySlice.actions;
 export default citySlice;

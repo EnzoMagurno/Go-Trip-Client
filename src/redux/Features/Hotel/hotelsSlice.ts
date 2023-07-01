@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { token } from "../Citys/CitySlice";
- 
+const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
 
 
@@ -13,31 +12,72 @@ import { token } from "../Citys/CitySlice";
 } */
 
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
-    return await fetch("http://localhost:3001/hotel/findHotel", {
-        method: "GET",
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await fetch("http://localhost:3001/hotel/findHotel", {
         headers: {
-            "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al obtener los hoteles:', error);
+      throw error;
+    }
+  });
+
+  export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await fetch(`http://localhost:3001/hotel/findhotel/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al obtener el hotel:', error);
+      throw error;
+    }
+  });
+
+  export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      const response = await axios.put("http://localhost:3001/hotel/updhotel", updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const data = response.data.detail;
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al actualizar el hotel:', error);
+      throw error;
+    }
+  });
+
+
+  export const deleteHotel = createAsyncThunk("deleteHotel", async (id) => {
+    return fetch(`http://localhost:3001/hotel/delHotel/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${TOKEN_FETCH}`
         }
     })
     .then(response => response.json())
-    .then(data => data)
-})
-
-export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
-    return fetch(`http://localhost:3001/hotel/findhotel/${id}`, {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
+    .then(data => {
+        console.log(data)
+        return data
     })
-    .then(response => response.json())
-    .then(data => data)
-})
-
-
-export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
-
-    return axios.put(`http://localhost:3001/hotel/updhotel`, updatedData).then(response =>  response.data.detail)
 })
 
 
@@ -68,6 +108,10 @@ const hotelSlice = createSlice({
            state.hotel = action.payload
             
         })
+        .addCase(deleteHotel.fulfilled, (state, action) => {
+            state.hotel = action.payload
+             
+         })
     }
 })
 

@@ -4,9 +4,8 @@ import Options from './Options';
 import { selectCityState } from '../../redux/Features/Citys/CitySlice';
 import { City } from '../../redux/Features/Citys/CitySlice';
 const Select = ({toggleOpen}) => {
-	const cityResults: City[] = useSelector(selectCityState);
+	const cityResults: City[] = useSelector(state => state.city.copyDataCity);
 
-	console.log(cityResults);
 	return (
 		<div>
 			{cityResults.length ? (
