@@ -53,6 +53,15 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 		}
 	}, []);
 
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const storedNameSession = localStorage.getItem('username');
+			if (storedNameSession) {
+				setUserNameSession(JSON.parse(storedNameSession));
+			}
+		}
+	}, [localStorage.getItem('username')]);
+
 	return (
 		<div
 			className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5  pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`}
