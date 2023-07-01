@@ -61,25 +61,14 @@ const NavBarFooter = () => {
 					</p>
 				</div>
 			</Link>
-			{idSession !== '' ? (
-				<Link href={`/userInfo/${idSession}`}>
-					<div className='flex justify-center items-center h-full flex-wrap'>
-						<AiOutlineUser className='w-full flex items-center justify-center' />
-						<p className={`${fStext} w-fullflex items-center justify-center`}>
-							Profile
-						</p>
-					</div>
-				</Link>
-			) : (
-				<Link href='/login'>
-					<div className='flex justify-center items-center h-full flex-wrap'>
-						<AiOutlineUser className='w-full flex items-center justify-center' />
-						<p className={`${fStext} w-fullflex items-center justify-center`}>
-							Login / Register
-						</p>
-					</div>
-				</Link>
-			)}
+			<Link href={idSession ? `/userInfo/${idSession}` : '/login'}>
+				<div className='flex justify-center items-center h-full flex-wrap'>
+					<AiOutlineUser className='w-full flex items-center justify-center' />
+					<p className={`${fStext} w-fullflex items-center justify-center`}>
+						Profile
+					</p>
+				</div>
+			</Link>
 		</nav>
 	);
 };
