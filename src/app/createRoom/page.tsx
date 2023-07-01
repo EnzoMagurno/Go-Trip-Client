@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
 import { fetchingServices } from '@/redux/Features/Services/servicesSlice';
 import { MainGlobal } from '@/redux/mainInterface';
+import ServicesOptions from '@/components/ServicesSelect/ServicesSelect';
 
 
 const asapSemi = Asap({
@@ -35,6 +36,15 @@ const id: string | null = searchParams.get('id')
 
 const selectServices: object[] = []
 const [serviceName, setServiceName] = useState([]);
+const [windowIsOpen, setWindow] = useState('hidden');
+
+const closeWindow = () => {
+  if (windowIsOpen === '') {
+    setWindow('hidden');
+  } else {
+    setWindow('');
+  }
+};
 
 const router = useRouter()  
 
@@ -216,9 +226,18 @@ const handleSelect = (e: React.MouseEvent<HTMLButtonElement> ) => {
                         id="cityInput"
                         placeholder='Services'
                         />
-                        <div className='grid bg-neutral-50 grid-cols-3 rounded-xl my-2 gap-4 border border-2 justify-between p-2'>
+                        <div className='grid bg-neutral-50 grid-cols-3 rounded-xl my-2 gap-4  border-2 justify-between p-2'>
                     {serviceName.map(c => (<span className={`${josefinRegular.className} flex items-center h-full text-center relative  text-md text-white bg-[#7533ac] rounded-xl p-2`}>{c[1]}<button type='button' className='w-2 text-lg p-0 absolute -top-0.5 right-0 mr-2' onClick={handleDelete} value={c[0]}>x</button></span>))}
                     </div>
+                    <button
+					onClick={closeWindow}
+					className=' h-6 w-6 flex flex-col justify-evenly'
+				>
+					<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
+					<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
+					<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
+				</button>
+                    <ServicesOptions  window={windowIsOpen} closeWindow={closeWindow}/>
                 {(!form.room || !form.price || !form.description )               
                    ? <button  className={`${josefinRegular.className} bg-[#929292]  text-white mt-10 h-10 mx-auto rounded-full w-3/4`} disabled >Create room</button>
                    :  <button onClick={handleSubmit} type="submit" className={`${josefinRegular.className} bg-[#7533ac] text-white mt-10 h-10 mx-auto rounded-full w-3/4`}>Create room</button>
