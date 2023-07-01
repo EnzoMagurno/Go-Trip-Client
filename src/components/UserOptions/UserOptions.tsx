@@ -10,7 +10,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 interface UserOptionsProps {
 	window: string;
-	closeWindow: never;
+	closeWindow: () => void;
 }
 
 const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
@@ -37,7 +37,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 		setAvatarSession(['']);
 		setRolSession('');
 		localStorage.removeItem('userData');
-		closeWindow(); //! No esta funcionando
+		closeWindow();
 		router.push('/');
 	};
 
@@ -57,11 +57,22 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 			<ul>
 				<li className=' text-black h-16 flex justify-between items-center p-3'>
 					{/* MANTENER CODIGO */}
-					<img
-						src={avatarSession[0]}
-						alt={userNameSession}
-						className='w-14 h-14 object-cover rounded-full'
-					/>
+					{avatarSession[0] ? (
+						<img
+							src={avatarSession[0]}
+							alt={userNameSession}
+							className='w-14 h-14 object-cover rounded-full'
+						/>
+					) : (
+						<img
+							src={
+								'https://res.cloudinary.com/dvjcqhpuz/image/upload/v1688169816/Avatars/profileIcon_jozcrb.png'
+							}
+							alt={userNameSession}
+							className='w-14 h-14 object-cover rounded-full'
+						/>
+					)}
+
 					<h2 className=' w-full flex justify-center items-center h-full'>
 						{userNameSession}
 					</h2>
