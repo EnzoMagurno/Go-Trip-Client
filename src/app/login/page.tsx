@@ -72,6 +72,15 @@ const page = () => {
 		}
 	}, [userSession]);
 
+	useEffect(() => {
+		if (savedEmail && isChecked) {
+			setForm({
+				...form,
+				email: savedEmail,
+			});
+		}
+	}, []);
+
 	let timeoutId: null | ReturnType<typeof setTimeout> = null;
 	const PasswordIcon = showPassword ? AiOutlineEye : AiOutlineEyeInvisible;
 
@@ -102,6 +111,8 @@ const page = () => {
 	};
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		console.log(form); //!Check
+
 		const newOriginalForm = { ...form };
 
 		const newForm = {
@@ -147,7 +158,8 @@ const page = () => {
 				}, 10000);
 
 				if (isChecked) {
-					setSavedEmail(response.data.data.email);
+					const email = response.data.data.email;
+					setSavedEmail(email.trim());
 				}
 
 				if (isChecked === false) {
