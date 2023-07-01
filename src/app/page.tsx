@@ -42,9 +42,13 @@ const Home = () => {
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
 
 	useEffect(() => {
-		localStorage.getItem('token');
-		localStorage.getItem('username');
-	}, [userNameSession]); //! MANTENER CODE
+		if (typeof window !== 'undefined') {
+			const storeduserNameSession = localStorage.getItem('username');
+			if (storeduserNameSession) {
+				setUserNameSession(JSON.parse(storeduserNameSession));
+			}
+		}
+	}, [localStorage.getItem('username')]);
 
 	useEffect(() => {
 		dispatch(fetchingHotel());
@@ -54,8 +58,7 @@ const Home = () => {
 		<div className={`p-5 pb-24 dark:bg-neutral-900`}>
 			<header className='pt-2 pb-2 '>
 				<h4 className={`${josefin.className}  text-gray-500 dark:text-blueSky`}>
-					{/* MANTENER CODE */}
-					{tokenSession ? userNameSession : 'Hello, User'}
+					{userNameSession !== '' ? userNameSession : 'Hello, User'}
 				</h4>
 				<h3 className={`${roboto.className} text-3xl dark:text-white`}>
 					Where We Go?
