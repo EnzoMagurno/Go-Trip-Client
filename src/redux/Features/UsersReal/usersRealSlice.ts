@@ -2,10 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { MainGlobal } from "../../mainInterface";
 import axios from "../../../utils/axios";
 
-
+const getTokenSession = () => {
+    return localStorage.getItem("token");
+  };
 
 export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
-        const response = await axios.get("/User/readUser/");
+        const tokenSession = getTokenSession()
+
+        const response = await axios.get("/User/readUser/",{
+            headers:{
+                Authorization:`Bearer ${tokenSession}`
+            }
+        });
       return response.data;
     })
 
@@ -14,7 +22,7 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 export interface User { 
     id: string,
     name: string,
-    // avatar: string
+    photoUser: string
     postalCode: string,
     birthday: string,
     country: string,

@@ -15,11 +15,32 @@ import { useRouter } from 'next/navigation';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import spinner from '../login/loading.module.css';
 import axios from '../../utils/axios';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { nameCheck } from '../../utils/index';
+import { randomAvatar } from '../../utils/index';
 
 const asap = Asap({ subsets: ['latin'] });
 const josefin = Josefin_Sans({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] });
 export const listOfCountries = Object.values(countries);
+
+export interface FormState {
+	name: string;
+	country: string;
+	postalCode: string;
+	phoneCode: string;
+	phone: string;
+	email: string;
+	password: string;
+	confirmPassword: string;
+	birthday: string;
+	rol: string;
+	gender: string;
+	address: string;
+	dniPasaport: string;
+	photoUser: string[];
+	thirdPartyCreated: boolean;
+}
 
 const page = () => {
 	const [countriesList, setCountriesList] = useState<string[]>([]);
@@ -27,10 +48,33 @@ const page = () => {
 	const [disabled, setDisabled] = useState<boolean>(true);
 	const [focusedField, setFocusedField] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [confirmShowPassword, setConfirmShowPassword] =
 		useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(false);
 
+	const [tokenSession, setTokenSession] = useLocalStorage('token', ''); //!SessionToken
+	const [sessionId, setSessionId] = useLocalStorage('idSession', ''); //!SesionID
+	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
+	const [avatarSession, setAvatarSession] = useLocalStorage('avatar', ['']);
+	const [rolSession, setRolSession] = useLocalStorage('rol', '');
+
+	const [userSession, setUserSession] = useLocalStorage<FormState>('userData', {
+		name: '',
+		birthday: '',
+		gender: '',
+		address: '',
+		dniPasaport: '',
+		rol: '',
+		country: '',
+		postalCode: '',
+		phoneCode: '',
+		phone: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+		photoUser: [],
+		thirdPartyCreated: false,
+	}); //!SessionData
 	const [dates, setDates] = useState<string>('');
 
 	const PasswordIcon = showPassword ? AiOutlineEye : AiOutlineEyeInvisible;
@@ -51,21 +95,9 @@ const page = () => {
 		(a: string, b: string) => parseInt(a, 10) - parseInt(b, 10)
 	);
 
-	interface FormState {
-		name: string;
-		country: string;
-		postalCode: string;
-		phoneCode: string;
-		phone: string;
-		email: string;
-		password: string;
-		confirmPassword: string;
-		birthday: string;
-		rol: string;
-		gender: string;
-		address: string;
-		dniPasaport: string;
-		thirdPartyCreated: boolean;
+	interface DataLogin {
+		username: string;
+		passwordlogin: string;
 	}
 
 	const [errors, setErrors] = useState<Errors>({});
@@ -80,10 +112,11 @@ const page = () => {
 		password: '',
 		confirmPassword: '',
 		birthday: '',
-		rol: 'user',
+		rol: 'host',
 		gender: '',
 		address: '',
 		dniPasaport: '',
+		photoUser: [''],
 		thirdPartyCreated: false,
 	});
 
@@ -203,33 +236,91 @@ const page = () => {
 		);
 	};
 
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		if (disabled === false) {
-			console.log(form);
+	// TODO: Revisar necesaria implementacion de esta Peticion en RTK
 
-			setLoading(true);
-			setTimeout(() => {
-				setLoading(false);
-				router.push('/')
-			}, 1000);
-			console.log('Petición de inicio de sesión');
+	const registerUser = async (form: FormState, data: DataLogin) => {
+		//! Funcion para el registro y logeo obtencion del Token
+		try {
+			const responseRegister = await axios.post('user/createNewUser', form);
+			const newUserData = responseRegister.data;
 
-			axios.post('/User/createNewUser/', form).catch((err) => alert(err));
+			console.log(newUserData); //! Check
+
+			const responseLogin = await axios.post('user/login', data);
+			const dataLoggedUser = responseLogin.data.data;
+			const tokenSession = responseLogin.data.tokenSession;
+			setTokenSession(tokenSession);
+
+			console.log('Esto es el Data', dataLoggedUser); //! Check
+			setSessionId(dataLoggedUser.id);
+			setUserNameSession(dataLoggedUser.name);
+			setAvatarSession(dataLoggedUser.photoUser);
+			setRolSession(dataLoggedUser.rol);
+			setUserSession({
+				name: dataLoggedUser.name,
+				birthday: dataLoggedUser.birthday,
+				gender: dataLoggedUser.gender,
+				address: dataLoggedUser.address,
+				dniPasaport: dataLoggedUser.dniPasaport,
+				rol: dataLoggedUser.rol,
+				country: dataLoggedUser.country,
+				postalCode: dataLoggedUser.postalCode,
+				phoneCode: dataLoggedUser.phoneCode,
+				phone: dataLoggedUser.phone,
+				email: dataLoggedUser.email,
+				password: dataLoggedUser.password,
+				confirmPassword: dataLoggedUser.confirmPassword,
+				photoUser: dataLoggedUser.photoUser,
+				thirdPartyCreated: dataLoggedUser.thirdPartyCreated,
+			});
 
 			router.push('/');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		if (disabled === false) {
+			const username = nameCheck(form.name);
+			form.name = username;
+
+			// console.log(form); //! Check Form
+
+			if (form.photoUser[0] === '') {
+				const avatar = randomAvatar();
+				form.photoUser[0] = avatar;
+			}
+
+			const dataLogin: DataLogin = {
+				username: form.email,
+				passwordlogin: form.password,
+			};
+
+			// console.log(form); //!Check Form
+
+			setLoading(true);
+
+			setTimeout(() => {
+				setLoading(false);
+			}, 2000);
+			console.log('Petición de inicio de sesión');
+
+			registerUser(form, dataLogin);
 		} else {
 			alert('Please check data, and try again');
 		}
 	};
 
+	//TODO: Revisar y asignar values
 	return (
 		<>
 			<div className='overflow-y-auto'>
 				<div className='pl-5 flex w-full h-28'>
 					<div className=' flex justify-start items-center w-1/4'>
-						<Link href='/'>
+						<a onClick={() => router.back()}>
 							<BsArrowLeftShort className='text-5xl' />
-						</Link>
+						</a>
 					</div>
 
 					<div className=' flex justify-start items-center w-2/4'>
@@ -268,6 +359,7 @@ const page = () => {
 						placeholder='Full name'
 						id='nameInput'
 						name='name'
+						value={form.name}
 						onFocus={handleFocus}
 						onBlur={handleBlur}
 						autoComplete='off'
@@ -446,6 +538,7 @@ const page = () => {
 							className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-full`}
 							type={showPassword ? 'text' : 'password'}
 							name='password'
+							value={form.password}
 							onChange={handleChange}
 							placeholder='Create password'
 							id='password'
@@ -619,12 +712,14 @@ const page = () => {
 					</button>
 				</div>
 
-				<Link href='' className='flex justify-center mt-5'>
+				<div className='flex justify-center mt-5'>
 					<p>
 						Already have an account?{' '}
-						<span className='text-[#3F0071]'>Login</span>
+						<a className='text-[#3F0071]' onClick={() => router.push('/login')}>
+							Login
+						</a>
 					</p>
-				</Link>
+				</div>
 			</div>
 		</>
 	);
