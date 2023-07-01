@@ -4,7 +4,7 @@ import { CiLogout } from 'react-icons/ci';
 import { RiHotelLine, RiAdminLine } from 'react-icons/ri';
 import { AiOutlineSetting } from 'react-icons/ai';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 
@@ -23,13 +23,14 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 	const [avatarSession, setAvatarSession] = useLocalStorage('avatar', ['']);
 	const [rolSession, setRolSession] = useLocalStorage('rol', '');
 
+	const [clickCount, setClickCount] = useState(0);
+
 	// console.log(tokenSession);
 	// console.log(idSession);
 	// console.log(userNameSession);
 	// console.log(avatarSession[0]);
 	// console.log(rolSession);
 
-	//!Mantener codigo
 	const handleClick = () => {
 		setTokenSession('');
 		setIdSession('');
@@ -37,7 +38,9 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 		setAvatarSession(['']);
 		setRolSession('');
 		localStorage.removeItem('userData');
+		router.refresh();
 		closeWindow();
+		setClickCount((prevCount) => prevCount + 1);
 		router.push('/');
 	};
 
@@ -64,40 +67,50 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 				</div>
 			</button>
 			<ul>
-				<li className=' text-black h-16 flex justify-between items-center p-3'>
-					{/* MANTENER CODIGO */}
-					{avatarSession?.length > 0 ? (
-						<img
-							src={avatarSession[0]}
-							alt={userNameSession}
-							className='w-14 h-14 object-cover rounded-full'
-						/>
-					) : (
-						<img
-							src={
-								'https://res.cloudinary.com/dvjcqhpuz/image/upload/v1688169816/Avatars/profileIcon_jozcrb.png'
-							}
-							alt={userNameSession}
-							className='w-14 h-14 object-cover rounded-full'
-						/>
-					)}
+				<Link
+					href={tokenSession ? `/userInfo/${idSession}` : `/login`}
+					passHref
+					onClick={() => {
+						closeWindow();
+					}}
+				>
+					<li className=' text-black h-16 flex justify-between items-center p-3'>
+						{avatarSession[0] !== '' ? (
+							<img
+								src={avatarSession[0]}
+								alt={userNameSession}
+								className='w-14 h-14 object-cover rounded-full'
+							/>
+						) : (
+							<img
+								src={
+									'https://res.cloudinary.com/dvjcqhpuz/image/upload/v1688169816/Avatars/profileIcon_jozcrb.png'
+								}
+								alt={userNameSession}
+								className='w-14 h-14 object-cover rounded-full'
+							/>
+						)}
 
-					<h2 className=' w-full flex justify-center items-center h-full'>
-						{userNameSession}
-					</h2>
-				</li>
+						<h2 className=' w-full flex justify-center items-center h-full'>
+							{userNameSession}
+						</h2>
+					</li>
+				</Link>
+
 				<li className='bg-white h-10 '>
-					{/* MANTENER CODIGO */}
-					<a
+					<Link
+						href={
+							rolSession === 'admin' || rolSession === 'host'
+								? `/myHotels/${idSession}`
+								: `/beAHoteiler`
+						}
+						passHref
 						onClick={() => {
-							tokenSession && rolSession === 'admin'
-								? router.push(`/myHotels/${idSession}`)
-								: router.push('/beAHoteiler');
+							closeWindow();
 						}}
-						// MANTENER CODIGO
 						className='w-full flex justify-between items-center p-3'
 					>
-						{tokenSession && rolSession === 'admin' ? (
+						{rolSession === 'admin' || rolSession === 'host' ? (
 							<div className='flex items-center justify-between'>
 								<RiHotelLine className='inline text-2xl mr-3 text-blueSky' /> My
 								Hotels
@@ -110,12 +123,16 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 						)}
 
 						<IoIosArrowForward className=' text-blueSky' />
-					</a>
+					</Link>
 				</li>
 				<li className='bg-white h-10'>
 					<Link
 						href='/settings'
 						className='w-full flex justify-between items-center p-3'
+						passHref
+						onClick={() => {
+							closeWindow();
+						}}
 					>
 						<div className='flex items-center justify-between'>
 							<AiOutlineSetting className='inline text-2xl mr-3 text-blueSky' />{' '}
@@ -124,29 +141,36 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 						<IoIosArrowForward className=' text-blueSky' />
 					</Link>
 				</li>
-				<li className='bg-white h-10 '>
-					<Link
-						href='/admin'
-						className='w-full flex justify-between items-center p-3'
-					>
-						<div className='flex items-center justify-between'>
-							<RiAdminLine className='inline text-2xl mr-3 text-blueSky' />{' '}
-							Admin
-						</div>
-						<IoIosArrowForward className=' text-blueSky' />
-					</Link>
-				</li>
+				{tokenSession && rolSession === 'host' ? (
+					<li className='bg-white h-10 '>
+						<Link
+							href='/admin'
+							className='w-full flex justify-between items-center p-3'
+							onClick={() => {
+								closeWindow();
+							}}
+						>
+							<div className='flex items-center justify-between'>
+								<RiAdminLine className='inline text-2xl mr-3 text-blueSky' />{' '}
+								Admin
+							</div>
+							<IoIosArrowForward className=' text-blueSky' />
+						</Link>
+					</li>
+				) : null}
 			</ul>
 			<ul className=' pt-5 pl-5 pr-5'>
 				<li className='flex justify-end items-center text-red-400 '>
-					<a
-						onClick={() => {
-							handleClick();
-						}}
-					>
-						Log out
-					</a>
-					<CiLogout className='inline text-2xl ml-3' />
+					{tokenSession ? (
+						<button
+							onClick={() => {
+								handleClick();
+							}}
+						>
+							Log out
+							<CiLogout className='inline text-2xl ml-3' />
+						</button>
+					) : null}
 				</li>
 			</ul>
 		</div>

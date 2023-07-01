@@ -111,7 +111,7 @@ const page = () => {
 	};
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		console.log(form); //!Check
+		// console.log(form); //!Check
 
 		const newOriginalForm = { ...form };
 
@@ -172,7 +172,7 @@ const page = () => {
 			})
 			.catch((error) => {
 				console.log(error); // Muestra el error en la consola
-				setErrorData(!errorData);
+				setErrorData(true);
 			});
 	};
 
