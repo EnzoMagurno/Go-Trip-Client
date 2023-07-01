@@ -30,6 +30,7 @@ const page = () => {
 	});
 	const [errors, setErrors] = useState<Errors>({});
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const [errorData, setErrorData] = useState<boolean>(false);
 	const [loading, setLoading] = useState(false);
 	const [loadingTime, setLoadingTime] = useState(false);
 	const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -38,6 +39,11 @@ const page = () => {
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
 	const [avatarSession, setAvatarSession] = useLocalStorage('avatar', ['']);
 	const [rolSession, setRolSession] = useLocalStorage('rol', '');
+	const [savedEmail, setSavedEmail] = useLocalStorage<string>('savedEmail', '');
+	const [isChecked, setIsChecked] = useLocalStorage<boolean>(
+		'savedEmail',
+		false
+	);
 
 	const [userSession, setUserSession] = useLocalStorage<FormRegister>(
 		'userData',
@@ -71,6 +77,7 @@ const page = () => {
 
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		setFocusedField(e.target.name);
+		setErrorData(false);
 	};
 
 	const handleBlur = () => {
@@ -90,6 +97,10 @@ const page = () => {
 		);
 	};
 
+	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setIsChecked(event.target.checked);
+	};
+
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		const newOriginalForm = { ...form };
 
@@ -98,14 +109,12 @@ const page = () => {
 			username: newOriginalForm.email,
 		};
 
-		console.log(newForm);
+		// console.log(newForm); //!Check
 
 		axios
 			.post('user/login', newForm)
 			.then((response) => {
-				console.log(response.data); // Muestra la respuesta en la consola
-
-				console.log(response.data);
+				// console.log(response.data); // Muestra la respuesta en la consola
 
 				setTokenSession(response.data.tokenSession);
 				setIdSession(response.data.data.id);
@@ -130,12 +139,20 @@ const page = () => {
 					thirdPartyCreated: response.data.data.thirdPartyCreated,
 				});
 				setLoading(true);
-				console.log('Petición de inicio de sesión');
+				// console.log('Petición de inicio de sesión');   //!Check
 
 				setLoadingTime(true);
 				setTimeout(() => {
 					setLoading(false);
 				}, 10000);
+
+				if (isChecked) {
+					setSavedEmail(response.data.data.email);
+				}
+
+				if (isChecked === false) {
+					setSavedEmail('');
+				}
 
 				if (loading === false && loadingTime === false) {
 					router.push('/');
@@ -143,6 +160,7 @@ const page = () => {
 			})
 			.catch((error) => {
 				console.log(error); // Muestra el error en la consola
+				setErrorData(!errorData);
 			});
 	};
 
@@ -180,6 +198,7 @@ const page = () => {
 					type='text'
 					autoComplete='off'
 					name='email'
+					value={savedEmail ? savedEmail : form.email}
 					onChange={handleChange}
 					onFocus={handleFocus}
 					onBlur={handleBlur}
@@ -215,7 +234,9 @@ const page = () => {
 						type='checkbox'
 						name=''
 						id='rememberMeInput'
+						checked={isChecked}
 						autoComplete='off'
+						onChange={handleCheckboxChange}
 					/>
 					<label
 						htmlFor='rememberMeInput'
@@ -255,6 +276,11 @@ const page = () => {
 					</button>
 				</div>
 			</div>
+			{errorData ? (
+				<span className='flex justify-center items-center mt-4 text-red-400'>
+					Email or password incorrect, please try again!
+				</span>
+			) : null}
 
 			{loading || loadingTime ? (
 				<div className='flex justify-center items-center mt-4'>
@@ -370,16 +396,19 @@ const page = () => {
 			<div className='flex justify-center mt-6'>
 				<p>
 					Don’t have an account?{' '}
-					<a
-						className='text-[#3F0071]'
-						onClick={() => router.push('/register')}
-					>
+					<Link href='/register' className='text-[#3F0071]'>
 						Sign in
-					</a>
+					</Link>
 				</p>
 			</div>
 		</>
 	);
 };
+
+{
+	/* <Link href='' className='text-purple-800'>
+	Forgot Password?
+</Link>; */
+}
 
 export default page;
