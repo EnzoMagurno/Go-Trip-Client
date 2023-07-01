@@ -41,6 +41,15 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 		router.push('/');
 	};
 
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const storedAvatarSession = localStorage.getItem('avatar');
+			if (storedAvatarSession) {
+				setAvatarSession(JSON.parse(storedAvatarSession));
+			}
+		}
+	}, []);
+
 	return (
 		<div
 			className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5  pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`}
@@ -57,7 +66,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 			<ul>
 				<li className=' text-black h-16 flex justify-between items-center p-3'>
 					{/* MANTENER CODIGO */}
-					{avatarSession[0] ? (
+					{avatarSession?.length > 0 ? (
 						<img
 							src={avatarSession[0]}
 							alt={userNameSession}
