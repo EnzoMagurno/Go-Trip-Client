@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BsCalendarCheck } from 'react-icons/bs';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useEffect } from 'react';
 import {
 	AiOutlineHome,
 	AiOutlineHeart,
@@ -12,6 +13,25 @@ const fStext = 'text-sm';
 const NavBarFooter = () => {
 	const [tokenSession, setTokenSession] = useLocalStorage('token', ''); //!Manter codigo
 	const [idSession, setIdSession] = useLocalStorage('idSession', '');
+	const [rolSession, setRolSession] = useLocalStorage('rol', '');
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const storeduserIdSession = localStorage.getItem('idSession');
+			if (storeduserIdSession) {
+				setIdSession(JSON.parse(storeduserIdSession));
+			}
+		}
+	}, [localStorage.getItem('idSession')]);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const storeduserTokenSession = localStorage.getItem('token');
+			if (storeduserTokenSession) {
+				setTokenSession(JSON.parse(storeduserTokenSession));
+			}
+		}
+	}, [localStorage.getItem('token')]);
 
 	return (
 		<nav className=' flex justify-evenly z-30 text-iconsPurple bg-white shadow-input pt-3 pb-3 text-3xl fixed left-0 bottom-0 w-full '>
@@ -24,7 +44,7 @@ const NavBarFooter = () => {
 				</div>
 			</Link>
 
-			<Link href=''>
+			<Link href={tokenSession !== '' ? `/myFavorites` : `/login`}>
 				<div className='flex justify-center items-center h-full flex-wrap'>
 					<AiOutlineHeart className='w-full flex items-center justify-center' />
 					<p className={`${fStext} w-fullflex items-center justify-center`}>
@@ -33,7 +53,7 @@ const NavBarFooter = () => {
 				</div>
 			</Link>
 
-			<Link href='/myBookings'>
+			<Link href={tokenSession !== '' ? `/myBookings` : `/login`}>
 				<div className='flex justify-center items-center  h-full flex-wrap'>
 					<BsCalendarCheck className='w-full text-2xl flex items-center justify-center' />
 					<p className={`${fStext} w-full flex items-center justify-center`}>
@@ -41,8 +61,7 @@ const NavBarFooter = () => {
 					</p>
 				</div>
 			</Link>
-			{/* Mantener Codigo */}
-			<Link href={tokenSession ? `/userInfo/${idSession}` : '/login'}>
+			<Link href={idSession ? `/userInfo/${idSession}` : '/login'}>
 				<div className='flex justify-center items-center h-full flex-wrap'>
 					<AiOutlineUser className='w-full flex items-center justify-center' />
 					<p className={`${fStext} w-fullflex items-center justify-center`}>

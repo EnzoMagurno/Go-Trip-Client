@@ -48,19 +48,15 @@ const NavBarTop = () => {
 				/>
 			</button>
 
-			{/* MANTENER CODIGO */}
-			{tokenSession ? (
-				<button
-					onClick={closeWindow}
-					className=' h-6 w-6 flex flex-col justify-evenly'
-				>
-					<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
-					<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
-					<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
-				</button>
-			) : (
-				''
-			)}
+			<button
+				onClick={closeWindow}
+				className=' h-6 w-6 flex flex-col justify-evenly'
+			>
+				<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
+				<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
+				<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
+			</button>
+
 			<UserOptions window={windowIsOpen} closeWindow={closeWindow} />
 			{/* <label htmlFor="check"  className=" shadow-inset_custom w-14 h-8 cursor-pointer rounded-full  relative dark:shadow-inset_BlueSky ">
                     <input type="checkbox" onChange={setTheme} id="check" className=" sr-only peer" />
