@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { MainGlobal } from "../../mainInterface";
 import axios from "../../../utils/axios";
 
+const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 const getTokenSession = () => {
     return localStorage.getItem("token");
   };
@@ -11,12 +12,29 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 
         const response = await axios.get("/User/readUser/",{
             headers:{
-                Authorization:`Bearer ${tokenSession}`
+                Authorization:`Bearer ${TOKEN_FETCH}`
             }
         });
+        console.log(response.data)
       return response.data;
     })
 
+
+    export const updatingUsersReal = createAsyncThunk("updateUsersReal", async (newDataUser) => {
+
+        console.log(newDataUser)
+        const tokenSession = getTokenSession()
+
+
+        const response = await axios.put(`/User/updateUser/${newDataUser.id}`, newDataUser,{
+            headers:{
+                Authorization:`Bearer ${TOKEN_FETCH}`
+            }
+        } );
+        console.log(response.data)
+      return response.data; 
+    })
+    
 
 
 export interface User { 
@@ -53,6 +71,7 @@ const usersRealSlice = createSlice({
     name: "usersReal",
     initialState: {
         usersReal: [],
+        userUpdated: {},
         usersRealCopy: [],
         status: "idle",
         error: null
@@ -79,6 +98,9 @@ const usersRealSlice = createSlice({
         })
         .addCase(fetchingUsersReal.rejected, (state: InitialStateRealUser, action) => {
             state.error = action.error.message || null
+        })
+        .addCase(updatingUsersReal.fulfilled, (state, action) => {
+            state.userUpdated = action.payload
         })
     }
 })
