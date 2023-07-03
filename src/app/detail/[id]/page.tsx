@@ -2,13 +2,15 @@
 
 import { Josefin_Sans, Roboto } from 'next/font/google';
 import StarRating from '@/components/StarRaiting/StarRaiting';
-import { AiOutlineMessage, } from "react-icons/ai";
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice';
 import React, { useEffect } from "react"
 import { useRouter } from 'next/navigation';
 import { TbHomeCancel } from 'react-icons/tb'
+import { AiFillBook } from 'react-icons/ai'
+import { BsFillJournalBookmarkFill } from 'react-icons/bs'
+import Link from 'next/link'
 
 
 const RobotoBold = Roboto({
@@ -33,30 +35,24 @@ const josefinLight = Josefin_Sans({
     subsets: ['latin'],
 });
 
-const Rooms = (room) =>
-    <div className='bg-gray-400 border rounded-lg overflow-hidden'>
-        {/* <img src="" alt="Hotel Image" className='flex justify-start items-start' /> */}
-        <h2>Room </h2>
-        <div>
-            <p>Room description</p>
-            <p>Room $Price</p>
-            <p>Room Amount</p>
-        </div>
-    </div>
 
 
-const NoRooms = () =>
-    <div className='pl-5 flex'>
-        <TbHomeCancel /><p>No rooms available</p>
-    </div>
 
-// type Hotel = {
-//     id: string
-//     name: string,
-//     destination: object
-//     overview: string
-//     state: { hotel: {} }
-// }
+
+type Hotel = {
+    id: string
+    name: string,
+    destination: object
+    overview: string
+    state: { hotel: {} }
+    rooms?: []
+    room: {
+        room: object
+        description?: string,
+        price?: number,
+        numRooms?: number
+    }
+}
 interface Params {
     id: string
 }
@@ -64,53 +60,89 @@ interface Params {
 const Detail = ({ params }: { params: Params }) => {
     const { id } = params
     const router = useRouter()
-    // console.log(router);
+
     console.log(id);
     const dispatch: Dispatch = useDispatch()
+    const Room = ({ room }: Hotel) => (
+        < div className="bg-gray-300 border rounded-lg overflow-hidden mt-4" >
+            <div className="p-4">
+                <h2 className="text-xl font-semibold">{room.room}</h2>
+                <p className="text-gray-500">{room.description}</p>
+                <p className="text-gray-500">Price: ${room.price}</p>
+                <p className="text-gray-500">Available Rooms: {room.numRooms || 'N/A'}</p>
+                <div className='flex justify-center items-center mt-3'>
+
+                    <Link href={{ pathname: `/reservation/${id}`, query: { room: room.id } }}>
+                        <span className="w-full mt-4 text-center bg-[#3F0071] hover:bg-blue-600 text-white py-2 px-4 rounded-lg">Book here</span>
+                    </Link>
+
+                </div>
+            </div>
+        </div >
+    );
+    const Rooms = ({ rooms }: Hotel) => (
+        <div>
+            <h2 className="flex justify-center text-2xl mt-3">{rooms?.length
+                ?
+                <div className='flex items-center'>
+                    <BsFillJournalBookmarkFill />
+                    <span className='pl-2'>Book now</span>
+                </div>
+                :
+                null}
+            </h2>
+            {rooms?.length ? (
+                <div>
+                    {rooms.map((room: string, index: number) => <Room key={hotel.room} room={room} />)}
+                </div>
+
+            ) : (
+                <NoRooms />
+            )}
+        </div>
+    );
+
+    const NoRooms = () => (
+        <div className=" flex items-center justify-center text-xl mt-3">
+            <TbHomeCancel />
+            <p className='pl-2'>No rooms available</p>
+        </div>
+    );
 
     useEffect(() => {
-        // dispatch(fetchinHotelId(id))
-        fetch(`http://localhost:3001/hotel/findHotel/${id}`, {
-            headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5YzQxYzYzYS1hNDA5LTQwZTQtYjJkYi1kZjQ2MjRiYjdiYmYiLCJyb2xlIjoiaG9zdCIsImlhdCI6MTY4ODEzNzg1NCwiZXhwIjoxNjg4MTQ1MDU0fQ.ygSfrif326u09F3-PCm9c3kGM4no5KSE7sLcRnBiTD4`,
-                'Content-Type': 'application/json',
-            },
-            // Resto de los parámetros de la solicitud...
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        dispatch(fetchinHotelId(id))
     }, [])
 
     const hotel = useSelector(state => state.hotel.hotel)
     console.log(hotel)
 
     return (
-        <>
-            <div className='relative flex items-center justify-center'>
-                <div className="flex justify-center">
-                </div>
-                <img src={hotel.image} alt='Hotel' className={`${hotel.image ? 'w-full' : 'hidden'}`} />
-                <div className='bg-gray-900 opacity-80 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 w-full'>
-                    <h3 className="text-center">{hotel.name}</h3>
-                    <h4 className="text-center">{hotel.destination && hotel.destination.city}</h4>
-                    <p className="text-center">{hotel.destination && hotel.destination.country}</p>
+        <div className='max-w-screen-xl mx-auto flex flex-col'>
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                <img src={hotel.image} alt="Hotel" className="w-full" />
+                <div className="p-4">
+                    <h3 className="text-xl font-semibold">{hotel.name}</h3>
+                    <h4 className="text-gray-500">{hotel.destination && hotel.destination.city}</h4>
+                    <p className="text-gray-500">{hotel.destination && hotel.destination.country}</p>
+                    <div className="flex flex-col justify-start mt-4">
+                        <span className="text-gray-700 font-bold">Check-in <span className='pl-2'>{hotel.checkIn}</span></span>
+                        <span className="text-gray-700 font-bold">Check-out <span className='pl-2'>{hotel.checkOut}</span></span>
+                    </div>
                 </div>
             </div>
 
-            <h2 className='flex justify-center text-2xl mt-3'>Book now</h2>
-            {hotel.rooms && hotel.rooms.length ? (<Rooms />) : (<NoRooms />)}
-            <a onClick={() => router.push(`http://localhost:3000/reservation/${id}`)}></a>
+            {hotel.rooms && hotel.rooms.length ? (
+                <Rooms rooms={hotel.rooms} />
+            ) : (
+                <NoRooms />
+            )}
 
-            <div className='flex flex-col justify-center pl-5 mt-6'>
-                <h3>About hotel</h3>
-                <p className=''>{hotel.overview}</p>
+            <div className="mt-6 px-5">
+                <h3 className="text-2xl font-bold mb-2">About the hotel</h3>
+                <p className="text-lg text-gray-700 leading-relaxed">{hotel.overview}</p>
             </div>
-        </>
+
+        </div>
     )
 }
 export default Detail

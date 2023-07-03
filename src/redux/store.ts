@@ -5,6 +5,7 @@ import usersSlice from "./Features/Users/usersSlice";
 import citySlice from "./Features/Citys/CitySlice";
 import usersRealSlice from "./Features/UsersReal/usersRealSlice";
 import serviceSlice from "./Features/Services/servicesSlice";
+import roomSlice from "./Features/Room/RoomSlice";
 
 export const store = configureStore({
     reducer: {
@@ -12,8 +13,8 @@ export const store = configureStore({
         hotel: hotelSlice.reducer,
         city: citySlice.reducer,
         usersReal: usersRealSlice.reducer,
-        services: serviceSlice.reducer
-
+        services: serviceSlice.reducer,
+        room: roomSlice
     }
 })
 
