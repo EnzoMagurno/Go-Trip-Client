@@ -16,6 +16,8 @@ import {
 	fetchinHotelId,
 } from '../../redux/Features/Hotel/hotelsSlice';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { Upload} from '@/utils/Upload'
+
 
 interface HotelProps {
 	hotel: MyHotel;
@@ -332,7 +334,9 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 			</button>
 
 			<h5 className='text-lg font-bold mt-3 mb-3 text-iconsPurple'>Photos</h5>
-			<hr />
+			<Upload idHotel={id} idRoom=''/>
+
+			
 		</div>
 	);
 };
