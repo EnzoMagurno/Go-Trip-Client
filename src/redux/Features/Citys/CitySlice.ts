@@ -56,8 +56,7 @@ export const fetchingCity = createAsyncThunk("getCity", async (cityName) => {
 
 
 export const getHotelsCoincidencesByCityId = createAsyncThunk('getHotelsByCity', async (id) => {
-	if(!id) return 
-	console.log(id)
+	if (!id) return 
 
 	return await axios.get(`/destination/${id}`, {
 
