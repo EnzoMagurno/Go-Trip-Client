@@ -14,7 +14,7 @@ const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
     try {
       const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
-      const response = await fetch("http://localhost:3001/hotel/findHotel", {
+      const response = await fetch("https://gotrippf-production.up.railway.app/hotel/findHotel", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -32,7 +32,7 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
   export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
     try {
       const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
-      const response = await fetch(`http://localhost:3001/hotel/findhotel/${id}`, {
+      const response = await fetch(`https://gotrippf-production.up.railway.app/hotel/findhotel/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -50,7 +50,7 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
   export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
     try {
       const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
-      const response = await axios.put("http://localhost:3001/hotel/updhotel", updatedData, {
+      const response = await axios.put("https://gotrippf-production.up.railway.app/hotel/updhotel", updatedData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -67,7 +67,7 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
 
 
   export const deleteHotel = createAsyncThunk("deleteHotel", async (id) => {
-    return fetch(`http://localhost:3001/hotel/delHotel/${id}`, {
+    return fetch(`https://gotrippf-production.up.railway.app/hotel/delHotel/${id}`, {
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${TOKEN_FETCH}`

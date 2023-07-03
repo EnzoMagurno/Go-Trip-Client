@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const fetchUsers = createAsyncThunk("allUsers", async () => {
 
-    return await fetch("http://localhost:3001/user/readUser", {
+    return await fetch("https://gotrippf-production.up.railway.app/user/readUser", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

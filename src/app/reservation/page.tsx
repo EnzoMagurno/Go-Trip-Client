@@ -51,7 +51,7 @@ const page = (props: PageProps): React.ReactNode => {
 
     console.log(totalAmount);
     useEffect(() => {
-        fetch(`http://localhost:3001/hotel/findhotel/${id}`)
+        fetch(`https://gotrippf-production.up.railway.app/hotel/findhotel/${id}`)
             .then(response => response.json())
             .then(data => setHotel(data))
     }, [])
