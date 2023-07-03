@@ -1,12 +1,17 @@
 'use client'
-import axios from 'axios';
+
 import { Josefin_Sans, Roboto } from 'next/font/google';
 import StarRating from '@/components/StarRaiting/StarRaiting';
-import { AiOutlineMessage, } from "react-icons/ai";
-import { BsArrowLeft, BsFillHeartFill } from "react-icons/bs";
+import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice';
-import { useEffect } from "react"
+import React, { useEffect } from "react"
+import { useRouter } from 'next/navigation';
+import { TbHomeCancel } from 'react-icons/tb'
+import { AiFillBook } from 'react-icons/ai'
+import { BsFillJournalBookmarkFill } from 'react-icons/bs'
+import Link from 'next/link'
+
 
 const RobotoBold = Roboto({
     weight: ['700'],
@@ -30,91 +35,114 @@ const josefinLight = Josefin_Sans({
     subsets: ['latin'],
 });
 
-const rating = 4
-
-
-const host = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
-
-// type Hotel = {
-//     id: string
-//     name: string,
-//     destination: object
-//     overview: string
-
-// }
-
-// export const hotelApi = createApi({
-//     reducerPath: 'userApi',
-//     baseQuery: fetchBaseQuery({
-//         baseUrl: 'http://localhost:3001/hotel/'
-//     }),
-//     endpoints:(builder)=> ({
-//         getHotel: builder.query<Hotel[], null>({
-//             query: () => 'findhotel'
-//         }),
-//         getHotelById: builder.query<Hotel, {id:string}>({
-//             query: ({id}) => `findhotel/${id}`
-//         })
-//     })
-// })
 
 
 
 
+type Hotel = {
+    id: string
+    name: string,
+    destination: object
+    overview: string
+    state: { hotel: {} }
+    rooms?: []
+    room: {
+        room: object
+        description?: string,
+        price?: number,
+        numRooms?: number
+    }
+}
+interface Params {
+    id: string
+}
 
-export default async function Detail({ params }) {
+const Detail = ({ params }: { params: Params }) => {
     const { id } = params
+    const router = useRouter()
 
-    const dispatch = useDispatch()
+    console.log(id);
+    const dispatch: Dispatch = useDispatch()
+    const Room = ({ room }: Hotel) => (
+        < div className="bg-gray-300 border rounded-lg overflow-hidden mt-4" >
+            <div className="p-4">
+                <h2 className="text-xl font-semibold">{room.room}</h2>
+                <p className="text-gray-500">{room.description}</p>
+                <p className="text-gray-500">Price: ${room.price}</p>
+                <p className="text-gray-500">Available Rooms: {room.numRooms || 'N/A'}</p>
+                <div className='flex justify-center items-center mt-3'>
+
+                    <Link href={{ pathname: `/reservation/${id}`, query: { room: room.id } }}>
+                        <span className="w-full mt-4 text-center bg-[#3F0071] hover:bg-blue-600 text-white py-2 px-4 rounded-lg">Book here</span>
+                    </Link>
+
+                </div>
+            </div>
+        </div >
+    );
+    const Rooms = ({ rooms }: Hotel) => (
+        <div>
+            <h2 className="flex justify-center text-2xl mt-3">{rooms?.length
+                ?
+                <div className='flex items-center'>
+                    <BsFillJournalBookmarkFill />
+                    <span className='pl-2'>Book now</span>
+                </div>
+                :
+                null}
+            </h2>
+            {rooms?.length ? (
+                <div>
+                    {rooms.map((room: string, index: number) => <Room key={hotel.room} room={room} />)}
+                </div>
+
+            ) : (
+                <NoRooms />
+            )}
+        </div>
+    );
+
+    const NoRooms = () => (
+        <div className=" flex items-center justify-center text-xl mt-3">
+            <TbHomeCancel />
+            <p className='pl-2'>No rooms available</p>
+        </div>
+    );
+
     useEffect(() => {
         dispatch(fetchinHotelId(id))
-
     }, [])
 
     const hotel = useSelector(state => state.hotel.hotel)
-
     console.log(hotel)
 
     return (
-
-        <div className=" ">
-            <BsArrowLeft className='fixed top-5 left-5 text-4xl text-white z-40 ' />
-            <BsFillHeartFill className='fixed top-7 right-5 text-2xl text-white z-40 ' />
-            <img src={hotel.image} alt='prueba' className=" fixed w-full -top-30" />
-            <div className="absolute h-3/4 bottom-0 rounded-3xl ">
-                <div className='px-5 pt-9 pb-5 bg-slate-100 rounded-3xl'>
-                    <section className="">
-                        <h1 className={`${josefinBold.className} text-2xl`}>{hotel.hotel_name}</h1>
-                        <h2 className={`${josefinRegular.className} text-xs`}>des</h2>
-
-                        <div>
-                            <StarRating rating={rating} />
-                        </div>
-                        <div className='absolute top-16 pt-1 pr-5 right-0'>
-                            <h1 className={`${RobotoBold.className} text-3xl`}>{`$${hotel.rates_from}`}</h1>
-                            <h1 className={`${josefinRegular.className} -mt-2 text-base`}>/per night</h1>
-                        </div>
-                    </section>
-                    <hr className='mt-4 ' />
-                    <section className=''>
-                        <p className={`${josefinLight.className} text-base mt-4  leading-4`}>{hotel.overview}</p>
-                    </section>
-                    <section className='mt-3'>
-                        <h1 className={`${josefinBold.className} text-lg`}>Hosted by</h1>
-                        <div className='flex flex-wrap gap-3 w-full '>
-                            <img src={host} alt='prueba' className="mt-2 h-16 w-16 rounded-full" />
-                            <div>
-                                <h1 className={`${josefinSemiBold.className} mt-5`}>Alber Smith</h1>
-                                <h1 className={`${josefinLight.className}`}>Chain name</h1>
-                            </div>
-                            <div className='absolute  bg-iconsPurple w-10 h-10 rounded-2xl mt-4 right-5' >
-                                <AiOutlineMessage className='m-auto mt-2 h-5 w-5 text-white' />
-                            </div>
-                        </div>
-                    </section>
-                    <button className='mt-5 h-10 rounded-full w-full bg-iconsPurple text-white '>Book now</button>
+        <div className='max-w-screen-xl mx-auto flex flex-col'>
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                <img src={hotel.image} alt="Hotel" className="w-full" />
+                <div className="p-4">
+                    <h3 className="text-xl font-semibold">{hotel.name}</h3>
+                    <h4 className="text-gray-500">{hotel.destination && hotel.destination.city}</h4>
+                    <p className="text-gray-500">{hotel.destination && hotel.destination.country}</p>
+                    <div className="flex flex-col justify-start mt-4">
+                        <span className="text-gray-700 font-bold">Check-in <span className='pl-2'>{hotel.checkIn}</span></span>
+                        <span className="text-gray-700 font-bold">Check-out <span className='pl-2'>{hotel.checkOut}</span></span>
+                    </div>
                 </div>
             </div>
+
+            {hotel.rooms && hotel.rooms.length ? (
+                <Rooms rooms={hotel.rooms} />
+            ) : (
+                <NoRooms />
+            )}
+
+            <div className="mt-6 px-5">
+                <h3 className="text-2xl font-bold mb-2">About the hotel</h3>
+                <p className="text-lg text-gray-700 leading-relaxed">{hotel.overview}</p>
+            </div>
+
         </div>
     )
 }
+export default Detail
