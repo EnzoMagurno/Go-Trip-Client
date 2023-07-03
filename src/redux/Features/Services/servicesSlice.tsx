@@ -17,7 +17,7 @@ export interface InitialStateService {
 
 export const fetchingServices= createAsyncThunk("getServices", async () => {
     const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
-    return await fetch("http://localhost:3001/service", {
+    return await fetch("https://gotrippf-production.up.railway.app/service", {
         headers: {
           Authorization: `Bearer ${token}`
         }

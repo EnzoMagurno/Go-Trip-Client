@@ -14,7 +14,9 @@ const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
     try {
       const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
       const response = await axios.get("/hotel/findHotel", {
+
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -31,8 +33,12 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
 
   export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
     try {
+
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
       
       const response = await axios.get(`/hotel/findhotel/${id}`, {
+
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -49,7 +55,11 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
 
   export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
     try {
+
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
       const response = await axios.put("/hotel/updhotel", updatedData, {
+
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -66,7 +76,9 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
 
 
   export const deleteHotel = createAsyncThunk("deleteHotel", async (id) => {
+
     return axios.delete(`/hotel/delHotel/${id}`, {
+
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${TOKEN_FETCH}`

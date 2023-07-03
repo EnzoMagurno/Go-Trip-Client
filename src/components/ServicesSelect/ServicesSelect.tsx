@@ -1,74 +1,68 @@
 'use client'
-import React from 'react'
-import axios from '../../utils/axios';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from 'react';
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
-import { fetchingServices } from '@/redux/Features/Services/servicesSlice';
-import { MainGlobal } from '@/redux/mainInterface';
+import { name } from '@cloudinary/url-gen/actions/namedTransformation';
 
-interface ServicesProps {
-	window: string;
-	closeWindow: never;
-}
+const josefinRegular = Josefin_Sans({
+    weight: ['400'],
+    subsets: ['latin'],
+  });
 
-const ServicesOptions: React.FC<ServicesProps> = ({ window, closeWindow }) => {
+const ServicesSelect = ({ services, selectedServices, setServiceName,onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-    const dispatch = useDispatch()
-
-const [serviceName, setServiceName] = useState([]);
-
-const services = useSelector((state: MainGlobal) => state.services.dataService)
-console.log(services);
-  
-  
-
-  useEffect(() => {
-    
-    
-      dispatch(fetchingServices())
-  },[])
-  
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-  
+  const handleCheckboxChange = (event) => {
+    const { value, checked, name } = event.target;
+    if (selectedServices.includes(value)) {
+        
+    }else {
+    const updatedSelectedServices = checked
+      ? [...selectedServices, value]
+      : selectedServices.filter((service) => service !== value);
+      setServiceName((prevServiceName) => [...prevServiceName, {value, name}])
+    onChange(updatedSelectedServices);
+    }
   };
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleToggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+ 
+  
+  
+  return (
+    <div className="">
+      <div className="" onClick={handleToggleOpen}>
+        
+          
+            <span className="text-sm  text-white bg-[#7533ac] rounded-3xl p-2 px-3">Add existing services</span>
     
-    
-//     const updatedServiceName = serviceName.filter((c) => c[0] !== e.target.value);
-//     setServiceName(updatedServiceName);
-//     setForm({
-//       ...form,
-//       ServicesRoom: form.ServicesRoom.filter((c) => c !== e.target.value)
-//   })
-   }
-   
-
-
-	return (
-		<div
-			className={`absolute  ${window} top-12 z-50 bg-white w-1/2 pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`}
-		>
-			<button
-				onClick={closeWindow}
-				className='absolute top-4 right-4 w-6 h-6 flex justify-center items-center '
-			>
-				
-			</button>
-			<ul>
-				{services && services?.map(service =>  (
-                    <li key={service.id}>
-                        <label>{service.name}
-                        <input type="checkbox"  />
-                        </label>
-                    </li>
-                ))}
-			</ul>
-		</div>
-	);
+      
+      </div>
+      {isOpen && (
+        <div className=" mt-4 grid p-5 z-10 pl-10 bg-white shadow-xl rounded-lg">
+          <ul className="grid grid-cols-2 gap-3">
+            {services.map((service) => (
+              <li key={service}>
+                <label className=''>
+                  <input
+                    className=' mr-2'
+                    type="checkbox"
+                    value={service.id}
+                    name={service.name}
+                    checked={selectedServices.includes(service.id)}
+                    onChange={handleCheckboxChange}
+                  />
+                  {service.name}
+                </label>
+              </li>
+            ))}
+          </ul>
+          <button type='button' onClick={handleToggleOpen} className={`${josefinRegular.className} bg-[#7533ac] text-white mt-10 h-10 mx-auto rounded-full w-2/4`}>Done</button>
+        </div>
+      )}
+    </div>
+  );
 };
 
-export default ServicesOptions;
+export default ServicesSelect;

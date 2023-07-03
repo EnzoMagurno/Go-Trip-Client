@@ -29,7 +29,10 @@ export interface InitialStateCity {
 }
 
 export const fetchingCities = createAsyncThunk('getCities', async () => {
-	return await axios.get(`/destination`, {
+
+	return await fetch(`https://gotrippf-production.up.railway.app/destination`, {
+        method: "GET",
+
         headers: {
             "Authorization": `Bearer ${TOKEN_FETCH }`
         }
@@ -40,7 +43,9 @@ export const fetchingCities = createAsyncThunk('getCities', async () => {
 
 export const fetchingCity = createAsyncThunk("getCity", async (cityName) => {
 	
+
     return await axios.get(`/destination/?city=${cityName}`, {
+
         headers: {
             "Authorization": `Bearer ${TOKEN_FETCH }`
         }
@@ -53,7 +58,9 @@ export const fetchingCity = createAsyncThunk("getCity", async (cityName) => {
 export const getHotelsCoincidencesByCityId = createAsyncThunk('getHotelsByCity', async (id) => {
 	if(!id) return 
 	console.log(id)
+
 	return await axios.get(`/destination/${id}`, {
+
         headers: {
             "Authorization": `Bearer ${TOKEN_FETCH }`
         }
