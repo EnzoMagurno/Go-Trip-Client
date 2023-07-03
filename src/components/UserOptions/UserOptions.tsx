@@ -49,8 +49,12 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 			const storedAvatarSession = localStorage.getItem('avatar');
 			if (storedAvatarSession) {
 				setAvatarSession(JSON.parse(storedAvatarSession));
+				console.log(storedAvatarSession)
+				
 			}
+			
 		}
+		
 	}, []);
 
 	return (
@@ -75,9 +79,9 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 					}}
 				>
 					<li className=' text-black h-16 flex justify-between items-center p-3'>
-						{avatarSession[0] !== '' ? (
+						{ avatarSession !== '' ? (
 							<img
-								src={avatarSession[0]}
+								src={avatarSession}
 								alt={userNameSession}
 								className='w-14 h-14 object-cover rounded-full'
 							/>

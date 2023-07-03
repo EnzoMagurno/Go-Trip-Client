@@ -1,20 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-
-
-export const fetchUsers = createAsyncThunk("allUsers", async () => {
-
-    return await fetch("http://localhost:3001/user/readUser", {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDA1ZWRiYS0yYWEzLTQ5ODAtYjg2NS05NWU3NDg0NDgzZmUiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2ODc5MjMzMzcsImV4cCI6MTY4NzkzMDUzN30.Ojmdyqp2WCXcttVwJYRd84Lxz0LjXytOcgjuC6jxVNo',
-        }
-    })
-    .then(response => response.json())
-    .then(data => data)
-    .catch(error => console.log(error))
-});
+/* import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 
@@ -38,7 +22,7 @@ const userSlice = createSlice({
 
 
 
-export default userSlice;
+export default userSlice; */
 
 /* export const {} = userSlice.actions */
 
