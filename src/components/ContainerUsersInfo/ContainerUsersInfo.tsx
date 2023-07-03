@@ -17,6 +17,8 @@ const asap = Asap({ subsets: ['latin'] });
 const josefin = Josefin_Sans({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] });
 
+const EditIcon = AiOutlineEdit;
+
 function ContainerUsersInfo() {
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
@@ -42,12 +44,10 @@ function ContainerUsersInfo() {
 	const id = useParams().id;
 	console.log(id);
 
-	const userDataString = localStorage.getItem('userData'); //! MANTENER CODE
-	let userFound = userDataString ? JSON.parse(userDataString) : null; //! MANTENER CODE
+	const userDataString = localStorage.getItem('userData');
+	let userFound = userDataString ? JSON.parse(userDataString) : null;
 
 	console.log(userFound);
-
-	const EditIcon = AiOutlineEdit;
 
 	const optionsCountries: string[] = listOfCountries.map(
 		(country) => country.name

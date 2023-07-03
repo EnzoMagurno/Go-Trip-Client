@@ -54,8 +54,17 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 			}
 			
 		}
-		
-	}, []);
+
+	}, [typeof window !== 'undefined' && localStorage.getItem('avatar')]);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const storedUserNameSession = localStorage.getItem('username');
+			setUserNameSession(
+				storedUserNameSession ? JSON.parse(storedUserNameSession) : ''
+			);
+		}
+	}, [typeof window !== 'undefined' && localStorage.getItem('username')])
 
 	return (
 		<div
@@ -79,7 +88,10 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 					}}
 				>
 					<li className=' text-black h-16 flex justify-between items-center p-3'>
-						{ avatarSession !== '' ? (
+
+						{avatarSession &&
+						avatarSession.length > 0 &&
+						avatarSession[0] !== '' ? (
 							<img
 								src={avatarSession}
 								alt={userNameSession}

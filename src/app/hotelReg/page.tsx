@@ -4,14 +4,15 @@ import { useRouter } from 'next/navigation';
 import Select from 'react-select';
 import axios from '../../utils/axios'
 import validation from './validation'
+import { AdvancedImage } from '@cloudinary/react';
 import { Errors } from './validation'
 import { countries } from 'countries-list'
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchingCities } from "../../redux/Features/Citys/CitySlice";
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
-import { token } from "../../redux/Features/Citys/CitySlice";
 import { MainGlobal } from '@/redux/mainInterface';
+import { DragAndDrop } from '@/components/Drag & Drop/DragAndDrop';
 import { Loader } from '@googlemaps/js-api-loader';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 
@@ -43,13 +44,10 @@ function HotelRegister() {
   const cities = useSelector((state: MainGlobal) => state.city.dataCity)
  
   const [phoneCode, setPhoneCode] = useState<string[]>([]) 
-  const [hotelId, setHotelId] = useState(null);
+  const [imageURL, setImageURL] = useState("");
   const [lada, setLada] = useState('')
   const [completePhone, setCompletePhone] = useState('')
-
-  // const [file, setFile] = useState()
-
-console.log(cities);
+  const [city, setCity] = useState('')
 
 
   cities.map(e => selectCities.push({label:e.city, value: e.id}))
@@ -101,6 +99,7 @@ const handleSubmit = async (e: any) => {
   const formPost = { ...form };
   formPost.numberRooms = Number(form.numberRooms);
   
+  
   console.log(formPost);
   try {
     const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
@@ -126,7 +125,7 @@ const selectChange = (e: any) => {
       ...form,
       destinationId: e.value
   });
-  console.log(e.value)
+  setCity(e.label)
   setErrors(validation({
     ...form,
     destinationId: e.value
@@ -146,6 +145,8 @@ const handleChange = (e: any) => {
       
       
   });
+  console.log(e.target.value);
+  
   setErrors(validation({
     ...form,
     [e.target.name]: e.target.value
@@ -167,6 +168,8 @@ const selectLadaChange = (e: any) => {
 
 // }
 
+console.log(form.image);
+
 
 
   return (
@@ -187,6 +190,7 @@ const selectLadaChange = (e: any) => {
                         onChange={selectChange}
                         value={form.destinationId}
                         id="cityInput"
+                        placeholder={city}
                         />
                     <span className='text-red-400'>{errors.destinationId && <p>{errors.destinationId}</p>}</span>
 
@@ -254,13 +258,7 @@ const selectLadaChange = (e: any) => {
                     <span className='text-red-400'>{errors.phone && <p>{errors.phone}</p>}</span>
 
           <label className={`${josefinRegular.className} mt-2.5`} htmlFor="hotelPhotoInput">Cover photo</label>
-                    <input className={`${josefinRegular.className} border-2 rounded-xl my-2 h-14 pl-4`}
-                        type="text"
-                        onChange={handleChange}
-                        id='hotelPhotoInput'
-                        name='image'
-                        value={form.image}
-                        autoComplete='off' />
+                    <DragAndDrop setForm={setForm}/>
                     <span className='text-red-400'>{errors.image && <p>{errors.image}</p>}</span>
 
         <div className='flex gap-5 '>
