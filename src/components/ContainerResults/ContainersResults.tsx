@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectHotelState } from "../../redux/Features/Hotel/hotelsSlice"
 import ContainerResult from "./ContainerResult";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getHotelsCoincidencesByCityId } from "@/redux/Features/Citys/CitySlice";
+
+import FiltersBar from "../Filters/FiltersBar";
 const ContainerResults = ({roboto}) => {
     const searchParams = useSearchParams()
     const idCity = searchParams.get("city")
@@ -14,17 +16,17 @@ const ContainerResults = ({roboto}) => {
 
 
     const destination = useSelector(state => state.city.hotelByCity) 
+    console.log(destination)
 
 
   
     
 
-
-
-
+    
     useEffect(() => {
         dispatch(getHotelsCoincidencesByCityId(idCity))
-    }, [destination?.hotel?.length])
+
+    }, [idCity])
 
     
 
@@ -35,6 +37,7 @@ const ContainerResults = ({roboto}) => {
 
         return (
             <div className="p-5">
+                <FiltersBar />
                 <h3 className="text-center pt-2 pb-2">{ hotel.length } Results of { `${destination.city}, ${destination.state}, ${destination.country}` }</h3>
                  <div className="grid grid-row s-6 gap-5" >
                 {
