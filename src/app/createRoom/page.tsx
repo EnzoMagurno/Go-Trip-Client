@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
 import { fetchingServices } from '@/redux/Features/Services/servicesSlice';
 import { MainGlobal } from '@/redux/mainInterface';
+import ServicesOptions from '@/components/ServicesSelect/ServicesSelect';
 
 
 const asapSemi = Asap({
@@ -35,11 +36,16 @@ const id: string | null = searchParams.get('id')
 
 const selectServices: object[] = []
 const [serviceName, setServiceName] = useState([]);
+const [newService, setNewService] = useState({
+  name: ''
+})
+
 
 const router = useRouter()  
 
 
   const services = useSelector((state: MainGlobal) => state.services.dataService)
+ 
   
   services.map(e => selectServices.push({label:e.name, value: [e.id, e.name]}))
 
@@ -50,16 +56,22 @@ const router = useRouter()
   },[])
   
   const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    try{
-     const response = await axios
-      .post("/rooms/newRooms", form)
-      .catch((err) => alert(err))
-      console.log(response)      
-      router.push(`/myHotels/${id}`)
-  } catch (error) {
-  console.error('Error al crear el hotel:', error);
-  }}
+    e.preventDefault();
+    
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH  
+       const response = await axios.post("/rooms/newRooms", form, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      console.log(response);
+      router.push(`/myHotels/${id}`);
+    } catch (error) {
+      console.error('Create error:', error);
+    }
+  };
 
 interface FormState {
   room: string;
@@ -86,8 +98,37 @@ const [form, setForm] = useState<FormState>({
   hotelId: id
 });
 
+const handleCreate = async (e:any) => {
+  if (newService) {
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH  
+       const response = await axios.post("/service", newService, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      console.log(response.data.name);
+       setForm({ ...form, ServicesRoom: [...form. ServicesRoom, response.data.id]})
+       setServiceName((prevServiceName) => [
+        ...prevServiceName,
+        { value: response.data.id, name: response.data.name }
+      ])
+    } catch (error) {
+      console.error('Create service error:', error);
+    }
+  
+  }
+}
+
+const handleChangeService = async (e: any) => {
+ setNewService({name: e.target.value})
+ 
+}
+
 
 const handleChange = (e: any) => {
+  
   setForm({
       ...form,
       [e.target.name]: e.target.value
@@ -101,52 +142,31 @@ const handleChange = (e: any) => {
  
 }
 
-const handleSelect = (e: React.MouseEvent<HTMLButtonElement> ) => {
-  
-  
-  if (form.ServicesRoom.includes(e.value[0]))
-      {
-      
-      } else {
-  setForm({
-      ...form,
-      ServicesRoom: [...form.ServicesRoom, e.value[0]]
-  })
-  setServiceName((prevServiceName) => [...prevServiceName, e.value]);
-  
-  console.log(form.ServicesRoom);
-  
 
-
-  setErrors(
-      validation({
-          ...form,
-          ServicesRoom: [...form.ServicesRoom, e.value]
-      })
-  )
-  
-  }}
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     
     
-    const updatedServiceName = serviceName.filter((c) => c[0] !== e.target.value);
-    setServiceName(updatedServiceName);
+    const updatedServiceName = serviceName.filter((c) => c.value !== e.target.value);
     setForm({
       ...form,
-      ServicesRoom: form.ServicesRoom.filter((c) => c !== e.target.value)
-  })
+      ServicesRoom: form.ServicesRoom.filter((c) => c !== e.target)
+    })
+    setServiceName(updatedServiceName);
+  
    }
-   console.log(form.ServicesRoom)
+   
+   console.log(form);
+   
 
   return (
     
-    <div className='relative bg-neutral-100 pb-20 inset-0'>
+    <div className='relativeflex items-center justify-center  bg-neutral-100 pb-20 inset-0'>
       
 
       
       
-      <form  onSubmit={handleSubmit} className='bg-neutral-50  mt-5 flex flex-col p-4 shadow-md'>
+      <form  onSubmit={handleSubmit} className='bg-neutral-50  mt-5 mb-32 flex flex-col p-4 shadow-md'>
           <div className={`${asapSemi.className} text-2xl w-screen flex pt-20`}>
           <h1 className='flex text-center'>Create a room</h1>
       </div>
@@ -201,18 +221,34 @@ const handleSelect = (e: React.MouseEvent<HTMLButtonElement> ) => {
         <span className='text-red-400'>{errors.description && <p>{errors.description}</p>}</span>
 
                      
-        <label className={`${josefinRegular.className}  mt-2.5`} htmlFor="addRoom">Services</label>
-        <Select className={`${josefinRegular.className}  text-black w-full mt-2.5 `}
-                        name='city'
-                        options={selectServices}
-                        onChange={handleSelect}
-                        value={form.ServicesRoom}
-                        id="cityInput"
-                        placeholder='Services'
-                        />
-                        <div className='grid bg-neutral-50 grid-cols-3 rounded-xl my-2 gap-4 border border-2 justify-between p-2'>
-                    {serviceName.map(c => (<span className={`${josefinRegular.className} flex items-center h-full text-center relative  text-md text-white bg-[#7533ac] rounded-xl p-2`}>{c[1]}<button type='button' className='w-2 text-lg p-0 absolute -top-0.5 right-0 mr-2' onClick={handleDelete} value={c[0]}>x</button></span>))}
+        <label className={`${josefinRegular.className}  my-2.5`} htmlFor="addRoom">Services</label>
+        
+                    <ServicesOptions
+  services={services}
+  setServiceName={setServiceName}
+  selectedServices={form.ServicesRoom}
+  onChange={(updatedSelectedServices) =>{ 
+    setForm({ ...form, ServicesRoom: updatedSelectedServices})
+  }
+    
+  }
+/>
+                        <div className='grid bg-neutral-50 grid-cols-3 rounded-xl my-4 gap-4  border-2 justify-between p-2'>
+{serviceName.map(c => (<span className={`${josefinRegular.className} flex items-center h-full text-center relative  text-md text-white bg-[#7533ac] rounded-xl p-2`}>{c.name}<button type='button' className='w-2 text-lg p-0 absolute -top-0.5 right-0 mr-2'  onClick={handleDelete} value={c.value}>x</button></span>))}
                     </div>
+                
+                    <label className={`${josefinRegular.className} mt-2.5`} htmlFor="NewServices">New service</label>
+                    <input className={`${josefinRegular.className} border-2 rounded-xl mt-2 h-14 pl-4`}
+                        type='text'
+                        onChange={handleChangeService}
+                        id='NewServices'
+                        name='services'
+                        value={newService.name}
+                        placeholder="Can't fin a specific services? create them!" /> 
+                   <button type='button' onClick={handleCreate} className={`${josefinRegular.className} bg-[#7533ac] text-white mt-5 h-10 mx-auto rounded-full w-2/4`}>Create service</button>
+
+                
+
                 {(!form.room || !form.price || !form.description )               
                    ? <button  className={`${josefinRegular.className} bg-[#929292]  text-white mt-10 h-10 mx-auto rounded-full w-3/4`} disabled >Create room</button>
                    :  <button onClick={handleSubmit} type="submit" className={`${josefinRegular.className} bg-[#7533ac] text-white mt-10 h-10 mx-auto rounded-full w-3/4`}>Create room</button>

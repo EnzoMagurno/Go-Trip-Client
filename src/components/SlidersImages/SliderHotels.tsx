@@ -1,18 +1,11 @@
 "use client"
 import React from 'react'
-import axios from '../../utils/axios';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Select from 'react-select';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchingHotel } from '@/redux/Features/Hotel/hotelsSlice';
-
-
-const vegas =
-	'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/8a/e0/b9/bellagio-las-vegas.jpg?w=1200&h=-1&s=1';
-const italia =
-	'https://cf.bstatic.com/xdata/images/hotel/270x200/317806454.jpg?k=b6652391fac2074d5338ffaa4d2601124fe71ccd9beec29742e4037ac43055cd&o';
-
+import { City } from '../../redux/Features/Citys/CitySlice';
+import { getHotelsCoincidence } from "../../redux/Features/Hotel/hotelsSlice";
+import { fetchingCities } from "../../redux/Features/Citys/CitySlice";
+import { MainGlobal } from '@/redux/mainInterface';
 
 
 export interface Font {
@@ -25,47 +18,52 @@ export interface Fonts {
 
 const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 
+	const cityResults: City[] = useSelector((state: MainGlobal) => state.city.dataCity);
+
+	
+	const citiesCopy = cityResults.slice(); 
+
 	const dispatch = useDispatch()
+
 
 	useEffect(() => {
     
-		dispatch(fetchingHotel())
+    
+		dispatch(fetchingCities())
+	},[])
+
 	
-	  },[])
 
+	const citiesSort = citiesCopy.sort((a,b) => 
+		b.hotel.length - a.hotel.length
+	)
 
+	const firstTenCities = citiesSort.slice(0, 10);
 
+	
 
 	return (
 
-		<div className='grid grid-cols-2 gap-5 h-56 mt-3'>
-			<div className={`w-full relative shadow-img rounded-3xl`}>
-                <div className='bg-black absolute z-10 w-full h-full opacity-30 rounded-3xl'></div>
+		<div className='flex overflow-x-auto flex-wrap h-60 my-3 '>
+		  <div className="flex flex-row gap-5 my-3">
+			{firstTenCities && firstTenCities?.map((city: City)=>{
+				return (
+
+			<button onClick={() => { dispatch(getHotelsCoincidence(city.id))}}className='w-36 relative shadow-img rounded-3xl'>
+                <div className=' bg-gradient-to-t from-black via-transparent absolute z-10 w-full h-full opacity-30 rounded-3xl'></div>
                     <img
-					src={vegas}
-					alt='las vegas'
+					src={city?.hotel[0].image}
+					alt={city?.city}
 					className={`w-full h-full object-cover rounded-r-3xl rounded-l-3xl `}
 				/>
-				<div className='absolute bottom-0 text-white w-full pl-3 pb-3 z-30'>
-					<h2 className={`${roboto.className}`}>Las Vegas</h2>
-					<p className='text-little'>195 propertys</p>
+				<div className='absolute bottom-0 text-white left-3 pb-3 z-30'>
+					<h2 className={`${roboto.className}`}>{city.city}</h2>
+					<p className='text-little'>{city.hotel.length} properties</p>
 				</div>
-                </div>
+                </button>
+				)
+			})}
 				
-			
-
-			<div className='w-full relative shadow-img rounded-3xl'>
-            <div className='bg-black absolute z-10 w-full h-full opacity-30 rounded-3xl'></div>
-				<img
-					src={italia}
-					alt='roma'
-					className='w-full h-full object-cover rounded-r-3xl rounded-l-3xl'
-				/>
-				<div className='absolute bottom-0 text-white  w-full pl-3 pb-3 z-30'>
-                    
-					<h2 className={`${roboto.className} tracking-widest`} >Roma</h2>
-					<p className=' text-little'>115 propertys</p>
-				</div>
 			</div>
 		</div>
 	);

@@ -1,70 +1,125 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
+const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 
 
+
+/* interface InitialStateHotel {
+    hotelData: [],
+    copyHotelData: [],
+    hotel: {}
+} */
 
 export const fetchingHotel = createAsyncThunk("getHotels", async () => {
-    const TOKEN = process.env.NEXT_PUBLIC_TOKEN_FETCH
-    return await fetch("http://localhost:3001/hotel/findHotel", {
-        headers: {
-            Authorization: `Bearer ${TOKEN}`,
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(data => data)
-})
+  try {
+    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
+    const response = await axios.get("/hotel/findHotel", {
+
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await response.data;
+    return data;
+  } catch (error) {
+    // Manejar el error según tus necesidades
+    console.error('Error al obtener los hoteles:', error);
+    throw error;
+  }
+});
 
 export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
-    const TOKEN = process.env.NEXT_PUBLIC_TOKEN_FETCH
-    return fetch(`http://localhost:3001/hotel/findHotel/${id}`, {
-        headers: {
-            Authorization: `Bearer ${TOKEN}`,
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(response => response.json())
-        .then(data => data)
-})
+  try {
 
+    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
+
+    const response = await axios.get(`/hotel/findhotel/${id}`, {
+
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await response.data;
+    return data;
+  } catch (error) {
+    // Manejar el error según tus necesidades
+    console.error('Error al obtener el hotel:', error);
+    throw error;
+  }
+});
 
 export const updateHotel = createAsyncThunk("postHotel", async (updatedData) => {
+  try {
 
-    return axios.put(`http://localhost:3001/hotel/updhotel`, updatedData).then(response => response.data.detail)
+    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
+    const response = await axios.put("/hotel/updhotel", updatedData, {
+
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = response.data.detail;
+    return data;
+  } catch (error) {
+    // Manejar el error según tus necesidades
+    console.error('Error al actualizar el hotel:', error);
+    throw error;
+  }
+});
+
+
+export const deleteHotel = createAsyncThunk("deleteHotel", async (id) => {
+
+  return axios.delete(`/hotel/delHotel/${id}`, {
+
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${TOKEN_FETCH}`
+    }
+  })
+    .then(response => response.data)
 })
 
 
 const hotelSlice = createSlice({
-    name: "hotel",
-    initialState: {
-        hotelData: [],
-        copyHotelData: [],
-        hotel: {},
-        status: "idle",
-        error: null
-    },
-    reducers: {
-        getHotelsCoincidence: (state, action) => {
-            state.copyHotelData = state.hotelData.filter(hotel => hotel.destinationId == action.payload)
-            console.log(action.payload)
-        }
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchingHotel.fulfilled, (state, action) => {
-                state.hotelData = action.payload
+  name: "hotel",
+  initialState: {
+    hotelData: [],
+    copyHotelData: [],
+    hotel: {}
+  },
+  reducers: {
+    getHotelsCoincidence: (state, action) => {
 
-
-            })
-            .addCase(fetchinHotelId.fulfilled, (state, action) => {
-                state.hotel = action.payload;
-
-            })
-            .addCase(updateHotel.fulfilled, (state, action) => {
-                state.hotel = action.payload
-                console.log(action)
-            })
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchingHotel.fulfilled, (state, action) => {
+        state.hotelData = action.payload
+
+
+      })
+      .addCase(fetchinHotelId.fulfilled, (state, action) => {
+        state.hotel = action.payload;
+
+      })
+      .addCase(updateHotel.fulfilled, (state, action) => {
+        state.hotel = action.payload
+
+      })
+      .addCase(deleteHotel.fulfilled, (state, action) => {
+        state.hotel = action.payload
+
+      })
+  }
 })
 
 

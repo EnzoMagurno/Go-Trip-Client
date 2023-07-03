@@ -10,37 +10,44 @@ import { Asap, Josefin_Sans, Poppins } from 'next/font/google';
 import { AiOutlineEdit } from 'react-icons/ai';
 import validation, { Errors } from '../../app/register/validation';
 import { listOfCountries } from '../../app/register/page';
-
-import {
-	selectAllUsersReal,
-	fetchingUsersReal,
-} from '../../redux/Features/UsersReal/usersRealSlice';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { FormState } from '../../app/register/page';
 
 const asap = Asap({ subsets: ['latin'] });
 const josefin = Josefin_Sans({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] });
 
+const EditIcon = AiOutlineEdit;
+
 function ContainerUsersInfo() {
-	interface InputState {
-		name: string | '';
-		country: string | '';
-		postalCode: string | '';
-		phoneCode: string | '';
-		phone: string | '';
-		email: string | '';
-		password: string | '';
-		confirmPassword: string | '';
-		birthday: string | '';
-		rol: string | '';
-		gender: string | '';
-		address: string | '';
-		dniPasaport: string | '';
-		thirdPartyCreated: boolean;
-	}
+	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
+	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
+	const [avatarSession, setAvatarSession] = useLocalStorage('avatar', ['']);
+	const [userSession, setUserSession] = useLocalStorage('userData', {
+		name: '',
+		birthday: '',
+		gender: '',
+		address: '',
+		dniPasaport: '',
+		rol: '',
+		country: '',
+		postalCode: '',
+		phoneCode: '',
+		phone: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+		photoUser: [''],
+		thirdPartyCreated: false,
+	}); //!SessionData
 
 	const id = useParams().id;
-	const users = useSelector(selectAllUsersReal);
-	const EditIcon = AiOutlineEdit;
+	console.log(id);
+
+	const userDataString = localStorage.getItem('userData');
+	let userFound = userDataString ? JSON.parse(userDataString) : null;
+
+	console.log(userFound);
 
 	const optionsCountries: string[] = listOfCountries.map(
 		(country) => country.name
@@ -72,11 +79,10 @@ function ContainerUsersInfo() {
 	// console.log(users); //!Check Users
 	// console.log(id); //!Check Params Id
 
-	const userFound = users?.find((user) => user.id === id);
 	// console.log(userFound); //Check UserFound
 	// console.log(userFound?.dniPasaport);
 
-	const [form, setForm] = useState<InputState>({
+	const [form, setForm] = useState<FormState>({
 		name: '',
 		country: '',
 		postalCode: '',
@@ -90,6 +96,7 @@ function ContainerUsersInfo() {
 		gender: '',
 		address: '',
 		dniPasaport: '',
+		photoUser: [''],
 		thirdPartyCreated: false,
 	});
 
@@ -97,16 +104,6 @@ function ContainerUsersInfo() {
 	const [focusedField, setFocusedField] = useState<string | null>(null);
 
 	// console.log(form); //!Check Input
-
-	useEffect(() => {
-		dispatchThunk(fetchingUsersReal());
-	}, [
-		users.length,
-		editEnableName,
-		editEnableId,
-		editEnableEmail,
-		editEnablePhone,
-	]);
 
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		setFocusedField(e.target.name);
@@ -140,13 +137,39 @@ function ContainerUsersInfo() {
 
 		if (propertyClick) {
 			const data = { ...form };
-			// console.log(data);
+
+			console.log('Esta es la data que esta subiendo', data);
 
 			axios
-				.put(putURL, data)
+				.put(putURL, data, {
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${tokenSession}`,
+					},
+				})
 				.then((response) => {
 					console.log('Successful modification');
-					// console.log(response.data);
+					console.log(response.data);
+
+					setUserNameSession(response.data.name);
+					setAvatarSession(response.data.photoUser);
+					setUserSession({
+						name: response.data.name,
+						birthday: response.data.birthday,
+						gender: response.data.gender,
+						address: response.data.address,
+						dniPasaport: response.data.dniPasaport,
+						rol: response.data.rol,
+						country: response.data.country,
+						postalCode: response.data.postalCode,
+						phoneCode: response.data.phoneCode,
+						phone: response.data.phone,
+						email: response.data.email,
+						password: response.data.password,
+						confirmPassword: response.data.confirmPassword,
+						photoUser: response.data.photoUser,
+						thirdPartyCreated: response.data.thirdPartyCreated,
+					});
 				})
 				.catch((error) => {
 					// Ocurrió un error durante la solicitud
@@ -157,32 +180,10 @@ function ContainerUsersInfo() {
 
 	useEffect(() => {
 		if (userFound) {
-			setForm((prevInput) => ({
-				...prevInput,
-				name: userFound.name || prevInput.name,
-				country: userFound.country || prevInput.country,
-				postalCode: userFound.postalCode || prevInput.postalCode,
-				phoneCode: userFound.phoneCode || prevInput.phoneCode,
-				phone: userFound.phone || prevInput.phone,
-				email: userFound.email || prevInput.email,
-				password: userFound.password || prevInput.password,
-				confirmPassword: userFound.confirmPassword || prevInput.confirmPassword,
-				birthday: userFound.birthday || prevInput.birthday,
-				rol: userFound.rol || prevInput.rol,
-				gender: userFound.gender || prevInput.gender,
-				address: userFound.address || prevInput.address,
-				dniPasaport: userFound.dniPasaport || prevInput.dniPasaport,
-				thirdPartyCreated: userFound.thirdPartyCreated,
-			}));
+			setForm({ ...userFound });
 			// console.log(form);
 		}
-	}, [
-		userFound,
-		editEnableName,
-		editEnableId,
-		editEnableEmail,
-		editEnablePhone,
-	]);
+	}, [editEnableName, editEnableId, editEnableEmail, editEnablePhone]);
 
 	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const property = event.target.name;
