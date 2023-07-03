@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import axios from '../../utils/axios'
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { BoxDragAndDrop } from './BoxDragAndDrop';
 import { ImageSelected } from './ImageSelected';
 import { fileUpload } from '@/utils/fileUpload';
 
-export const DragAndDrop = ({ setForm }: anyz) => {
+export const GalleryDrop = ({idHotel}: any, {idRoom}: any) => {
 
   const [images, setImages] = useState<ImageListType>([]);
   const [urlImage, setUrlImage] = useState('')
@@ -12,25 +13,52 @@ export const DragAndDrop = ({ setForm }: anyz) => {
 
   const handleChange = (imageList: ImageListType) => setImages(imageList);
 
+  interface FormState {
+    urlIMG: string;
+    idHotel: string;
+    idRoom: string;
+    
+  }
+  
+  const [form, setForm] = useState<FormState>({
+    urlIMG: '',
+    idHotel: '',
+    idRoom: ''
+  });
+
   const onUpload = async () => {
     setLoading(true);
     console.log(images[0].file);
     
     const url = await fileUpload(images[0].file);
+    console.log(url);
+    
     setLoading(false);
-
+    setForm({
+      urlIMG: url,
+    idHotel: idHotel,
+    idRoom: idRoom
+    })
     if (idHotel) {
       
     }
 
     if (url) {
         setUrlImage(url);
-        // Aquí puedes hacer lo que necesites con la URL, como establecerla en form.image
-        setForm((prevForm) => ({
-          ...prevForm,
-          image: url
-        }));
-        console.log(url);
+        try {
+          const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+          const response = await axios.post("/gallery/upload", form, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+      
+          const id = response.data.detail.id;
+          console.log(id);
+      
+        } catch (error) {
+          console.error('Error(1)', error);
+        }
         
       } else alert('Error, please try again later. ❌')
        
