@@ -30,7 +30,7 @@ export interface InitialStateCity {
 
 export const fetchingCities = createAsyncThunk('getCities', async () => {
 
-	return await fetch(`https://gotrippf-production.up.railway.app/destination`, {
+	return await axios(`https://gotrippf-production.up.railway.app/destination`, {
         method: "GET",
 
         headers: {
