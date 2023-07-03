@@ -2,15 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { Bad_Script, Courgette, Josefin_Sans, Roboto } from 'next/font/google';
 import NavBarFooter from '@/components/navBarFooter/NavBarFooter';
-import SearchBar from '../components/SearchBar/SearchBar';
-import SliderMain from '../components/SlidersImages/SliderMain';
-import FiltersBar from '../components/Filters/FiltersBar';
-import ContainerResults from '../components/ContainerResults/ContainersResults';
-import {
-	fetchingCities,
-	fetchingCity,
-	selectCityState,
-} from '../redux/Features/Citys/CitySlice';
+import SearchBar from "../components/SearchBar/SearchBar";
+import SliderMain from "../components/SlidersImages/SliderMain";
+import FiltersBar from "../components/Filters/FiltersBar";
+import ContainerResults from "../components/ContainerResults/ContainersResults";
+import { fetchingCities, fetchingCity, selectCityState } from "../redux/Features/Citys/CitySlice";
 import { useSelector, useDispatch } from 'react-redux';
 import {
 	fetchingHotel,

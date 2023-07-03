@@ -52,8 +52,8 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 			<button onClick={() => { dispatch(getHotelsCoincidence(city.id))}}className='w-36 relative shadow-img rounded-3xl'>
                 <div className=' bg-gradient-to-t from-black via-transparent absolute z-10 w-full h-full opacity-30 rounded-3xl'></div>
                     <img
-					src={city.hotel[0].image}
-					alt={city.city}
+					src={city?.hotel[0].image}
+					alt={city?.city}
 					className={`w-full h-full object-cover rounded-r-3xl rounded-l-3xl `}
 				/>
 				<div className='absolute bottom-0 text-white left-3 pb-3 z-30'>

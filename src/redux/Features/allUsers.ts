@@ -1,3 +1,4 @@
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
@@ -15,6 +16,7 @@ export const fetchUsers = createAsyncThunk("allUsers", async () => {
     .then(data => data)
     .catch(error => console.log(error))
 });
+/*
 
 
 
@@ -38,7 +40,7 @@ const userSlice = createSlice({
 
 
 
-export default userSlice;
+export default userSlice; */
 
 /* export const {} = userSlice.actions */
 

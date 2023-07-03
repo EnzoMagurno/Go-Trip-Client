@@ -27,7 +27,7 @@ const FiltersBar: React.FC = () => {
 		}, 150);
 	};
 	return (
-		<div className='relative shadow-img p-2  mt-3 rounded-2xl'>
+		<div className='relative shadow-img p-2  mt-3 rounded-full '>
 			<SearchBar toggleOpen={toggleOpen} inputIsDisabled={inputIsDisabled} />
 
 			<div>

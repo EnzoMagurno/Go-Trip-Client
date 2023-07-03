@@ -49,8 +49,12 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 			const storedAvatarSession = localStorage.getItem('avatar');
 			if (storedAvatarSession) {
 				setAvatarSession(JSON.parse(storedAvatarSession));
+				console.log(storedAvatarSession)
+				
 			}
+			
 		}
+
 	}, [typeof window !== 'undefined' && localStorage.getItem('avatar')]);
 
 	useEffect(() => {
@@ -60,7 +64,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 				storedUserNameSession ? JSON.parse(storedUserNameSession) : ''
 			);
 		}
-	}, [typeof window !== 'undefined' && localStorage.getItem('username')]);
+	}, [typeof window !== 'undefined' && localStorage.getItem('username')])
 
 	return (
 		<div
@@ -84,11 +88,12 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 					}}
 				>
 					<li className=' text-black h-16 flex justify-between items-center p-3'>
+
 						{avatarSession &&
 						avatarSession.length > 0 &&
 						avatarSession[0] !== '' ? (
 							<img
-								src={avatarSession[0]}
+								src={avatarSession}
 								alt={userNameSession}
 								className='w-14 h-14 object-cover rounded-full'
 							/>

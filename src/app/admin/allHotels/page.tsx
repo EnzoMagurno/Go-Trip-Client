@@ -7,7 +7,7 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { IoAddOutline } from 'react-icons/io5';
 import { TbEdit } from 'react-icons/tb';
 import { BsSave } from "react-icons/bs";
-import HotelsAdminContainer from "../../../components/HotelsAdminContainer/HotelsAdminContainer";
+import HotelsAdminContainer from "../../../components/AdminContainers/HotelsAdminContainer";
 const AllHotelsAdmin = () => {
 	const dispatch = useDispatch();
 	const hotels = useSelector((state) => state.hotel.hotelData);
