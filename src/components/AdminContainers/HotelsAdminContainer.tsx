@@ -57,6 +57,7 @@ const AdminContainer = (props) => {
     }
 
     const deleteHotelHandler = () => {
+
         dispatch(deleteHotel(id))
     }
 
@@ -195,9 +196,9 @@ const AdminContainer = (props) => {
 				{/*</motion.div> */}
 			</div>
 			<div className='flex justify-evenly'>
-				<button className='flex justify-center items-center w-32 border text-sm border-red-600 text-red-600 rounded-md p-1 pl-0 pr-0 mt-2 font-medium hover:bg-red-600 hover:text-white transition duration-300'>
+				<button onClick={deleteHotelHandler} className='flex justify-center items-center w-32 border text-sm border-red-600 text-red-600 rounded-md p-1 pl-0 pr-0 mt-2 font-medium hover:bg-red-600 hover:text-white transition duration-300'>
 					Delete
-					<AiOutlineDelete onClick={deleteHotelHandler} className='inline-block ml-1 text-lg' />
+					<AiOutlineDelete style={ {pointerEvents: "none"} } className='inline-block ml-1 text-lg' />
 				</button>
 				<button className='flex justify-center items-center w-32 border text-sm border-blue-400 text-blue-400 rounded-md p-1 pl-0 pr-0 mt-2 font-medium hover:bg-blue-500 hover:text-white transition duration-300'>
 					Add new room

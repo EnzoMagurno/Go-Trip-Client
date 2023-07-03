@@ -1,15 +1,17 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+/* import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { MainGlobal } from "../../mainInterface";
 
 
 
 export const fetchingUsers = createAsyncThunk("getUsers", async () => {
-    return await fetch("https://reqres.in/api/users")
-    .then(response => response.json())
-    .then(data => {
-        return data.data
-    })
-})
+    return await fetch("http://localhost:3001/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+  });
+ 
 
 
 
@@ -49,21 +51,11 @@ const usersSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder
-        .addCase(fetchingUsers.pending, (state, action) => {
-            state.status = "pending"
-        })
-        .addCase(fetchingUsers.fulfilled, (state, action) => {
-
-            state.users = action.payload
-            state.usersCopy = action.payload
-        })
-        .addCase(fetchingUsers.rejected, (state: InitialStateUser, action) => {
-            state.error = action.error.message || null
-        })
+      
+      
     }
 })
 
 export const { sortReverseData } = usersSlice.actions;
 export const selectAllUsers = (state: MainGlobal): User[] => state.users.usersCopy
-export default usersSlice;
+export default usersSlice; */

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MainGlobal } from '@/redux/mainInterface';
+import axios from 'axios';
 const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
 
@@ -28,33 +29,23 @@ export interface InitialStateCity {
 }
 
 export const fetchingCities = createAsyncThunk('getCities', async () => {
-	return await fetch(`http://localhost:3001/destination`, {
-        method: "GET",
+	return await axios.get(`/destination`, {
         headers: {
             "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
-		.then((response) => response.json())
-		.then((data) => {
-			console.log(data)
-			return data;
-		})
+		.then((response) => response.data)
 		.catch((error) => console.log(error.message));
 });
 
 export const fetchingCity = createAsyncThunk("getCity", async (cityName) => {
 	
-    return await fetch(`http://localhost:3001/destination/?city=${cityName}`, {
-        method: "GET",
+    return await axios.get(`/destination/?city=${cityName}`, {
         headers: {
             "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        return data
-    })
+    .then(response => response.data)
 	.catch(error => console.log(error.message))
 });
 
@@ -62,17 +53,12 @@ export const fetchingCity = createAsyncThunk("getCity", async (cityName) => {
 export const getHotelsCoincidencesByCityId = createAsyncThunk('getHotelsByCity', async (id) => {
 	if(!id) return 
 	console.log(id)
-	return await fetch(`http://localhost:3001/destination/${id}`, {
-        method: "GET",
+	return await axios.get(`/destination/${id}`, {
         headers: {
             "Authorization": `Bearer ${TOKEN_FETCH }`
         }
     })
-		.then((response) => response.json())
-		.then((data) => {
-			console.log(data)
-			return data;
-		})
+		.then((response) => response.data)
 		.catch((error) => console.log(error.message));
 });
 const citySlice = createSlice({

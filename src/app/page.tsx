@@ -37,14 +37,16 @@ const Home = () => {
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
 
+	const storedUserNameSession = localStorage.getItem('username');
+
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			const storeduserNameSession = localStorage.getItem('username');
-			if (storeduserNameSession) {
-				setUserNameSession(JSON.parse(storeduserNameSession));
-			}
+			storedUserNameSession;
+			setUserNameSession(
+				storedUserNameSession ? JSON.parse(storedUserNameSession) : ''
+			);
 		}
-	}, [localStorage.getItem('username')]);
+	}, [typeof window !== 'undefined' && storedUserNameSession]);
 
 	useEffect(() => {
 		dispatch(fetchingHotel());
