@@ -18,7 +18,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('http://localhost:3001/hotel/findhotel?name=Hotel du Collectionneur', {
+			const response = await axios.get('https://gotrippf-production.up.railway.app/hotel/findhotel?name=Hotel du Collectionneur', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
@@ -33,7 +33,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('http://localhost:3001/hotel/findhotel?name=The Kayon Valley Resort', {
+			const response = await axios.get('https://gotrippf-production.up.railway.app/hotel/findhotel?name=The Kayon Valley Resort', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }

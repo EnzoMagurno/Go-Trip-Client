@@ -22,7 +22,7 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('http://localhost:3001/destination?country=Mexico', {
+			const response = await axios.get('https://gotrippf-production.up.railway.app/destination?country=Mexico', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
@@ -75,7 +75,7 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 
   return (
 	<div className=' mt-3 mb-3'>
-// 			<h2 className={`${roboto.className} text-subTitle mb-3`}>Hot Deals</h2>
+	<h2 className={`${roboto.className} text-subTitle mb-3`}>Hot Deals</h2>
     <div className="swiper-container">
       <div className="swiper-wrapper">
         {/* Agrega tus divs del carrusel aquí */}

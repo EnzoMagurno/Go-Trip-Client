@@ -19,6 +19,8 @@ export interface Fonts {
 const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 
 	const cityResults: City[] = useSelector((state: MainGlobal) => state.city.dataCity);
+
+	
 	const citiesCopy = cityResults.slice(); 
 
 	const dispatch = useDispatch()

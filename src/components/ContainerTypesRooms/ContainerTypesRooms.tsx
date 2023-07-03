@@ -65,11 +65,6 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 		  }
 		}, [services.length]);
 
-	
-	
-	console.log(services)
-	console.log(ServicesRoom)
-	console.log(serviceName)
 
 
     //DAR TRANSITION PARA QUE EL CARD DE UN TYPO DE CUARTO SE HAGA GRANDE CUANDO SE APRETE EN VER MAS
