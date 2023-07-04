@@ -40,12 +40,10 @@ export const config = {
 		'/myBookings/:path*',
 		'/myFavorites/:path*',
 		'/userInfo/:path*',
-		'/hotelReg/:path*',
 		'/createRoom/:path*',
 		'/detail/:path*',
 		'/myHotels/:path*',
 		'/reservation/:path*',
-		'/resultsHotels/:path*',
 		'/admin/:path*',
 	],
 };
