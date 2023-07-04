@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from "react";
+import { useEffect, useState} from "react";
 import { useRouter } from "next/navigation"
 import { roboto } from '../../../app/page';
 import ContainerTypesRooms from "../../../components/ContainerTypesRooms/ContainerTypesRooms";
@@ -7,6 +7,9 @@ import SettingsHotel from "../../../components/SettingsHotel/SettingsHotel";
 import { useDispatch, useSelector } from "react-redux";
 import { selectHotelIdState, fetchinHotelId } from "../../../redux/Features/Hotel/hotelsSlice";
 import Link from "next/link";
+import { GalleryDrop } from "@/components/GalleryDrop/GalleryDrop";
+import Image from 'next/image';
+import ImageOptions from '@/components/Imageoptions/ImageOptions'
 
 
 
@@ -30,11 +33,46 @@ const DetailHotel = ({ params }) => {
 // hotel.rooms.map((h)=> rooms.push(h))
 // console.log(rooms);
 
+const [selectedImage, setSelectedImage] = useState(null);
+	const [showOverlay, setShowOverlay] = useState(false);
+  
+	
+	const handleImageClick = (image) => {
+		setSelectedImage(image);
+		setShowOverlay(true);
+	  };
+	
+	  const handleCloseOverlay = () => {
+		setShowOverlay(false);
+	  };
+
 
 	return (
 		<div className='p-5 pb-24'>
 			<div>
 				<SettingsHotel hotel={hotel} />
+				
+			<h5 className='text-lg font-bold mt-3 mb-3 text-iconsPurple'>Photos</h5>
+			<div className='m-5 max-h-64 overflow-scroll rounded-lg shadow-cardTypeRoom grid grid-cols-2 gap-2 p-2'>
+				
+			{hotel.gallery && hotel.gallery?.map((i, index)=> (
+				<Image 
+				className='rounded-xl'
+				src={i.urlIMG}
+				width={150}
+				height={80}
+				alt={`Image ${index}`}
+				onClick={() => handleImageClick(i)}
+				/>
+				))}
+				<GalleryDrop  idHotel={hotel.id} />
+			</div>
+				{showOverlay && (
+        <ImageOptions image={selectedImage} onClose={handleCloseOverlay} />
+      )}
+
+				
+			
 				<h3 className='mt-3 mb-3 text-lg font-bold text-iconsPurple'>
 				Types Rooms
 			</h3>

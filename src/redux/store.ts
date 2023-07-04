@@ -5,6 +5,7 @@ import citySlice from "./Features/Citys/CitySlice";
 import usersRealSlice from "./Features/UsersReal/usersRealSlice";
 import serviceSlice from "./Features/Services/servicesSlice";
 import roomSlice from "./Features/Room/RoomSlice";
+import gallerySlice from "./Features/Gallery/GallerySlice";
 
 import dateSlice from "./Features/Dates/DatesSlice";
 export const store = configureStore({
@@ -14,7 +15,8 @@ export const store = configureStore({
                 usersReal: usersRealSlice.reducer,
                 services: serviceSlice.reducer,
                 room: roomSlice,
-                date: dateSlice.reducer
+                date: dateSlice.reducer,
+                gallery: gallerySlice.reducer
 
         }
 })

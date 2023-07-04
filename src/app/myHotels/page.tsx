@@ -23,8 +23,9 @@ export interface MyHotel {
 		name: string
 		numberRooms: number
 		overview: string
-		rooms: number
+		rooms: []
 		status: boolean
+		gallery: []
 }
 
 const MyHotels = () => {

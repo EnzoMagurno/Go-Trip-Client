@@ -4,7 +4,7 @@ import { BoxDragAndDrop } from './BoxDragAndDrop';
 import { ImageSelected } from './ImageSelected';
 import { fileUpload } from '@/utils/fileUpload';
 
-export const DragAndDrop = ({ setForm }: anyz) => {
+export const DragAndDrop = ({ setForm }: any) => {
 
   const [images, setImages] = useState<ImageListType>([]);
   const [urlImage, setUrlImage] = useState('')
@@ -18,10 +18,6 @@ export const DragAndDrop = ({ setForm }: anyz) => {
     
     const url = await fileUpload(images[0].file);
     setLoading(false);
-
-    if (idHotel) {
-      
-    }
 
     if (url) {
         setUrlImage(url);

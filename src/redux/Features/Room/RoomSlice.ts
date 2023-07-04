@@ -35,4 +35,5 @@ const roomSlice = createSlice({
     },
 });
 
+export const selectRoomIdState = (state) => state.room.room
 export default roomSlice.reducer;
