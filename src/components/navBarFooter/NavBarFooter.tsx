@@ -11,7 +11,7 @@ import {
 const fStext = 'text-sm';
 
 const NavBarFooter = () => {
-	const [tokenSession, setTokenSession] = useLocalStorage('token', ''); //!Manter codigo
+	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 	const [idSession, setIdSession] = useLocalStorage('idSession', '');
 	const [rolSession, setRolSession] = useLocalStorage('rol', '');
 
@@ -44,7 +44,7 @@ const NavBarFooter = () => {
 				</div>
 			</Link>
 
-			<Link href='/myFavorites'>
+			<Link href={tokenSession ? `/myFavorites` : `/login`}>
 				<div className='flex justify-center items-center h-full flex-wrap'>
 					<AiOutlineHeart className='w-full flex items-center justify-center' />
 					<p className={`${fStext} w-fullflex items-center justify-center`}>
@@ -53,7 +53,7 @@ const NavBarFooter = () => {
 				</div>
 			</Link>
 
-			<Link href='/myBookings'>
+			<Link href={tokenSession ? `/myBookings` : `/login`}>
 				<div className='flex justify-center items-center  h-full flex-wrap'>
 					<BsCalendarCheck className='w-full text-2xl flex items-center justify-center' />
 					<p className={`${fStext} w-full flex items-center justify-center`}>
@@ -61,7 +61,7 @@ const NavBarFooter = () => {
 					</p>
 				</div>
 			</Link>
-			<Link href={`/userInfo/${idSession}`}>
+			<Link href={tokenSession ? `/userInfo/${idSession}` : `/login`}>
 				<div className='flex justify-center items-center h-full flex-wrap'>
 					<AiOutlineUser className='w-full flex items-center justify-center' />
 					<p className={`${fStext} w-fullflex items-center justify-center`}>

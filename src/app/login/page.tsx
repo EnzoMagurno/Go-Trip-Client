@@ -124,7 +124,7 @@ const page = () => {
 
 		axios
 			.post('user/login', newForm, {
-				withCredentials: true,
+				// withCredentials: true,
 			})
 			.then((response) => {
 				// console.log(response.data); // Muestra la respuesta en la consola
