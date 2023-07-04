@@ -44,7 +44,6 @@ function HotelRegister() {
   const cities = useSelector((state: MainGlobal) => state.city.dataCity)
  
   const [phoneCode, setPhoneCode] = useState<string[]>([]) 
-  const [imageURL, setImageURL] = useState("");
   const [lada, setLada] = useState('')
   const [completePhone, setCompletePhone] = useState('')
   const [city, setCity] = useState('')

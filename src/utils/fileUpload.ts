@@ -8,7 +8,6 @@ export const fileUpload = async (file: File): Promise<string | null> => {
     const formData = new FormData();
     formData.append('upload_preset','ml_default')
     formData.append('file', file);
-    console.log(file[0]);
     
     try {
         const res = await fetch(cloudinaryUrl, {

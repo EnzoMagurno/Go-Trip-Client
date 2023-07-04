@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
+import { axios } from '@/utils/axios';
 
-export const Upload = () => {
+export const Upload = ({ idHotel, idRoom }) => {
 	const [fileInputState, setFileInputState] = useState('');
 	const [previewSource, setPreviewSource] = useState('');
 	const [selectedFile, setSelectedFile] = useState();
+
+	console.log(idHotel);
+	idRoom = 'debfd7bb-bf90-4d4d-aa83-d7af1e2c3431';
+	console.log(idRoom);
 
 	const handleFileInputChange = (e) => {
 		const file = e.target.files[0];
@@ -29,15 +34,18 @@ export const Upload = () => {
 
 	const uploadImage = async (base64EncodedImage) => {
 		try {
-			const uploadGallery = await fetch('/gallery/upload', {
-				method: 'POST',
-				body: JSON.stringify({
-					data: base64EncodedImage,
-					idHotel: idHotel,
-					idRoom: idRoom,
-				}),
-				headers: { 'Content-Type': 'application/json' },
-			});
+			const uploadGallery = await fetch(
+				'https://gotrippf-production.up.railway.app/gallery/upload',
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						data: base64EncodedImage,
+						idHotel: idHotel,
+						idRoom: idRoom,
+					}),
+					headers: { 'Content-Type': 'application/json' },
+				}
+			);
 			if (uploadGallery.ok) {
 				// La solicitud fue exitosa
 				const response = await uploadGallery.json();
@@ -73,7 +81,7 @@ export const Upload = () => {
 					value={fileInputState}
 					className='form-input'
 				/>
-				<button className='btn' onClick={handleSubmitFile}>
+				<button className='btn' type='submit'>
 					Submit
 				</button>
 			</form>

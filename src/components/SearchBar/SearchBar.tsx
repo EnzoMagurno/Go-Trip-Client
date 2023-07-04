@@ -4,7 +4,7 @@ import { useDispatch, useSelector  } from "react-redux";
 import Select from "../Select/Select";
 import { getHotelsCoincidencesByCityId, cleanCoincedences, fetchingCity } from "../../redux/Features/Citys/CitySlice";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 interface PropsSearchBar {
@@ -14,6 +14,11 @@ interface PropsSearchBar {
 
 const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) => {
 	const dispatch = useDispatch()
+
+	const searchParams = useSearchParams()
+    const idCity = searchParams.get("city")
+
+	
 	
 	const cityData = useSelector(state => state.city.city)
 	const [ cityName, setCityName ] = useState("")
@@ -48,8 +53,11 @@ const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) =>
 				spellCheck={false}
 			/>
             <button onClick={() => { 
+			
 				
 				router.push(`/resultsHotels?city=${cityData.id}`)
+
+				dispatch(getHotelsCoincidencesByCityId(idCity))
 			
 			}} 
 			className="absolute top-1 flex items-center justify-center bg-zinc-200 w-9 h-9 rounded-full right-1 text-2xl text-iconsPurple dark:text-orangeBg">

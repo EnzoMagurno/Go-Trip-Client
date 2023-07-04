@@ -20,6 +20,8 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
     })
 
 
+
+
     export const updatingUsersReal = createAsyncThunk("updateUsersReal", async (newDataUser) => {
 
         console.log(newDataUser)
@@ -27,6 +29,56 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 
 
         const response = await axios.put(`/User/updateUser/${newDataUser.id}`, newDataUser,{
+            headers:{
+                Authorization:`Bearer ${TOKEN_FETCH}`
+            }
+        } );
+        console.log(response.data)
+      return response.data; 
+    })
+
+    export const deleteUsersReal = createAsyncThunk("deleteUsersReal", async (id) => {
+
+        
+        const tokenSession = getTokenSession()
+
+
+        const response = await axios.delete(`/User/deleteUser/${id}`, {
+
+            headers:{
+                Authorization:`Bearer ${TOKEN_FETCH}`
+            }
+        } )
+        console.log(response.data)
+      return response.data; 
+    })
+    
+    export const activeUsersReal = createAsyncThunk("activeUsersReal", async (id) => {
+
+        
+        const tokenSession = getTokenSession()
+        console.log(id)
+        
+        
+        
+        return await axios.put(`User/restoreUser/${id}`, null, {
+            headers:{
+                Authorization:`Bearer ${TOKEN_FETCH}`
+            }
+        } )
+        .then(response => response.data)
+        .catch(error => console.log(error));
+    
+
+    })
+
+    export const getallUsersReal = createAsyncThunk("readAllUsersReal", async (id) => {
+
+        
+        const tokenSession = getTokenSession()
+
+
+        const response = await axios.get(`/user/readDeletedUsers`,{
             headers:{
                 Authorization:`Bearer ${TOKEN_FETCH}`
             }
@@ -73,6 +125,7 @@ const usersRealSlice = createSlice({
         usersReal: [],
         userUpdated: {},
         usersRealCopy: [],
+        usersDeleted: [],
         status: "idle",
         error: null
     },
@@ -88,23 +141,24 @@ const usersRealSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(fetchingUsersReal.pending, (state: InitialStateRealUser, action) => {
-            state.status = "pending"
-        })
         .addCase(fetchingUsersReal.fulfilled, (state:InitialStateRealUser, action) => {
 
             state.usersReal = action.payload
-            state.usersRealCopy = action.payload
-        })
-        .addCase(fetchingUsersReal.rejected, (state: InitialStateRealUser, action) => {
-            state.error = action.error.message || null
+           /*  state.usersRealCopy = action.payload */
         })
         .addCase(updatingUsersReal.fulfilled, (state, action) => {
             state.userUpdated = action.payload
+        })
+        .addCase(getallUsersReal.fulfilled, (state, action) => {
+            console.log(action.payload)
+            state.usersDeleted = action.payload 
+        })
+        .addCase(activeUsersReal.fulfilled, (state, action) => {
+            console.log(action.payload)
         })
     }
 })
 
 export const { nameEdit } = usersRealSlice.actions;
-export const selectAllUsersReal = (state: MainGlobal): User[] => state.usersReal.usersRealCopy
+/* export const selectAllUsersReal = (state: MainGlobal): User[] => state.usersReal.allUsers */
 export default usersRealSlice;
