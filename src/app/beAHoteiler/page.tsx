@@ -35,7 +35,7 @@ function beAHoteiler() {
 			</p>
 
 			<Link
-				href={tokenSession ? `/hotelReg` : `/login`}
+				href={`/hotelReg`}
 				type='button'
 				className={`${josefinRegular.className} bg-[#7533ac] flex flex-row items-center justify-center text-white mt-10 h-10 mx-auto rounded-full w-2/3 `}
 			>

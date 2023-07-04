@@ -3,22 +3,18 @@ import { MainGlobal } from '@/redux/mainInterface';
 import axios from 'axios';
 const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
-
-
-
 interface CityName {
 	name: string;
 	id: string;
 }
 
-
 export interface City {
-    id: number
-    country: string,
-    state: string
-    city: string,
-    moneyType: string
-    status: boolean
+	id: number;
+	country: string;
+	state: string;
+	city: string;
+	moneyType: string;
+	status: boolean;
 }
 
 export interface InitialStateCity {
@@ -29,44 +25,43 @@ export interface InitialStateCity {
 }
 
 export const fetchingCities = createAsyncThunk('getCities', async () => {
-
 	return await axios(`https://gotrippf-production.up.railway.app/destination`, {
-        method: "GET",
+		method: 'GET',
 
-        headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH }`
-        }
-    })
+		headers: {
+			Authorization: `Bearer ${TOKEN_FETCH}`,
+		},
+	})
 		.then((response) => response.data)
 		.catch((error) => console.log(error.message));
 });
 
-export const fetchingCity = createAsyncThunk("getCity", async (cityName) => {
-	
-
-    return await axios.get(`/destination/?city=${cityName}`, {
-
-        headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH }`
-        }
-    })
-    .then(response => response.data)
-	.catch(error => console.log(error.message))
-});
-
-
-export const getHotelsCoincidencesByCityId = createAsyncThunk('getHotelsByCity', async (id) => {
-	if (!id) return 
-
-	return await axios.get(`/destination/${id}`, {
-
-        headers: {
-            "Authorization": `Bearer ${TOKEN_FETCH }`
-        }
-    })
+export const fetchingCity = createAsyncThunk('getCity', async (cityName) => {
+	return await axios
+		.get(`/destination/?city=${cityName}`, {
+			headers: {
+				Authorization: `Bearer ${TOKEN_FETCH}`,
+			},
+		})
 		.then((response) => response.data)
 		.catch((error) => console.log(error.message));
 });
+
+export const getHotelsCoincidencesByCityId = createAsyncThunk(
+	'getHotelsByCity',
+	async (id) => {
+		if (!id) return;
+
+		return await axios
+			.get(`/destination/${id}`, {
+				headers: {
+					Authorization: `Bearer ${TOKEN_FETCH}`,
+				},
+			})
+			.then((response) => response.data)
+			.catch((error) => console.log(error.message));
+	}
+);
 const citySlice = createSlice({
 	name: 'city',
 	initialState: {
@@ -101,17 +96,17 @@ const citySlice = createSlice({
 					state.copyDataCity = [];
 				else state.copyDataCity = action.payload;
 			})
-            .addCase(fetchingCities.fulfilled, (state, action) => {
-			 state.dataCity = action.payload; 
+			.addCase(fetchingCities.fulfilled, (state, action) => {
+				state.dataCity = action.payload;
 			})
 			.addCase(getHotelsCoincidencesByCityId.fulfilled, (state, action) => {
-				state.hotelByCity = action.payload
-				console.log(action.payload)
-			})
-			
+				state.hotelByCity = action.payload;
+				console.log(action.payload);
+			});
 	},
 });
 
 export const selectCityState = (state: MainGlobal) => state.city.dataCity;
-export const { searchCoincidences, cleanCoincedences, getNameAndIdCity } = citySlice.actions;
+export const { searchCoincidences, cleanCoincedences, getNameAndIdCity } =
+	citySlice.actions;
 export default citySlice;
