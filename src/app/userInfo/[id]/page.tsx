@@ -17,9 +17,13 @@ const UserInfo = () => {
 			<div className='overflow-y-auto'>
 				<div className='pl-5 flex w-full h-6'></div>
 				<div className='flex flex-col pl-5'>
-					<h1 className={`${asap.className} text-3xl font-bold text-gray-900`}>
-						Personal Details
-					</h1>
+					<div>
+						<h1
+							className={`${asap.className} text-3xl font-bold text-gray-900`}
+						>
+							Personal Details
+						</h1>
+					</div>
 
 					<p
 						className={`${asap.className}text-base text-gray-500 mt-3 mb-3 pb-2`}

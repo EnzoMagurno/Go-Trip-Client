@@ -5,7 +5,7 @@ import { jwtVerify } from 'jose';
 export async function middleware(request: NextRequest) {
 	const cookieToken = request.cookies.get('gotripCookie');
 	// console.log(cookieToken?.value)
-	console.log(cookieToken);
+	// console.log(cookieToken);
 
 	if (request.nextUrl.pathname === '/favicon.ico') {
 		return NextResponse.next();
