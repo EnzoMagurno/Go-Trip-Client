@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import Cookies from 'universal-cookie';
 
 interface UserOptionsProps {
 	window: string;
@@ -31,6 +32,8 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 	// console.log(avatarSession[0]);
 	// console.log(rolSession);
 
+	const cookies = new Cookies();
+
 	const handleClick = () => {
 		setTokenSession('');
 		setIdSession('');
@@ -40,6 +43,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 		localStorage.removeItem('userData');
 		router.refresh();
 		closeWindow();
+		cookies.remove('gotripCookie', { path: '/' });
 		setClickCount((prevCount) => prevCount + 1);
 		router.push('/');
 	};
@@ -79,7 +83,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 						avatarSession.length > 0 &&
 						avatarSession[0] !== '' ? (
 							<img
-								src={avatarSession}
+								src={avatarSession[0]}
 								alt={userNameSession}
 								className='w-14 h-14 object-cover rounded-full'
 							/>
@@ -103,7 +107,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 					<Link
 						href={
 							rolSession === 'admin' || rolSession === 'host'
-								? `/myHotels/${idSession}`
+								? `/myHotels`
 								: `/beAHoteiler`
 						}
 						passHref
