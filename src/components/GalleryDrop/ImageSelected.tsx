@@ -24,9 +24,8 @@ export const ImageSelected = ({
           loading
             ? <p className='loading-label'>Upload image ⏳...</p>
             : <>
-              <button disabled={loading} onClick={onUpload}>Upload 📤</button>
-              <button disabled={loading} onClick={() => onImageUpdate(0)}>Update ✏️</button>
-              <button disabled={loading} onClick={() => onImageRemove(0)}>Cancel ❌</button>
+              <button className='border border-neutral-400 mt-5 p-2 rounded-xl bg-iconsPurple text-white' disabled={loading} onClick={onUpload}>Accept 📤</button>
+              <button  disabled={loading} onClick={() => onImageRemove(0)}>Cancel ❌</button>
             </>
         }
       </div>

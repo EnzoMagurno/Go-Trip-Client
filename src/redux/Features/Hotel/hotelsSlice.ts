@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
-const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 
 
 
