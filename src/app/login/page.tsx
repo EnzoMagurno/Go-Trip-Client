@@ -123,7 +123,9 @@ const page = () => {
 		// console.log(newForm); //!Check
 
 		axios
-			.post('user/login', newForm)
+			.post('user/login', newForm, {
+				withCredentials: true,
+			})
 			.then((response) => {
 				// console.log(response.data); // Muestra la respuesta en la consola
 
@@ -180,7 +182,7 @@ const page = () => {
 		<>
 			<div className='p-5 flex  w-full h-28'>
 				<div className=' flex justify-start items-center w-1/4'>
-					<a onClick={() => router.back()}>
+					<a onClick={() => router.push('/')}>
 						<BsArrowLeftShort className=' text-5xl ' />
 					</a>
 				</div>
