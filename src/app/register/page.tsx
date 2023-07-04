@@ -112,7 +112,7 @@ const page = () => {
 		password: '',
 		confirmPassword: '',
 		birthday: '',
-		rol: 'host',
+		rol: 'user',
 		gender: '',
 		address: '',
 		dniPasaport: '',
@@ -235,6 +235,21 @@ const page = () => {
 			})
 		);
 	};
+	const handleClickGoogle = () => {
+		// URL para la autenticación con Google
+		const authUrl =
+			'https://gotrippf-production.up.railway.app/user/auth/google';
+
+		// Abrir una nueva ventana al hacer clic
+		const newWindow = window.open(authUrl, '_blank');
+		if (newWindow) {
+			// La ventana se abrió con éxito
+			// Puedes realizar acciones adicionales en la nueva ventana si es necesario
+		} else {
+			// No se pudo abrir la nueva ventana
+			// Puedes mostrar un mensaje de error o realizar acciones alternativas
+		}
+	};
 
 	// TODO: Revisar necesaria implementacion de esta Peticion en RTK
 
@@ -243,8 +258,6 @@ const page = () => {
 		try {
 			const responseRegister = await axios.post('user/createNewUser', form);
 			const newUserData = responseRegister.data;
-
-			console.log(newUserData); //! Check
 
 			const responseLogin = await axios.post('user/login', data);
 			const dataLoggedUser = responseLogin.data.data;
@@ -348,12 +361,14 @@ const page = () => {
 						Full name
 					</label>
 					<input
-						className={`${josefin.className
-							} border-2 rounded-xl my-2 pl-3 py-3 pb-3 ${(errors.name && focusedField === 'password') ||
-								(errors.name && focusedField === 'confirmPassword')
+						className={`${
+							josefin.className
+						} border-2 rounded-xl my-2 pl-3 py-3 pb-3 ${
+							(errors.name && focusedField === 'password') ||
+							(errors.name && focusedField === 'confirmPassword')
 								? 'border-red-300'
 								: ''
-							}`}
+						}`}
 						type='text'
 						onChange={handleChange}
 						placeholder='Full name'
@@ -374,11 +389,12 @@ const page = () => {
 						Birthdate
 					</label>
 					<DatePicker
-						className={`${(errors.birthday && focusedField === 'password') ||
-								(errors.birthday && focusedField === 'confirmPassword')
+						className={`${
+							(errors.birthday && focusedField === 'password') ||
+							(errors.birthday && focusedField === 'confirmPassword')
 								? 'border-red-400'
 								: ''
-							}`}
+						}`}
 						name='birthday'
 						onFocus={handleDatePickerFocus}
 						onBlur={handleBlur}
@@ -395,11 +411,12 @@ const page = () => {
 						Country/Region
 					</label>
 					<select
-						className={`border-2 rounded-xl pt-2 w-1/2 my-4 pl-3 py-3 pb-3 ${(errors.country && focusedField === 'password') ||
-								(errors.country && focusedField === 'confirmPassword')
+						className={`border-2 rounded-xl pt-2 w-1/2 my-4 pl-3 py-3 pb-3 ${
+							(errors.country && focusedField === 'password') ||
+							(errors.country && focusedField === 'confirmPassword')
 								? 'border-red-300'
 								: ''
-							}`}
+						}`}
 						name='country'
 						autoComplete='off'
 						onChange={selectChange}
@@ -452,12 +469,14 @@ const page = () => {
 					<div>
 						<div>
 							<select
-								className={`${josefin.className
-									} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3 ${(errors.phoneCode && focusedField === 'password') ||
-										(errors.phoneCode && focusedField === 'confirmPassword')
+								className={`${
+									josefin.className
+								} border-2 rounded-xl mr-2 my-2 pl-3 py-3 pb-3 w-1/3 ${
+									(errors.phoneCode && focusedField === 'password') ||
+									(errors.phoneCode && focusedField === 'confirmPassword')
 										? 'border-red-300'
 										: ''
-									}`}
+								}`}
 								name='phoneCode'
 								onFocus={handleSelectFocus}
 								onBlur={handleBlur}
@@ -475,15 +494,17 @@ const page = () => {
 
 							{/* PHONE */}
 							<input
-								className={`${josefin.className
-									} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2
-                                 ${(errors.phone &&
-										focusedField === 'password') ||
-										(errors.phone &&
-											focusedField === 'confirmPassword')
-										? 'border-red-300'
-										: ''
-									}`}
+								className={`${
+									josefin.className
+								} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-1/2
+                                 ${
+																		(errors.phone &&
+																			focusedField === 'password') ||
+																		(errors.phone &&
+																			focusedField === 'confirmPassword')
+																			? 'border-red-300'
+																			: ''
+																	}`}
 								type='number'
 								name='phone'
 								placeholder='Phone Number'
@@ -507,13 +528,15 @@ const page = () => {
 						Email address
 					</label>
 					<input
-						className={`${josefin.className
-							} border-2 rounded-xl my-2 pl-3 py-3 pb-3 
-                        ${(errors.email && focusedField === 'password') ||
-								(errors.email && focusedField === 'confirmPassword')
-								? 'border-red-300'
-								: ''
-							}`}
+						className={`${
+							josefin.className
+						} border-2 rounded-xl my-2 pl-3 py-3 pb-3 
+                        ${
+													(errors.email && focusedField === 'password') ||
+													(errors.email && focusedField === 'confirmPassword')
+														? 'border-red-300'
+														: ''
+												}`}
 						type='email'
 						name='email'
 						onChange={handleChange}
@@ -591,8 +614,9 @@ const page = () => {
 			<div className='sticky inset-x-0 bottom-0 bg-white border-t-[3px] '>
 				<div className='flex justify-center mt-5 items-center'>
 					<button
-						className={`${disabled ? `bg-[#3F0071] opacity-50` : `bg-[#3F0071]`
-							} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
+						className={`${
+							disabled ? `bg-[#3F0071] opacity-50` : `bg-[#3F0071]`
+						} + text-white font-semibold py-4 px-4 rounded-full w-[85%]`}
 						name='signButton'
 						onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
 							handleClick(e);
@@ -683,7 +707,10 @@ const page = () => {
 				</div>
 
 				<div className='flex justify-center mt-3 items-center'>
-					<button className='text-gray-600 font-semibold py-3 px-3 rounded-full w-[85%] border border-gray-500 border-opacity-100 flex justify-center'>
+					<button
+						onClick={handleClickGoogle}
+						className='text-gray-600 font-semibold py-3 px-3 rounded-full w-[85%] border border-gray-500 border-opacity-100 flex justify-center'
+					>
 						<svg
 							className='mr-2'
 							xmlns='http://www.w3.org/2000/svg'
