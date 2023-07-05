@@ -1,21 +1,18 @@
-import { AiOutlineDelete } from 'react-icons/ai';
 
-import { BsChevronDown } from 'react-icons/bs';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-	deleteHotel,
+	restoreHotel,
 	fetchingHotel,
+	updateHotel,
+	getDeletedHotels,
 } from '../../../redux/Features/Hotel/hotelsSlice';
-import { BsTelephone } from "react-icons/bs";
+import { BsTelephone, BsChevronDown } from "react-icons/bs";
 import { MdOutlineEmail } from "react-icons/md";
-import { GrDirections } from "react-icons/gr";
 import { GiModernCity, GiDirectionSigns } from "react-icons/gi" 
-import { motion } from 'framer-motion';
-
-
-
-const AdminContainer = (props) => {
+import { motion } from 'framer-motion'; 
+import { AiOutlineDelete } from 'react-icons/ai'; 
+const HotelsDisabledContainer = (props) => {
 	const {
 		id,
 		address,
@@ -57,10 +54,9 @@ const AdminContainer = (props) => {
 
 
 
-	const deleteHotelHandler = () => {
-		dispatch(deleteHotel(id));
-		dispatch(fetchingHotel());
-		
+	const restoreHotelHandler = () => {
+		dispatch(restoreHotel(id));
+		dispatch(getDeletedHotels())
 	};
 
 
@@ -89,19 +85,19 @@ const AdminContainer = (props) => {
 				<label
 								htmlFor={id}
 								className='relative shadow-inset_custom  w-14 h-8 cursor-pointer rounded-full inline-block  dark:shadow-inset_BlueSky '
-								onChange={deleteHotelHandler}
+                                onChange={restoreHotelHandler}
 							>
 								<input type='checkbox' id={id} className=' sr-only peer' />
-								<span className='w-6 h-6 top-1 peer-checked:left-1 peer-checked:bg-zinc-600 absolute rounded-full bg-green-600   left-7 transition-all duration-300'></span>
+								<span className='w-6 h-6 top-1 left-1 bg-zinc-600 absolute rounded-full peer-checked:bg-green-600  peer-checked:left-7 transition-all duration-300'></span>
 							</label>
 				</div>
 				
 			</div>
 			<div className='flex p-2 items-center'>
 				<h6 className=' font-medium w-2/5'>Delete hotel</h6>
-				<button
-				onClick={deleteHotelHandler}
-				className=' bg-red-600 w-full h-8 text-white flex justify-center items-center  rounded-md'>Delete <AiOutlineDelete className='text-lg inline ml-2' /></button>
+				<button 
+				disabled
+				className=' w-full h-8 bg-zinc-600 flex justify-center items-center text-white rounded-md'>Delete <AiOutlineDelete className="inline text-lg ml-2" /></button>
 			</div>
 		
 			
@@ -109,17 +105,22 @@ const AdminContainer = (props) => {
 						initial={{ height: 0 }}
 						animate={{ height: isOpen ? 'auto' : 0 }}
 						transition={{ duration: 0.3 }}
-						className='overflow-hidden p-2'
+						className='overflow-hidden'
 					>
-			<div className={`p-2  ${isOpen ? "border-2" : ""} border-zinc-100`}>
+			<div className='p-2'>
 				<div className='grid grid-cols-2'>
 					<div className='p-2'>
 						<h6 className=' font-medium mb-2'>Ubicacion</h6>
-						<p className=' text-xs mb-2'>
-						<GiModernCity className='text-xl text-iconsPurple' />
-							{destination.country}, {destination.state}
-							{destination.state ? ',' : ''} {destination.city}
-						</p>
+                        {
+                            destination?.id 
+                            ? (<p className=' text-xs mb-2'>
+                            <GiModernCity className='text-xl text-iconsPurple' />
+                                {destination.country}, {destination.state}
+                                {destination.state ? ',' : ''} {destination.city}
+                            </p>)
+                            : (<></>)
+                        }
+						
 						<p className=' text-xs'><GiDirectionSigns className='text-xl text-iconsPurple'/>{address}</p>
 					</div >
 					<div className=' overflow-auto p-2'>
@@ -152,4 +153,4 @@ const AdminContainer = (props) => {
 	);
 };
 
-export default AdminContainer;
+export default HotelsDisabledContainer;

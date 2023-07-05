@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { City } from '../../redux/Features/Citys/CitySlice';
-import { getHotelsCoincidence } from '../../redux/Features/Hotel/hotelsSlice';
+/* import { } from '../../redux/Features/Hotel/hotelsSlice'; */
 import { fetchingCities } from '../../redux/Features/Citys/CitySlice';
 import { MainGlobal } from '@/redux/mainInterface';
 
@@ -42,7 +42,7 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 						return (
 							<button
 								onClick={() => {
-									dispatch(getHotelsCoincidence(city.id));
+									
 								}}
 								className='w-36 relative shadow-img rounded-3xl'
 							>
