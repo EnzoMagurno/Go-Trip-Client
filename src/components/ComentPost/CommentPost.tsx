@@ -44,7 +44,7 @@ const CommentPost: React.FC<CommentRatingProps> = ({ onSubmit, idHotel, idUser }
         <div className='flex justify-center'>
          
           <textarea
-            className='border-2 p-1 align-text-top text-left rounded-lg w-11/12'
+            className='border-2 p-1 h-20 align-text-top text-left rounded-lg w-11/12'
             type="textarea"
             id="comment"
             value={comment}

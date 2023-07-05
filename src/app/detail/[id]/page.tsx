@@ -1,7 +1,6 @@
 'use client'
 import axios from '@/utils/axios'
 import { Josefin_Sans, Roboto } from 'next/font/google';
-import StarRating from '@/components/StarRaiting/StarRaiting';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice';
@@ -13,7 +12,8 @@ import { BsFillJournalBookmarkFill } from 'react-icons/bs'
 import Link from 'next/link'
 import CommentPost from '@/components/ComentPost/CommentPost';
 import { useLocalStorage } from '@/hooks/useLocalStorage'
-
+import StarRating from '@/components/StarRaiting/StarRaiting';
+import { fetchinCommentByHotel } from '@/redux/Features/Commets/CommentsSlice';
 
 
 const RobotoBold = Roboto({
@@ -87,6 +87,16 @@ const Detail = ({ params }: { params: Params }) => {
           }
       };
 
+      useEffect(() => {
+        dispatch(fetchinHotelId(id))
+        dispatch(fetchinCommentByHotel(id))
+    }, [])
+
+    const hotel = useSelector(state => state.hotel.hotel)
+    const comments = useSelector(state => state.comment.comment)
+    console.log(comments);
+      
+      
 
     const dispatch: Dispatch = useDispatch()
     const Room = ({ room }: Hotel) => (
@@ -135,15 +145,11 @@ const Detail = ({ params }: { params: Params }) => {
         </div>
     );
 
-    useEffect(() => {
-        dispatch(fetchinHotelId(id))
-    }, [])
-
-    const hotel = useSelector(state => state.hotel.hotel)
+   
 
     return (
         <div className='max-w-screen-xl mx-auto flex flex-col'>
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div className="bg-white shadow-lg  overflow-hidden">
                 <img src={hotel.image} alt="Hotel" className="w-full" />
                 <div className="p-4">
                     <h3 className="text-xl font-semibold">{hotel.name}</h3>
@@ -164,9 +170,27 @@ const Detail = ({ params }: { params: Params }) => {
 
             <div className="mt-6 px-5 pt-4 border shadow-lg">
                 <h3 className="text-2xl font-bold mb-">About the hotel</h3>
-                <p className="text-lg text-gray-700 leading-relaxed ">{hotel.overview}</p>
+                <p className="text-lg pb-4 text-gray-700 leading-relaxed ">{hotel.overview}</p>
             </div>
-            <div className='h-50 z-10 pt-3 mt-5 mb-28 border shadow-md'>
+                
+            <div className='h-50 z-10 pt-3 mt-5 border shadow-md'>
+              {comments && comments?.map((comment: Object) => {
+                return (
+                    <div className='pb-5 px-5'>
+                    <div className='pb-3'>
+                        <div className='flex'>
+                        <h2 className='top-0 mb-3 text-sm'>{comment.user.name}</h2>
+                        <span className='top-0 mb-3 text-sm'>  -{comment.user.country}</span>
+                        </div>
+                        <p>{comment.comment}</p>
+                        <StarRating rating={comment.rating}/>
+                    </div>
+                    <hr />
+                    </div>
+                )
+              })}  
+            </div>
+            <div className='h-50 z-10 pt-3 mt-2 mb-28 border shadow-md'>
                 <CommentPost idHotel={idHotel} idUser={idSession} onSubmit={handleCommentSubmit}/>           
             </div>
         </div>
