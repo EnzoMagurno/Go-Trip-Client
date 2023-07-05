@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react';
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
-import { name } from '@cloudinary/url-gen/actions/namedTransformation';
 
 const josefinRegular = Josefin_Sans({
     weight: ['400'],

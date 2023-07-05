@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import axios from 'axios';
+import axios from '@/utils/axios'
 import { useState, useEffect } from 'react';
 
 
@@ -22,7 +22,7 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('https://gotrippf-production.up.railway.app/destination?country=Mexico', {
+			const response = await axios.get('/destination?country=Argentina', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
