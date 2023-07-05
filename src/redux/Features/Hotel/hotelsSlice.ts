@@ -1,5 +1,8 @@
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
 /* interface InitialStateHotel {
@@ -27,23 +30,28 @@ export const fetchingHotel = createAsyncThunk('getHotels', async () => {
 	}
 });
 
-export const fetchinHotelId = createAsyncThunk('getHotel', async (id) => {
-	try {
-		const token = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
-		const response = await axios.get(`/hotel/findhotel/${id}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+export const  fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
+  try {
 
-		const data = await response.data;
-		return data;
-	} catch (error) {
-		// Manejar el error según tus necesidades
-		console.error('Error al obtener el hotel:', error);
-		throw error;
-	}
+    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
+
+    const response = await axios.get(`/hotel/findhotel/${id}`, {
+
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await response.data;
+    return data;
+  } catch (error) {
+    // Manejar el error según tus necesidades
+    console.error('Error al obtener el hotel:', error);
+    throw error;
+  }
+
 });
 
 export const updateHotel = createAsyncThunk(

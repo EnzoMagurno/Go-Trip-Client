@@ -1,11 +1,16 @@
 "use client"
 import React from 'react'
-import axios from 'axios';
+import axios from '@/utils/axios'
 import { useState, useEffect } from 'react';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getHotelsCoincidencesByCityId } from '@/redux/Features/Citys/CitySlice';
 import Swiper, {Navigation, Pagination} from 'swiper';
 import 'swiper/swiper-bundle.css';
+import { useRouter } from 'next/navigation';
+import { fetchinCommentByHotel } from '@/redux/Features/Commets/CommentsSlice';
+import StarRating from '@/components/StarRaiting/StarRaiting';
+
+
 
 import { Fonts } from './SliderHotels';
 
@@ -13,16 +18,16 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 
 	const [response, setResponse] = useState(null);
 
-	const hoteles = []
 
-	
+
+	const router = useRouter();
 
 	useEffect(() => {
 		const fetchData = async () => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('https://gotrippf-production.up.railway.app/destination?country=Mexico', {
+			const response = await axios.get('/hotel/findhotel/?destinationId=5ce1ce9c-ceda-4666-8c72-0f4ec34a21fe', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
@@ -49,47 +54,33 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 	  }, []);
 
 		
-	  const ciudades = response ? response : [];
+	  const hoteles = response ? response : [];
 
-
-		ciudades.map((ciudad) => ciudad.hotel[0]? hoteles.push(ciudad.hotel[0]): hoteles.push() )
-		console.log(hoteles);
-
-		const newArray = hoteles.map((hotel) => {
-			const obj1 = ciudades.find((item) => item.id === hotel.destinationId);
-			
-
-			return {
-			  ...hotel,
-			  city: obj1.city ? obj1.city : null,
-			};
-		  });
-
-		  console.log(newArray);
-		  
+console.log(response);
  
-  useEffect(() => {
-	
 
-  }, []);
+
 
   return (
-	<div className=' mt-3 mb-3'>
+	<div className=' mt-3 mb-3 overflow-hidden'>
 	<h2 className={`${roboto.className} text-subTitle mb-3`}>Hot Deals</h2>
-    <div className="swiper-container">
+    <div className="swiper-container ">
       <div className="swiper-wrapper">
         {/* Agrega tus divs del carrusel aquí */}
-		{newArray && newArray?.map(hotel => 
-			<div className="swiper-slide">
+		{hoteles && hoteles.map(hotel => 
+			<button onClick={() => {
+				router.push(`/detail/${hotel.id}`);
+			}} className="swiper-slide">
+				
 			<div className='h-56 relative'>
 					<div className='absolute bottom-0 text-white w-full pl-3 pr-3 h-12 '>
 						<div className='bg-slate-600 w-full h-full left-0 opacity-50 absolute rounded-bl-3xl rounded-br-3xl'></div>
 						<div className='flex justify-between'>
-							<h2 className={`${roboto.className} relative z-10 flex justify-center items-center`}>{hotel.city}</h2>
+							<h2 className={`${roboto.className} relative z-10 flex justify-center items-center`}>{hotel.name}</h2>
 							<h2 className={`${roboto.className} text-little relative text-base z-50 flex justify-center items-center`} >$250</h2>
 						</div>
 						<div className='flex justify-between'>
-							<p className={`text-little relative z-10 flex justify-center items-center `}>Mexico</p>
+							<p className={`text-little relative z-10 flex justify-center items-center `}>{hotel.city}</p>
 	
 							<p className='text-little relative z-10 flex justify-center items-center'>per night</p>
 						</div>
@@ -100,7 +91,7 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 						className=' rounded-3xl h-full w-full object-cover shadow-img'
 					/>
 				</div>
-			</div>
+			</button>
 			)}
         
        

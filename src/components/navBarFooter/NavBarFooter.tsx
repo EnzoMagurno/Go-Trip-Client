@@ -44,7 +44,7 @@ const NavBarFooter = () => {
 				</div>
 			</Link>
 
-			<Link href={tokenSession ? `/myFavorites` : `/login`}>
+			<Link href={`/myFavorites`}>
 				<div className='flex justify-center items-center h-full flex-wrap'>
 					<AiOutlineHeart className='w-full flex items-center justify-center' />
 					<p className={`${fStext} w-fullflex items-center justify-center`}>
@@ -53,7 +53,7 @@ const NavBarFooter = () => {
 				</div>
 			</Link>
 
-			<Link href={tokenSession ? `/myBookings` : `/login`}>
+			<Link href={`/myBookings`}>
 				<div className='flex justify-center items-center  h-full flex-wrap'>
 					<BsCalendarCheck className='w-full text-2xl flex items-center justify-center' />
 					<p className={`${fStext} w-full flex items-center justify-center`}>
@@ -61,7 +61,7 @@ const NavBarFooter = () => {
 					</p>
 				</div>
 			</Link>
-			<Link href={tokenSession ? `/userInfo/${idSession}` : `/login`}>
+			<Link href={`/userInfo/${idSession}`}>
 				<div className='flex justify-center items-center h-full flex-wrap'>
 					<AiOutlineUser className='w-full flex items-center justify-center' />
 					<p className={`${fStext} w-fullflex items-center justify-center`}>

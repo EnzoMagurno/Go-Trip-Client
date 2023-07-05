@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MainGlobal } from '@/redux/mainInterface';
-import axios from 'axios';
+import axios from '@/utils/axios';
 const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
 interface CityName {
@@ -25,7 +25,7 @@ export interface InitialStateCity {
 }
 
 export const fetchingCities = createAsyncThunk('getCities', async () => {
-	return await axios(`https://gotrippf-production.up.railway.app/destination`, {
+	return await axios(`/destination`, {
 		method: 'GET',
 
 		headers: {
@@ -101,7 +101,6 @@ const citySlice = createSlice({
 			})
 			.addCase(getHotelsCoincidencesByCityId.fulfilled, (state, action) => {
 				state.hotelByCity = action.payload;
-				console.log(action.payload);
 			});
 	},
 });
