@@ -4,7 +4,7 @@ import { BoxDragAndDrop } from './BoxDragAndDrop';
 import { ImageSelected } from './ImageSelected';
 import { fileUpload } from '@/utils/fileUpload';
 
-export const DragAndDrop = ({ setForm }) => {
+export const DragAndDrop = ({ setForm }: any) => {
 
   const [images, setImages] = useState<ImageListType>([]);
   const [urlImage, setUrlImage] = useState('')
@@ -29,7 +29,8 @@ export const DragAndDrop = ({ setForm }) => {
         console.log(url);
         
       } else alert('Error, please try again later. ❌')
-
+       
+    
     
   }
 

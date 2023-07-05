@@ -5,56 +5,74 @@ import { BsArrowLeftShort } from 'react-icons/bs'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
-import { DatePicker } from 'antd'
-import { Dayjs } from 'dayjs'
+// import { DatePicker } from 'antd'
+// import { Dayjs } from 'dayjs'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice'
+import { fetchRoomById } from '@/redux/Features/Room/RoomSlice'
+import { useRouter } from 'next/navigation'
 
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
 const poppins = Poppins({ weight: ['100'], subsets: ['latin'] })
 
 interface PageProps {
-    params: {}
-    searchParams: {}
-    hotel: {}
-}
-interface Hotel {
-    name: string
-    image: string
-    destination: {
-        city: string
-        moneyType: string
+    params: {},
+    searchParams: object,
+    hotel: {
+        name: string,
+        image: string,
+        destination: {
+            city: string,
+            moneyType: string
+        }
     }
 }
+// interface Hotel {
+//     name: string
+//     image: string
+//     destination: {
+//         city: string
+//         moneyType: string
+//     }
+// }
 
 
+// const handleDateChange = (value: Dayjs | null, fieldName: string) => {
+//     const dateValue = value?.format('DD-MM-YYYY');
+// };
 
-const handleDateChange = (value: Dayjs | null, fieldName: string) => {
-    const dateValue = value?.format('DD-MM-YYYY');
-};
 const page = (props: PageProps): React.ReactNode => {
-
-    const [onApprove, setOnApprove] = useState(false)
-
-    const [hotel, setHotel] = useState<Hotel>()
-    const [perDay, setPerDay] = useState<number>(250);
-    const [stay, setStay] = useState<number>(1);
-    const [originalPerDay, setOriginalPerDay] = useState<number>(250);
-    const [taxesAndServices] = useState<number>(60)
-    const id = 'fd150709-4c7f-4033-bcbd-d5b4e1a858ff'
-    const [totalAmount, setTotalAmount] = useState<number>(0);
-    const paypalId = "AdlpFWNaQPd5hGxdq6ybyz16wT-vyJ4hpqPOt7bpBQgQY7sBUY1FMTiwtDvrdXeecy607N3U2JkK2D9E"
-
-    const amount = '13.99'
-    const total = '1'
-    const currency = hotel?.destination.moneyType || ''
-
-    console.log(totalAmount);
+    const { params, searchParams } = props
+    const router = useRouter()
+    console.log(router);
     useEffect(() => {
-        fetch(`https://gotrippf-production.up.railway.app/hotel/findhotel/${id}`)
-            .then(response => response.json())
-            .then(data => setHotel(data))
+        dispatch(fetchinHotelId(params.id))
+        dispatch(fetchRoomById(searchParams.room))
     }, [])
+    const hotel = useSelector(state => state.hotel.hotel)
+    const room = useSelector(state => state.room.room)
+    console.log(room);
+    console.log(hotel, 'hotel');
+
+    const dispatch = useDispatch()
+
+    const [perDay, setPerDay] = useState<number>(0)
+    console.log('perday', perDay);
+
+    useEffect(() => {
+        if (room && room.price) {
+            setPerDay(room.price)
+        }
+    }, [room])
+
+    const [stay, setStay] = useState<number>(1);
+    const [taxesAndServices] = useState<number>(60)
+    const [totalAmount, setTotalAmount] = useState<number>(0);
+
+    const currency = room?.destination?.moneyType || ''
+
     useEffect(() => {
         const subtotal = stay * perDay;
         const total = subtotal + taxesAndServices;
@@ -70,7 +88,7 @@ const page = (props: PageProps): React.ReactNode => {
                     {
                         "nombre": "Compu re buena",
                         "precio": 1,
-                        "cantidad": 1
+                        "cantidad": perDay
                     }
                 ],
                 // "bookingId": "ABC123",
@@ -91,7 +109,7 @@ const page = (props: PageProps): React.ReactNode => {
             <div className=' overflow-y-auto'>
                 <div className='pl-5 flex w-full h-28'>
                     <div className=' flex justify-start items-center w-1/4'>
-                        <Link href=''>
+                        <Link href='' onClick={() => router.back()}>
                             <BsArrowLeftShort className='text-5xl' />
                         </Link>
                     </div>
@@ -100,52 +118,43 @@ const page = (props: PageProps): React.ReactNode => {
                     </div>
                 </div>
 
-                <div className='flex pl-5'>
-                    {hotel?.image && <img className='w-[45%] rounded-3xl' src={hotel.image} alt={hotel.name} />}
-                    {/* {hotel?.image && <Image className='w-1/6 rounded-3xl' src={hotel.image} alt={hotel.name} width={500} height={300} />} */}
-                    <div className='pl-3'>
-                        <h1 className='font-semibold text-2xl'>{hotel?.name}</h1>
-                        <p className='font-semibold'>{hotel?.destination.city}</p>
-                    </div>
+                <div className='flex justify-center'>
+                    {hotel?.image && <img className='max-w-[80%] rounded-3xl' src={hotel.image} alt={room.name} />}
                 </div>
 
+                <div className='flex justify-center flex-col items-center mt-2'>
+                    <h3 className='font-semibold text-2xl text-center'>{room?.description}</h3>
+                    <h4 className='font-semibold text-2xl'>{room?.room}</h4>
+                    <p className='font-semibold'>{hotel?.destination?.city}</p>
+                </div>
             </div>
 
             <div className='flex justify-center'>
-                <hr className='w-[90%] my-8 h-0.5 border-t-0 bg-gray-500 opacity-20 dark:opacity-50' />
+                <hr className='w-[90%] my-3 h-0.5 border-t-0 bg-gray-500 opacity-20 dark:opacity-50' />
             </div>
             <p className={`${asap.className} text-gray-500 font-semibold pl-5 mb-4`}>
                 Summary of charges
             </p>
             <div className={`${josefin.className} pl-5 flex justify-start`}>
-                <select value={stay} onChange={(e) => {
-                    const value = +e.target.value;
-                    const stayValue = !isNaN(value) && value !== 0 ? value : 1;
-                    setStay(stayValue);
-                }}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
+                <button onClick={() => stay > 1 && setStay(stay - 1)} className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none">
+                    <span className="m-auto text-2xl font-thin">-</span>
+                </button>
+                <span className='text-2xl pl-2 pr-2'>{stay}</span>
+                <button onClick={() => setStay(stay + 1)} className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none">
+                    <span className="m-auto text-2xl font-thin">+</span>
+                </button>
 
-                </select>
             </div>
 
-            <form className=''>
+            {/* <form className=''>
                 <DatePicker
                     onChange={value => handleDateChange(value, 'birthday')}
                     name='check-in'
                 />
-            </form>
+            </form> */}
 
-            <div className='flex justify-start pl-5'>
-                <h3>Per day: 250 USD</h3>
+            <div className='flex justify-start pl-5 mt-3 mb-3'>
+                <h3>Per day: {perDay}</h3>
             </div>
             <div className='pl-5 grid grid-cols-2 gap-4'>
                 <p>Days of stay</p>
@@ -162,11 +171,6 @@ const page = (props: PageProps): React.ReactNode => {
             <div className='pl-5 grid grid-cols-2 gap-4'>
                 <p>Total stay</p>
                 <p>{pago} {currency}</p>
-            </div>
-
-
-            <div>
-                <button onClick={handlePayment}>Pagar con MercadoPago</button>
             </div>
 
 
@@ -189,6 +193,10 @@ const page = (props: PageProps): React.ReactNode => {
             <h3 className={`${asap.className} flex justify-center mb-4 text-gray-500 mt-6 font-semibold`}>
                 Book now!
             </h3>
+            <div className='flex justify-center'>
+                <button onClick={handlePayment}>Pagar con MercadoPago</button>
+            </div>
+
             {/* PAYMENT METHOD */}
             <div className='flex justify-center -z-10'>
                 {/* <PayPalScriptProvider options={{ clientId: paypalId }}>
