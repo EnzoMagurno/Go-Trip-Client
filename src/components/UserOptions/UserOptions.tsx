@@ -57,6 +57,17 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 		}
 	}, []);
 
+	const storedUserNameSession = localStorage.getItem('username');
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			storedUserNameSession;
+			setUserNameSession(
+				storedUserNameSession ? JSON.parse(storedUserNameSession) : ''
+			);
+		}
+	}, [typeof window !== 'undefined' && storedUserNameSession]);
+
 	return (
 		<div
 			className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5  pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`}
@@ -102,35 +113,36 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 						</h2>
 					</li>
 				</Link>
+				{rolSession !== 'host' ? (
+					<li className='bg-white h-10 '>
+						<Link
+							href={
+								rolSession === 'admin' || rolSession === 'host'
+									? `/myHotels`
+									: `/beAHoteiler`
+							}
+							passHref
+							onClick={() => {
+								closeWindow();
+							}}
+							className='w-full flex justify-between items-center p-3'
+						>
+							{rolSession === 'admin' ? (
+								<div className='flex items-center justify-between'>
+									<RiHotelLine className='inline text-2xl mr-3 text-blueSky' />{' '}
+									My Hotels
+								</div>
+							) : (
+								<div className='flex items-center justify-between'>
+									<RiHotelLine className='inline text-2xl mr-3 text-blueSky' />
+									Be a hotelier
+								</div>
+							)}
 
-				<li className='bg-white h-10 '>
-					<Link
-						href={
-							rolSession === 'admin' || rolSession === 'host'
-								? `/myHotels`
-								: `/beAHoteiler`
-						}
-						passHref
-						onClick={() => {
-							closeWindow();
-						}}
-						className='w-full flex justify-between items-center p-3'
-					>
-						{rolSession === 'admin' || rolSession === 'host' ? (
-							<div className='flex items-center justify-between'>
-								<RiHotelLine className='inline text-2xl mr-3 text-blueSky' /> My
-								Hotels
-							</div>
-						) : (
-							<div className='flex items-center justify-between'>
-								<RiHotelLine className='inline text-2xl mr-3 text-blueSky' />
-								Be a hotelier
-							</div>
-						)}
-
-						<IoIosArrowForward className=' text-blueSky' />
-					</Link>
-				</li>
+							<IoIosArrowForward className=' text-blueSky' />
+						</Link>
+					</li>
+				) : null}
 				<li className='bg-white h-10'>
 					<Link
 						href='/settings'

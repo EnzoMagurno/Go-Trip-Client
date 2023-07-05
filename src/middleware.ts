@@ -22,8 +22,8 @@ export async function middleware(request: NextRequest) {
 		); //! Verifica si el token belongs our Back
 
 		const { role } = payload;
-		// console.log(payload)
-		//  console.log(role);
+		// console.log(payload);
+		// console.log(role);
 
 		if (request.nextUrl.pathname === '/admin' && role !== 'host') {
 			return NextResponse.redirect(new URL('/access-denied', request.url));
@@ -40,8 +40,8 @@ export const config = {
 		'/myBookings/:path*',
 		'/myFavorites/:path*',
 		'/userInfo/:path*',
-		'/createRoom/:path*',
-		'/detail/:path*',
+		// '/createRoom/:path*',
+		// '/detail/:path*',
 		'/myHotels/:path*',
 		'/reservation/:path*',
 		'/admin/:path*',

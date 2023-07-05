@@ -82,6 +82,18 @@ function ContainerUsersInfo() {
 	// console.log(userFound); //Check UserFound
 	// console.log(userFound?.dniPasaport);
 
+	const storedUserNameSession = localStorage.getItem('username');
+
+	//! updateName Fast
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			storedUserNameSession;
+			setUserNameSession(
+				storedUserNameSession ? JSON.parse(storedUserNameSession) : ''
+			);
+		}
+	}, [typeof window !== 'undefined' && storedUserNameSession]);
+
 	const [form, setForm] = useState<FormState>({
 		name: '',
 		country: '',
@@ -132,50 +144,47 @@ function ContainerUsersInfo() {
 	const handleClick = (
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	) => {
-		const propertyClick = event.currentTarget.name;
-		// console.log(propertyClick); //!Check  Boton Name Click
+		setEditEnableName(!editEnableName);
 
-		if (propertyClick) {
-			const data = { ...form };
+		const data = { ...form };
 
-			console.log('Esta es la data que esta subiendo', data);
+		console.log('Esta es la data que esta subiendo', data);
 
-			axios
-				.put(putURL, data, {
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${tokenSession}`,
-					},
-				})
-				.then((response) => {
-					console.log('Successful modification');
-					console.log(response.data);
+		axios
+			.put(putURL, data, {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${tokenSession}`,
+				},
+			})
+			.then((response) => {
+				console.log('Successful modification');
+				console.log(response.data);
 
-					setUserNameSession(response.data.name);
-					setAvatarSession(response.data.photoUser);
-					setUserSession({
-						name: response.data.name,
-						birthday: response.data.birthday,
-						gender: response.data.gender,
-						address: response.data.address,
-						dniPasaport: response.data.dniPasaport,
-						rol: response.data.rol,
-						country: response.data.country,
-						postalCode: response.data.postalCode,
-						phoneCode: response.data.phoneCode,
-						phone: response.data.phone,
-						email: response.data.email,
-						password: response.data.password,
-						confirmPassword: response.data.confirmPassword,
-						photoUser: response.data.photoUser,
-						thirdPartyCreated: response.data.thirdPartyCreated,
-					});
-				})
-				.catch((error) => {
-					// Ocurrió un error durante la solicitud
-					console.error(error);
+				setUserNameSession(response.data.name);
+				setAvatarSession(response.data.photoUser);
+				setUserSession({
+					name: response.data.name,
+					birthday: response.data.birthday,
+					gender: response.data.gender,
+					address: response.data.address,
+					dniPasaport: response.data.dniPasaport,
+					rol: response.data.rol,
+					country: response.data.country,
+					postalCode: response.data.postalCode,
+					phoneCode: response.data.phoneCode,
+					phone: response.data.phone,
+					email: response.data.email,
+					password: response.data.password,
+					confirmPassword: response.data.confirmPassword,
+					photoUser: response.data.photoUser,
+					thirdPartyCreated: response.data.thirdPartyCreated,
 				});
-		}
+			})
+			.catch((error) => {
+				// Ocurrió un error durante la solicitud
+				console.error(error);
+			});
 	};
 
 	useEffect(() => {
@@ -184,6 +193,13 @@ function ContainerUsersInfo() {
 			// console.log(form);
 		}
 	}, [editEnableName, editEnableId, editEnableEmail, editEnablePhone]);
+
+	useEffect(() => {
+		setForm((prevForm) => ({
+			...prevForm,
+			...userFound,
+		}));
+	}, [userNameSession, tokenSession, avatarSession, userSession]);
 
 	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const property = event.target.name;
@@ -268,7 +284,6 @@ function ContainerUsersInfo() {
 							} text-white text-xs  py-1 px-1 rounded-full w-[25%]`}
 							onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
 								handleClick(event);
-								setEditEnableName(!editEnableName);
 							}}
 							name='buttonEditName'
 							disabled={errors.name ? true : false}
