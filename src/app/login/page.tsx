@@ -13,6 +13,7 @@ import axios from '../../utils/axios';
 import { useRouter } from 'next/navigation';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { FormState as FormRegister } from '../register/page';
+import Cookies from 'universal-cookie';
 
 const asap = Asap({ subsets: ['latin'] });
 const josefin = Josefin_Sans({ subsets: ['latin'] });
@@ -110,6 +111,29 @@ const page = () => {
 		setIsChecked(event.target.checked);
 	};
 
+	const cookies = new Cookies();
+	const cookieName = 'goTrip_Cookie';
+
+	const expires = new Date();
+	expires.setDate(expires.getDate() + 7);
+
+	const handleClickGoogle = () => {
+		const authUrl =
+			'https://gotrippf-production.up.railway.app/user/auth/google';
+
+		window.open(authUrl, '_blank', 'width=600,height=400');
+		axios
+			.get('https://gotrippf-production.up.railway.app/user/profile')
+			.then((response) => {
+				// Aquí puedes acceder a los datos del JSON
+				console.log(response.data);
+			})
+			.catch((error) => {
+				// Manejo de errores
+				console.log(error);
+			});
+	};
+
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		// console.log(form); //!Check
 
@@ -123,9 +147,11 @@ const page = () => {
 		// console.log(newForm); //!Check
 
 		axios
-			.post('user/login', newForm)
+			.post('user/login', newForm, {
+				// withCredentials: true,
+			})
 			.then((response) => {
-				// console.log(response.data); // Muestra la respuesta en la consola
+				console.log(response.data); // Muestra la respuesta en la consola
 
 				setTokenSession(response.data.tokenSession);
 				setIdSession(response.data.data.id);
@@ -149,6 +175,11 @@ const page = () => {
 					photoUser: response.data.data.photoUser,
 					thirdPartyCreated: response.data.data.thirdPartyCreated,
 				});
+
+				const cookies = new Cookies();
+				const cookieToken = response.data.tokenSession;
+				cookies.set('gotripCookie', cookieToken, { path: '/' });
+				console.log('Cookie almacenada:', cookieToken);
 				setLoading(true);
 				// console.log('Petición de inicio de sesión');   //!Check
 
@@ -180,7 +211,7 @@ const page = () => {
 		<>
 			<div className='p-5 flex  w-full h-28'>
 				<div className=' flex justify-start items-center w-1/4'>
-					<a onClick={() => router.back()}>
+					<a onClick={() => router.push('/')}>
 						<BsArrowLeftShort className=' text-5xl ' />
 					</a>
 				</div>
@@ -210,7 +241,7 @@ const page = () => {
 					type='text'
 					autoComplete='off'
 					name='email'
-					value={savedEmail && isChecked ? savedEmail : form.email}
+					value={form.email}
 					onChange={handleChange}
 					onFocus={handleFocus}
 					onBlur={handleBlur}
@@ -376,7 +407,10 @@ const page = () => {
 			</div>
 
 			<div className='flex justify-center mt-6 items-center'>
-				<button className='text-gray-600 font-semibold py-3 px-3 rounded-full w-[85%] border border-gray-400 border-opacity-100 flex justify-center'>
+				<button
+					onClick={handleClickGoogle}
+					className='text-gray-600 font-semibold py-3 px-3 rounded-full w-[85%] border border-gray-400 border-opacity-100 flex justify-center'
+				>
 					<svg
 						className='mr-2'
 						xmlns='http://www.w3.org/2000/svg'

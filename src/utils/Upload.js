@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
-import { axios } from '@/utils/axios';
 
 export const Upload = ({ idHotel, idRoom }) => {
 	const [fileInputState, setFileInputState] = useState('');
 	const [previewSource, setPreviewSource] = useState('');
 	const [selectedFile, setSelectedFile] = useState();
 
-	console.log(idHotel);
-	idRoom = 'debfd7bb-bf90-4d4d-aa83-d7af1e2c3431';
-	console.log(idRoom);
-
 	const handleFileInputChange = (e) => {
 		const file = e.target.files[0];
+		console.log(e.target.files[0]);
 		previewFile(file);
 		setSelectedFile(file);
 		setFileInputState(e.target.value);
@@ -33,31 +29,61 @@ export const Upload = ({ idHotel, idRoom }) => {
 	};
 
 	const uploadImage = async (base64EncodedImage) => {
-		try {
-			const uploadGallery = await fetch(
-				'https://gotrippf-production.up.railway.app/gallery/upload',
-				{
-					method: 'POST',
-					body: JSON.stringify({
-						data: base64EncodedImage,
-						idHotel: idHotel,
-						idRoom: idRoom,
-					}),
-					headers: { 'Content-Type': 'application/json' },
+		if (idRoom) {
+			try {
+				const uploadGallery = await fetch(
+					'https://gotrippf-production.up.railway.app/gallery/upload',
+					{
+						method: 'POST',
+						body: JSON.stringify({
+							data: base64EncodedImage,
+							idHotel: idHotel,
+							idRoom: idRoom,
+						}),
+						headers: { 'Content-Type': 'application/json' },
+					}
+				);
+				if (uploadGallery.ok) {
+					// La solicitud fue exitosa
+					const response = await uploadGallery.json();
+					console.log(response); // La respuesta del backend en formato de objeto JavaScript
+				} else {
+					// La solicitud falló
+					console.error('Error al subir la imagen');
 				}
-			);
-			if (uploadGallery.ok) {
-				// La solicitud fue exitosa
-				const response = await uploadGallery.json();
-				console.log(response); // La respuesta del backend en formato de objeto JavaScript
-			} else {
-				// La solicitud falló
-				console.error('Error al subir la imagen');
+				setFileInputState('');
+				setPreviewSource('');
+				window.location.reload();
+			} catch (err) {
+				console.error(err);
 			}
-			setFileInputState('');
-			setPreviewSource('');
-		} catch (err) {
-			console.error(err);
+		} else if (!idRoom) {
+			try {
+				const uploadGallery = await fetch(
+					'https://gotrippf-production.up.railway.app/gallery/upload',
+					{
+						method: 'POST',
+						body: JSON.stringify({
+							data: base64EncodedImage,
+							idHotel: idHotel,
+						}),
+						headers: { 'Content-Type': 'application/json' },
+					}
+				);
+				if (uploadGallery.ok) {
+					// La solicitud fue exitosa
+					const response = await uploadGallery.json();
+					console.log(response); // La respuesta del backend en formato de objeto JavaScript
+				} else {
+					// La solicitud falló
+					console.error('Error al subir la imagen');
+				}
+				setFileInputState('');
+				setPreviewSource('');
+				window.location.reload();
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	};
 
@@ -71,7 +97,7 @@ export const Upload = ({ idHotel, idRoom }) => {
 
 	return (
 		<div>
-			<h1>Upload</h1>
+			<h1 className=''>Upload your pics</h1>
 			<form onSubmit={handleSubmitFile} className='form'>
 				<input
 					id='fileInput'
@@ -79,14 +105,19 @@ export const Upload = ({ idHotel, idRoom }) => {
 					name='image'
 					onChange={handleFileInputChange}
 					value={fileInputState}
-					className='form-input'
+					className=''
 				/>
-				<button className='btn' type='submit'>
-					Submit
-				</button>
 			</form>
 			{previewSource && (
-				<img src={previewSource} alt='chosen' style={{ height: '300px' }} />
+				<>
+					<img src={previewSource} alt='chosen' style={{ height: '200' }} />
+					<button
+						className=' border border-neutral-400 mt-5 p-2 rounded-xl bg-iconsPurple text-white'
+						onClick={handleSubmitFile}
+					>
+						Accept
+					</button>
+				</>
 			)}
 		</div>
 	);

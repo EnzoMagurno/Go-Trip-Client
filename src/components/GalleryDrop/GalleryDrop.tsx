@@ -3,64 +3,96 @@ import axios from '../../utils/axios'
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { BoxDragAndDrop } from './BoxDragAndDrop';
 import { ImageSelected } from './ImageSelected';
-import { fileUpload } from '@/utils/fileUpload';
 
-export const GalleryDrop = ({idHotel}: any, {idRoom}: any) => {
-
+export const GalleryDrop = (props: { idHotel: any; idRoom: any }) => {
+  const { idHotel, idRoom } = props;
   const [images, setImages] = useState<ImageListType>([]);
   const [urlImage, setUrlImage] = useState('')
   const [loading, setLoading] = useState(false);
 
   const handleChange = (imageList: ImageListType) => setImages(imageList);
 
-  interface FormState {
-    urlIMG: string;
-    idHotel: string;
-    idRoom: string;
-    
-  }
-  
-  const [form, setForm] = useState<FormState>({
-    urlIMG: '',
-    idHotel: '',
-    idRoom: ''
-  });
+
+
 
   const onUpload = async () => {
     setLoading(true);
     console.log(images[0].file);
-    
-    const url = await fileUpload(images[0].file);
-    console.log(url);
-    
+    const reader = new FileReader();
+		reader.readAsDataURL(images[0].file);
+		reader.onloadend = () => {
+			uploadImage(reader.result);
+		};
+		reader.onerror = () => {
+			console.error('Error');
+		};
     setLoading(false);
-    setForm({
-      urlIMG: url,
-    idHotel: idHotel,
-    idRoom: idRoom
-    })
-    if (idHotel) {
+    
+    const uploadImage = async (base64EncodedImage) => {
+      console.log(idHotel);
+      console.log(idRoom);
       
-    }
-
-    if (url) {
-        setUrlImage(url);
+      if (idRoom) {
         try {
-          const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
-          const response = await axios.post("/gallery/upload", form, {
-            headers: {
-              Authorization: `Bearer ${token}`
+          const uploadGallery = await fetch(
+            'https://gotrippf-production.up.railway.app/gallery/upload',
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                data: base64EncodedImage,
+                idHotel: idHotel,
+                idRoom: idRoom,
+              }),
+              headers: { 'Content-Type': 'application/json' },
             }
-          });
-      
-          const id = response.data.detail.id;
-          console.log(id);
-      
-        } catch (error) {
-          console.error('Error(1)', error);
+          );
+          if (uploadGallery.ok) {
+            // La solicitud fue exitosa
+            const response = await uploadGallery.json();
+            console.log(response); // La respuesta del backend en formato de objeto JavaScript
+            window.location.reload();
+
+          } else {
+            // La solicitud falló
+            console.error('Error al subir la imagen');
+          }
+          setImages('');
+          
+        } catch (err) {
+          console.error(err);
         }
-        
-      } else alert('Error, please try again later. ❌')
+      } else if (!idRoom) {
+        try {
+          const uploadGallery = await fetch(
+            'https://gotrippf-production.up.railway.app/gallery/upload',
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                data: base64EncodedImage,
+                idHotel: idHotel,
+              }),
+              headers: { 'Content-Type': 'application/json' },
+            }
+          );
+          if (uploadGallery.ok) {
+            // La solicitud fue exitosa
+            const response = await uploadGallery.json();
+            console.log(response); // La respuesta del backend en formato de objeto JavaScript
+            window.location.reload();
+
+          } else {
+            // La solicitud falló
+            console.error('Error al subir la imagen');
+          }
+          setImages('');
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+    
+
+  
        
     
     

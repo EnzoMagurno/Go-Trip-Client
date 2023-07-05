@@ -5,7 +5,12 @@ import { BsKey } from 'react-icons/bs';
 import { TfiGallery } from 'react-icons/tfi';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { fetchingServices } from '@/redux/Features/Services/servicesSlice';
+import { fetchRoomById, selectRoomIdState } from "@/redux/Features/Room/RoomSlice";
 import { MainGlobal } from '@/redux/mainInterface';
+import { GalleryDrop } from "../GalleryDrop/GalleryDrop";
+import Image from 'next/image';
+import ImageOptions from "../Imageoptions/ImageOptions";
+
 
 
 export interface MyRoom {
@@ -18,6 +23,7 @@ export interface MyRoom {
 		status: boolean
 		ServicesRoom: string[]
 		hotelId: string
+		gallery: []
 }
 
 export interface RoomProps {
@@ -29,29 +35,33 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 	
 	const dispatch = useDispatch()
 	const [serviceName, setServiceName] = useState<string[]>([]);
+	const room = useSelector(selectRoomIdState)
+
 
 	const services = useSelector((state: MainGlobal) => state.services.dataService)
 	
 	
 
 	const {
-		id, 
-		room, 
+		id,  
 		price, 
 		numRooms, 
 		roomsInUse, 
 		description, 
 		status, 
 		ServicesRoom, 
-		hotelId, 
+		hotelId,
+		gallery
 	} = roomType
 
-    
+    console.log(room);
+	
 
 	useEffect(() => {
     
     
 		dispatch(fetchingServices())
+		dispatch(fetchRoomById(id))
 		const getMatchingServices = () => {
 			const matchingServices = ServicesRoom.map((serviceId) => {
 			  return services.find((service) => service.id === serviceId);
@@ -65,7 +75,21 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 		  }
 		}, [services.length]);
 
-
+		const [selectedImage, setSelectedImage] = useState(null);
+		const [showOverlay, setShowOverlay] = useState(false);
+	  
+		
+		const handleImageClick = (image) => {
+			setSelectedImage(image);
+			setShowOverlay(true);
+		  };
+		
+		  const handleCloseOverlay = () => {
+			setShowOverlay(false);
+		  };
+	
+		  console.log(id);
+		  const idRoom = id
 
     //DAR TRANSITION PARA QUE EL CARD DE UN TYPO DE CUARTO SE HAGA GRANDE CUANDO SE APRETE EN VER MAS
 
@@ -73,11 +97,11 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 		<div>
 			
 			
-				<div className='p-3 shadow-cardTypeRoom  rounded-2xl'>
+				<div className='p-3 shadow-insetContainerTypeRooms  rounded-2xl'>
 					<div>
 						<div className='flex items-center text-center pb-2'>
 							<h5 className=' text-lg font-bold w-full'>
-								{room}
+								{roomType.room}
 								<BsKey className='inline text-xl text-yellow-600 ml-2' />
 							</h5>
 						</div>
@@ -119,11 +143,23 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 							<h5 className=' font-medium '>Gallery</h5>
 							<TfiGallery className='text-xl ml-2 ' />
 						</div>
-						<img
-							src='https://www.elmueble.com/medio/2022/11/06/dormitorio-rustico-con-vigas-de-madera-y-pared-de-madera-00557319_00000000_22116180616_900x900.jpg'
-							alt='habitacion'
-							className='w-20 object-cover rounded-lg'
-						/>
+						<div className='m-1 max-h-64 overflow-scroll rounded-lg shadow-cardTypeRoom grid grid-cols-2 gap-2 p-2'>
+				
+			{room.gallery && room.gallery?.map((i, index)=> (
+				<Image 
+				className='rounded-xl'
+				src={i.urlIMG}
+				width={150}
+				height={100}
+				alt={`Image ${index}`}
+				onClick={() => handleImageClick(i)}
+				/>
+				))}
+				<GalleryDrop idHotel={hotelId} idRoom={id}/>
+			</div>
+				{showOverlay && (
+        <ImageOptions image={selectedImage} onClose={handleCloseOverlay} />
+      )}
 					</div>
 				</div>
 				

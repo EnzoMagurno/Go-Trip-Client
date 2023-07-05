@@ -6,7 +6,7 @@ import { AiOutlineMail, AiOutlinePhone, AiOutlineBell } from 'react-icons/ai';
 import { MdOutlineBedroomChild } from 'react-icons/md';
 import { roboto, badScript } from '../../app/page';
 import { CiLocationOn } from 'react-icons/ci';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MyHotel } from '../../app/myHotels/page';
 import { editDataHandler, activateEdit } from './utils/settingsUtils';
 import { CiSaveDown2 } from 'react-icons/ci';
@@ -16,7 +16,7 @@ import {
 	fetchinHotelId,
 } from '../../redux/Features/Hotel/hotelsSlice';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { Upload} from '@/utils/Upload'
+
 
 
 interface HotelProps {
@@ -41,8 +41,9 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 		overview,
 		rooms,
 		status,
+		gallery
 	} = hotel;
-
+	
 	
 	const dispatch = useDispatch();
 
@@ -61,6 +62,7 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 	const [checkInputDisabled, setCheckEdit] = useState('hidden');
 	const [ descriptionInputDisabled, setDescriptionEdit] = useState('hidden');
 
+	
 	return (
 		<div className={`${roboto.className}`}>
 			<h5
@@ -111,9 +113,12 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 									<div className='absolute z-20 top-0 right-0 bg-white w-10 h-full rounded-lg flex justify-center items-center '>
 										<CiSaveDown2
 											onClick={() => {
-												dispatch(updateHotel({ id, email: editData.email }));
+												useEffect( ()=> {
+													dispatch(updateHotel({ id, email: editData.email }));
 												dispatch(fetchinHotelId(id));
 												setEmailEdit('hidden');
+												},[gallery])
+												
 											}}
 											className=' text-iconsPurple w-7 h-7 text-xl '
 										/>
@@ -333,10 +338,6 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 				<CiLocationOn className='inline text-2xl text-red-500 ml-2' />
 			</button>
 
-			<h5 className='text-lg font-bold mt-3 mb-3 text-iconsPurple'>Photos</h5>
-			<Upload idHotel={id} idRoom=''/>
-
-			
 		</div>
 	);
 };
