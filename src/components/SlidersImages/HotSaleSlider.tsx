@@ -3,6 +3,7 @@ import axios from '@/utils/axios'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Fonts } from './SliderHotels';
+import { RiH1 } from 'react-icons/ri';
 
 const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 
@@ -49,6 +50,7 @@ const router = useRouter()
 	  }, []);
 
 	
+	
 	  
 
 
@@ -57,7 +59,7 @@ const router = useRouter()
 			<div className='flex flex-col justify-between'>
 				
 
-				<button className='relative h-56 shadow-img rounded-3xl'
+				{paris && paris? <button className='relative h-56 shadow-img rounded-3xl'
 				onClick={()=> {
 					router.push(`/detail/${paris.id}`)
 				}}>
@@ -70,14 +72,14 @@ const router = useRouter()
 						<h2 className={`${roboto.className} tracking-wide  text-sm `}>{paris?.name}</h2>
 						<div className='flex justify-between items-center'>
 							<h2 className={`${roboto.className} tracking-wider text-sm`}>Paris</h2>
-							<h3>$400</h3>
+							<h3>${paris.rooms[0].price}</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>
 							<p className=''>France</p>
 							<p className=''>/per night</p>
 						</div>
 					</div>
-                </button>
+                </button> : <h1>Loading...</h1>}
 				
                 <div className=' bg-orangeBg w-full text-white h-24 mt-5 rounded-3xl shadow-img flex justify-center items-center'>
                    
@@ -95,7 +97,7 @@ const router = useRouter()
                     </div> 
                 </div>
 
-				<button className='relative  h-56 shadow-img rounded-3xl'
+				{bali && bali? <button className='relative  h-56 shadow-img rounded-3xl'
 				onClick={()=> {
 					router.push(`/detail/${bali.id}`)
 				}}>
@@ -108,14 +110,14 @@ const router = useRouter()
 						<h2 className={`${roboto.className} tracking-wide  text-sm `}>The Kayon Valley Resort</h2>
 						<div className='flex justify-between items-center  '>
 							<h2 className={`${roboto.className} tracking-wider text-sm`}>Bali</h2>
-							<h3>$200</h3>
+							<h3>${bali.rooms[0].price}</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>
 							<p className=''>Indonesia</p>
 							<p className=''>/per night</p>
 						</div>
 					</div>
-				</button>
+				</button> : <h1>Loading...</h1>}
 			</div>
 		</div>
 	);

@@ -2,11 +2,14 @@
 import React from 'react'
 import axios from '@/utils/axios'
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getHotelsCoincidencesByCityId } from '@/redux/Features/Citys/CitySlice';
 import Swiper, {Navigation, Pagination} from 'swiper';
 import 'swiper/swiper-bundle.css';
 import { useRouter } from 'next/navigation';
+import { fetchinCommentByHotel } from '@/redux/Features/Commets/CommentsSlice';
+import StarRating from '@/components/StarRaiting/StarRaiting';
+
 
 
 import { Fonts } from './SliderHotels';
@@ -15,7 +18,7 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 
 	const [response, setResponse] = useState(null);
 
-	// const hoteles = []
+
 
 	const router = useRouter();
 
@@ -54,6 +57,8 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 	  const hoteles = response ? response : [];
 
 console.log(response);
+ 
+
 
 
   return (
@@ -66,6 +71,7 @@ console.log(response);
 			<button onClick={() => {
 				router.push(`/detail/${hotel.id}`);
 			}} className="swiper-slide">
+				
 			<div className='h-56 relative'>
 					<div className='absolute bottom-0 text-white w-full pl-3 pr-3 h-12 '>
 						<div className='bg-slate-600 w-full h-full left-0 opacity-50 absolute rounded-bl-3xl rounded-br-3xl'></div>

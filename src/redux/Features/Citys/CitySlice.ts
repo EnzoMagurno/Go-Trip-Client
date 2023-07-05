@@ -101,7 +101,6 @@ const citySlice = createSlice({
 			})
 			.addCase(getHotelsCoincidencesByCityId.fulfilled, (state, action) => {
 				state.hotelByCity = action.payload;
-				console.log(action.payload);
 			});
 	},
 });

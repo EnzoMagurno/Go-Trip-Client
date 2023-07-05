@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from '@/utils/axios'
 const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
 
@@ -30,7 +30,7 @@ export const fetchingHotel = createAsyncThunk("getHotels", async () => {
   }
 });
 
-export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
+export const  fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
   try {
 
     const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
