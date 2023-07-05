@@ -7,11 +7,13 @@ import UserOptions from '../UserOptions/UserOptions';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useRouter } from 'next/navigation';
 
+
 const NavBarTop = () => {
 	const [tokenSession, setTokenSession] = useLocalStorage('token', ''); //!MantenerCodigo
 
 	const router = useRouter();
 
+	
 	const handleReload = () => {
 		router.push('/');
 	};
@@ -31,11 +33,18 @@ const NavBarTop = () => {
 	const [windowIsOpen, setWindow] = useState('hidden');
 
 	const closeWindow = () => {
+
 		if (windowIsOpen === '') {
 			setWindow('hidden');
 		} else {
 			setWindow('');
 		}
+	};
+
+	const [isOpen, setIsOpen] = useState(false);
+
+	const toggleOpen = () => {
+		setIsOpen(!isOpen);
 	};
 
 	return (
@@ -49,15 +58,17 @@ const NavBarTop = () => {
 			</button>
 
 			<button
-				onClick={closeWindow}
+				onClick={toggleOpen}
 				className=' h-6 w-6 flex flex-col justify-evenly'
 			>
 				<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
 				<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
 				<div className='h-0 w-full border-b-2 border-b-solid border-b-iconsPurple'></div>
 			</button>
+			
+						<UserOptions window={windowIsOpen} toggleOpen={toggleOpen} isOpen={isOpen}/>
 
-			<UserOptions window={windowIsOpen} closeWindow={closeWindow} />
+			
 			{/* <label htmlFor="check"  className=" shadow-inset_custom w-14 h-8 cursor-pointer rounded-full  relative dark:shadow-inset_BlueSky ">
                     <input type="checkbox" onChange={setTheme} id="check" className=" sr-only peer" />
                     <span className="w-6 h-6 top-1 left-1 bg-iconsPurple absolute rounded-full peer-checked:bg-orangeBg peer-checked:left-7 transition-all duration-300"></span>

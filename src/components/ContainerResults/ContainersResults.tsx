@@ -36,7 +36,7 @@ const ContainerResults = ({roboto}) => {
         const { hotel } = destination;
 
         return (
-            <div className="p-5">
+            <div className="p-5 pb-24">
                 <FiltersBar />
                 <h3 className="text-center pt-2 pb-2">{ hotel.length } Results of { `${destination.city}, ${destination.state}, ${destination.country}` }</h3>
                  <div className="grid grid-row s-6 gap-5" >
