@@ -125,25 +125,173 @@ const usersRealSlice = createSlice({
         usersReal: [],
         userUpdated: {},
         usersRealCopy: [],
+        usersDeletedCopy: [],
+        allUsers: false,
         usersDeleted: [],
+        usersFilter: [],
+        orderAlpha: "A - Z",
+        filterBy: "Active users",
         status: "idle",
         error: null
     },
     reducers: {
-        nameEdit: (state, action) => {
+        nameEdit: (state, action) => {;
+        },
+        searchByName: (state, action) => {
+
+            
 
 
+            if(state.allUsers) {
+                state.usersRealCopy = [ ...state.usersReal].filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase()))
+                state.usersDeletedCopy = [...state.usersDeleted].filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase()))
+            } else if (state.usersFilter[0]?.deletedAt === null) {
+                state.usersFilter = state.usersReal.filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase())).length 
+                ? state.usersReal.filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase())) 
+                : state.usersFilter = state.usersFilter
 
-            // const reverseData = [ ...state.users ].sort((a: User, b: User) => b.id - a.id)
+            } else if (typeof state.usersFilter[0]?.deletedAt === "string"){
 
-            // state.usersCopy = reverseData;
-        }
+                state.usersFilter = state.usersDeleted.filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase())).length
+                ? state.usersDeleted.filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase()))
+                : state.usersFilter = state.usersFilter
+            }
+
+        },
+        filterByStatus: (state, action) => {
+            
+            if (action.payload === "active") {
+                state.filterBy = "Active users"
+                state.allUsers = false
+                state.orderAlpha = "A - Z"
+                state.usersFilter = state.usersReal.filter(user => !user.deletedAt)
+            } else if (action.payload === "disabled"){
+                state.filterBy = "Disabled users"
+                state.orderAlpha = "A - Z"
+                state.allUsers = false
+                state.usersFilter = state.usersDeleted.filter(user => user.deletedAt).sort((a, b) => {
+                    
+                    if (a.name < b.name) {
+                        return -1
+                    } 
+
+                    if (a.name > b.name) {
+                        return 1
+                    }
+
+                    return 0
+                })
+            } else if (action.payload === "all") {
+                state.filterBy = "All users"
+                state.orderAlpha = "A - Z"
+                state.allUsers = true
+            }
+        },
+        orderAlpha: (state, action) => {
+
+            if (state.allUsers && action.payload === "az") {
+                state.orderAlpha = "A - Z"
+                state.usersRealCopy = [ ...state.usersRealCopy].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1
+                    } 
+
+                    if (a.name > b.name) {
+                        return 1
+                    }
+
+                    return 0
+                })
+
+                state.usersDeletedCopy = [ ...state.usersDeletedCopy ].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1
+                    } 
+
+                    if (a.name > b.name) {
+                        return 1
+                    }
+
+                    return 0
+                })
+            } else if (state.allUsers && action.payload === "za") {
+                state.orderAlpha = "Z - A"
+                state.usersRealCopy = [ ...state.usersRealCopy].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return 1
+                    } 
+
+                    if (a.name > b.name) {
+                        return -1
+                    }
+
+                    return 0
+                })
+
+                state.usersDeletedCopy = [ ...state.usersDeletedCopy ].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return 1
+                    } 
+
+                    if (a.name > b.name) {
+                        return -1
+                    }
+
+                    return 0
+                })
+            } else if (action.payload === "az") {
+                state.orderAlpha = "A - Z"
+                state.usersFilter =  [...state.usersFilter].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1
+                    } 
+
+                    if (a.name > b.name) {
+                        return 1
+                    }
+
+                    return 0
+                })
+               
+            } else {
+                state.orderAlpha = "Z - A"
+                state.usersFilter = [ ...state.usersFilter].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return 1
+                    } 
+
+                    if (a.name > b.name) {
+                        return -1
+                    }
+
+                    return 0
+                })
+                
+            }
+        } 
+
+        
     },
     extraReducers: (builder) => {
         builder
         .addCase(fetchingUsersReal.fulfilled, (state:InitialStateRealUser, action) => {
 
-            state.usersReal = action.payload
+            const arrOrdered = [...action.payload].sort((a, b) => {
+                if (a.name < b.name) {
+                    return -1
+                } 
+
+                if (a.name > b.name) {
+                    return 1
+                }
+
+                return 0
+            })
+            state.usersReal = arrOrdered
+            state.usersRealCopy = arrOrdered
+            if (state.usersFilter.length === 0) state.usersFilter = arrOrdered
+
+            
            /*  state.usersRealCopy = action.payload */
         })
         .addCase(updatingUsersReal.fulfilled, (state, action) => {
@@ -152,6 +300,7 @@ const usersRealSlice = createSlice({
         .addCase(getallUsersReal.fulfilled, (state, action) => {
             console.log(action.payload)
             state.usersDeleted = action.payload 
+            state.usersDeletedCopy = action.payload
         })
         .addCase(activeUsersReal.fulfilled, (state, action) => {
             console.log(action.payload)
@@ -159,6 +308,6 @@ const usersRealSlice = createSlice({
     }
 })
 
-export const { nameEdit } = usersRealSlice.actions;
+export const { nameEdit, searchByName, filterByStatus, orderAlpha } = usersRealSlice.actions;
 /* export const selectAllUsersReal = (state: MainGlobal): User[] => state.usersReal.allUsers */
 export default usersRealSlice;

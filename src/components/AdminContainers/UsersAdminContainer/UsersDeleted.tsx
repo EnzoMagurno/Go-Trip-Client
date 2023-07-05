@@ -118,7 +118,7 @@ const UsersDeleted = (props) => {
 	
 
 	return (
-		<div className=' relative mt-3 mb-3'>
+		<div className=' relative mt-5 mb-5'>
 			{/* Informacion de ususario*/}
 
 			<form className='relative w-full p-4 pt-7 pb-7 rounded-2xl bg-white shadow-buttonAdd '>
