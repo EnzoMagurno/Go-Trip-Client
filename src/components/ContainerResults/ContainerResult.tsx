@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import {useEffect} from 'react'
 import { useDispatch } from "react-redux";
 import StarRating from "../StarRaiting/StarRaiting";
+import { fetchingRooms, fetchRoomById } from "@/redux/Features/Room/RoomSlice";
 
 const ContainerResult = (props) => {
     console.log(props);
@@ -13,21 +14,36 @@ const ContainerResult = (props) => {
     const dispatch = useDispatch()
 
 	useEffect(() => {
-        
+        dispatch(fetchingRooms(props.id))
         dispatch(fetchinCommentByHotel(props.id)) 
     }, [])
+
+    const rooms = useSelector((state) => state.room.RoomData)
+console.log(rooms);
+
 
     const comments = useSelector((state) => state.comment.comment);
     console.log(comments);
     
+const roomsPrices =  Array.isArray(rooms)
+? rooms.filter((room) => room.hotelId === props.id)
+: [];
+
+
 const hotelComments =  Array.isArray(comments)
 ? comments.filter((comment) => comment.hotelId === props.id)
 : [];
 
+console.log(roomsPrices);
+
+
 console.log(hotelComments);
 
+let basePrice = 250
 
-
+if (roomsPrices.length) {
+     basePrice = roomsPrices[0]?.price;
+  } 
 
 const calif = Array.isArray(comments)
     ? comments.filter((comment) => comment.hotelId === props.id)
@@ -69,7 +85,7 @@ console.log(result);
                 <p className=" text-little">{props.state}, {props.country}</p>
                 </div>
 				<div className="w-1/4 flex flex-col justify-end items-end ">
-                <p className="block ">${props.cost}</p>
+                <p className="block ">${basePrice}</p>
                 <p className=" block text-little">/per night</p>
                 </div>
 			

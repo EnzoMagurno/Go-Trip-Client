@@ -49,7 +49,7 @@ const NavBarTop = () => {
 
 	return (
 		<nav className=' relative z-30 left-0 shadow-input top-0 w-full h-24 flex justify-between items-end p-5 pb-3 dark:bg-neutral-900 dark:shadow-Orange '>
-			<button onClick={handleReload} className=' inline-block w-sizeLogo'>
+			<button onClick={handleReload} className=' inline-block w-sizeLogo lg:w-6'>
 				<Image
 					src={!themeIsDark ? Logo_GoTrip : Logo_GoTrip_Dark}
 					alt='Logo_GoTrip'
