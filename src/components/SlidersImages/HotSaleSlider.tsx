@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from '@/utils/axios'
 import { useEffect, useState } from 'react';
-import { getHotelsCoincidence } from "../../redux/Features/Hotel/hotelsSlice";
+import { useRouter } from 'next/navigation';
 import { Fonts } from './SliderHotels';
 
 const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
@@ -10,7 +10,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 	const [bali, setBali] = useState(null);
 
 	
-
+const router = useRouter()
 	
 
 	useEffect(() => {
@@ -18,7 +18,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('/findhotel?name=Hotel du Collectionneur', {
+			const response = await axios.get('/hotel/findhotel?name=Hotel du Collectionneur', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
@@ -33,7 +33,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('http://localhost:8000/hotel/findhotel?name=The Kayon Valley Resort', {
+			const response = await axios.get('/hotel/findhotel?name=The Kayon Valley Resort', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
@@ -57,7 +57,10 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 			<div className='flex flex-col justify-between'>
 				
 
-				<div className='relative h-56 shadow-img rounded-3xl'>
+				<button className='relative h-56 shadow-img rounded-3xl'
+				onClick={()=> {
+					router.push(`/detail/${paris.id}`)
+				}}>
 					<img
 						src={paris?.image}
 						alt=''
@@ -74,7 +77,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 							<p className=''>/per night</p>
 						</div>
 					</div>
-                </div>
+                </button>
 				
                 <div className=' bg-orangeBg w-full text-white h-24 mt-5 rounded-3xl shadow-img flex justify-center items-center'>
                    
@@ -92,7 +95,10 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
                     </div> 
                 </div>
 
-				<div className='relative  h-56 shadow-img rounded-3xl'>
+				<button className='relative  h-56 shadow-img rounded-3xl'
+				onClick={()=> {
+					router.push(`/detail/${bali.id}`)
+				}}>
 					<img
 						src={bali?.image}
 						alt=''
@@ -109,7 +115,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 							<p className=''>/per night</p>
 						</div>
 					</div>
-				</div>
+				</button>
 			</div>
 		</div>
 	);
