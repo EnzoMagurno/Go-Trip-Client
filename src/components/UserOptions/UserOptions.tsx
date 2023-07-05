@@ -58,7 +58,18 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 		}
 	}, []);
 
-	
+
+	const storedUserNameSession = localStorage.getItem('username');
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			storedUserNameSession;
+			setUserNameSession(
+				storedUserNameSession ? JSON.parse(storedUserNameSession) : ''
+			);
+		}
+	}, [typeof window !== 'undefined' && storedUserNameSession]);
+
 
 	return (
 		<div
@@ -111,6 +122,31 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 						</h2>
 					</li>
 				</Link>
+				{rolSession !== 'host' ? (
+					<li className='bg-white h-10 '>
+						<Link
+							href={
+								rolSession === 'admin' || rolSession === 'host'
+									? `/myHotels`
+									: `/beAHoteiler`
+							}
+							passHref
+							onClick={() => {
+								closeWindow();
+							}}
+							className='w-full flex justify-between items-center p-3'
+						>
+							{rolSession === 'admin' ? (
+								<div className='flex items-center justify-between'>
+									<RiHotelLine className='inline text-2xl mr-3 text-blueSky' />{' '}
+									My Hotels
+								</div>
+							) : (
+								<div className='flex items-center justify-between'>
+									<RiHotelLine className='inline text-2xl mr-3 text-blueSky' />
+									Be a hotelier
+								</div>
+							)}
 
 				<li className='bg-white h-10 '>
 					<Link
@@ -138,6 +174,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 						<IoIosArrowForward className=' text-blueSky' />
 					</Link>
 				</li>
+
 				<li className='bg-white h-10'>
 					<Link
 						href='/settings'
