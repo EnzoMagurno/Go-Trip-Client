@@ -1,5 +1,5 @@
 'use client'
-
+import axios from '@/utils/axios'
 import { Josefin_Sans, Roboto } from 'next/font/google';
 import StarRating from '@/components/StarRaiting/StarRaiting';
 import { Dispatch } from 'redux';
@@ -11,6 +11,9 @@ import { TbHomeCancel } from 'react-icons/tb'
 import { AiFillBook } from 'react-icons/ai'
 import { BsFillJournalBookmarkFill } from 'react-icons/bs'
 import Link from 'next/link'
+import CommentPost from '@/components/ComentPost/CommentPost';
+import { useLocalStorage } from '@/hooks/useLocalStorage'
+
 
 
 const RobotoBold = Roboto({
@@ -58,10 +61,33 @@ interface Params {
 }
 
 const Detail = ({ params }: { params: Params }) => {
+    const [idSession, setIdSession] = useLocalStorage('idSession', '');
+
     const { id } = params
     const router = useRouter()
 
-    console.log(id);
+    const idHotel = id
+
+    const handleCommentSubmit = async (comment: Comment) => {
+        console.log(comment);
+        try {
+            const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+            const response = await axios.post("/comments", comment, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+        
+            console.log(response.data);
+            
+            window.location.reload();
+
+          } catch (error) {
+            console.error('Rating error:', error);
+          }
+      };
+
+
     const dispatch: Dispatch = useDispatch()
     const Room = ({ room }: Hotel) => (
         < div className="bg-gray-300 border rounded-lg overflow-hidden mt-4" >
@@ -114,7 +140,6 @@ const Detail = ({ params }: { params: Params }) => {
     }, [])
 
     const hotel = useSelector(state => state.hotel.hotel)
-    console.log(hotel)
 
     return (
         <div className='max-w-screen-xl mx-auto flex flex-col'>
@@ -137,11 +162,13 @@ const Detail = ({ params }: { params: Params }) => {
                 <NoRooms />
             )}
 
-            <div className="mt-6 px-5">
-                <h3 className="text-2xl font-bold mb-2">About the hotel</h3>
-                <p className="text-lg text-gray-700 leading-relaxed">{hotel.overview}</p>
+            <div className="mt-6 px-5 pt-4 border shadow-lg">
+                <h3 className="text-2xl font-bold mb-">About the hotel</h3>
+                <p className="text-lg text-gray-700 leading-relaxed ">{hotel.overview}</p>
             </div>
-
+            <div className='h-50 z-10 pt-3 mt-5 mb-28 border shadow-md'>
+                <CommentPost idHotel={idHotel} idUser={idSession} onSubmit={handleCommentSubmit}/>           
+            </div>
         </div>
     )
 }

@@ -50,6 +50,8 @@ export const GalleryDrop = (props: { idHotel: any; idRoom: any }) => {
             // La solicitud fue exitosa
             const response = await uploadGallery.json();
             console.log(response); // La respuesta del backend en formato de objeto JavaScript
+            window.location.reload();
+
           } else {
             // La solicitud falló
             console.error('Error al subir la imagen');
@@ -76,6 +78,8 @@ export const GalleryDrop = (props: { idHotel: any; idRoom: any }) => {
             // La solicitud fue exitosa
             const response = await uploadGallery.json();
             console.log(response); // La respuesta del backend en formato de objeto JavaScript
+            window.location.reload();
+
           } else {
             // La solicitud falló
             console.error('Error al subir la imagen');

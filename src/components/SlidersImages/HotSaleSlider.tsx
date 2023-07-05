@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios';
+import axios from '@/utils/axios'
 import { useEffect, useState } from 'react';
 import { getHotelsCoincidence } from "../../redux/Features/Hotel/hotelsSlice";
 import { Fonts } from './SliderHotels';
@@ -18,7 +18,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('https://gotrippf-production.up.railway.app/hotel/findhotel?name=Hotel du Collectionneur', {
+			const response = await axios.get('/findhotel?name=Hotel du Collectionneur', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
@@ -33,7 +33,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('https://gotrippf-production.up.railway.app/hotel/findhotel?name=The Kayon Valley Resort', {
+			const response = await axios.get('http://localhost:8000/hotel/findhotel?name=The Kayon Valley Resort', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
