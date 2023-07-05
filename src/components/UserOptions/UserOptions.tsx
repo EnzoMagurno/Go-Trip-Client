@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { motion } from 'framer-motion';
 import Cookies from 'universal-cookie';
 
 interface UserOptionsProps {
@@ -15,7 +14,7 @@ interface UserOptionsProps {
 	closeWindow: () => void;
 }
 
-const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen }) => {
+const UserOptions: React.FC<UserOptionsProps> = ({ window, closeWindow }) => {
 	const router = useRouter();
 
 	//!Matener Codigo
@@ -58,7 +57,6 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 		}
 	}, []);
 
-
 	const storedUserNameSession = localStorage.getItem('username');
 
 	useEffect(() => {
@@ -70,24 +68,15 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 		}
 	}, [typeof window !== 'undefined' && storedUserNameSession]);
 
-
 	return (
 		<div
-			className={`absolute right-3 top-16 z-50 bg-white w-4/5 ${!isOpen ? "shadow-none" : "shadow-img"}   rounded-xl  flex flex-col justify-between`}>
-			<motion.div
-						initial={{ height: 0 }}
-						animate={{ height: isOpen ? 'auto' : 0 }}
-						transition={{ duration: 0.2 }}
-						className='overflow-hidden'
-					>
-						{/* Contenido del elemento */}
-
-						<div className='pt-3 pb-3'>
-						<button
-				onClick={toggleOpen}
+			className={`absolute right-3 ${window} top-12 z-50 bg-white w-4/5  pt-5 pb-5 rounded-3xl shadow-img flex flex-col justify-between`}
+		>
+			<button
+				onClick={closeWindow}
 				className='absolute top-4 right-4 w-6 h-6 flex justify-center items-center '
 			>
-				<div onClick={toggleOpen} className={`${!isOpen ? "hidden" : ""}`}>
+				<div>
 					<div className='absolute top-1 w-0 h-4 border-l-2 border-red-400 rotate-45  border-solid'></div>
 					<div className='absolute top-1  w-0 h-4 border-r-2 border-red-400 -rotate-45  border-solid'></div>
 				</div>
@@ -96,7 +85,9 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 				<Link
 					href={tokenSession ? `/userInfo/${idSession}` : `/login`}
 					passHref
-					onClick={toggleOpen}
+					onClick={() => {
+						closeWindow();
+					}}
 				>
 					<li className=' text-black h-16 flex justify-between items-center p-3'>
 						{avatarSession &&
@@ -148,39 +139,18 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 								</div>
 							)}
 
-				<li className='bg-white h-10 '>
-					<Link
-						href={
-							rolSession === 'admin' || rolSession === 'host'
-								? `/myHotels`
-								: `/beAHoteiler`
-						}
-						passHref
-						onClick={toggleOpen}
-						className='w-full flex justify-between items-center p-3'
-					>
-						{rolSession === 'admin' || rolSession === 'host' ? (
-							<div className='flex items-center justify-between'>
-								<RiHotelLine className='inline text-2xl mr-3 text-blueSky' /> My
-								Hotels
-							</div>
-						) : (
-							<div className='flex items-center justify-between'>
-								<RiHotelLine className='inline text-2xl mr-3 text-blueSky' />
-								Be a hotelier
-							</div>
-						)}
-
-						<IoIosArrowForward className=' text-blueSky' />
-					</Link>
-				</li>
-
+							<IoIosArrowForward className=' text-blueSky' />
+						</Link>
+					</li>
+				) : null}
 				<li className='bg-white h-10'>
 					<Link
 						href='/settings'
 						className='w-full flex justify-between items-center p-3'
 						passHref
-						onClick={toggleOpen}
+						onClick={() => {
+							closeWindow();
+						}}
 					>
 						<div className='flex items-center justify-between'>
 							<AiOutlineSetting className='inline text-2xl mr-3 text-blueSky' />{' '}
@@ -194,7 +164,9 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 						<Link
 							href='/admin'
 							className='w-full flex justify-between items-center p-3'
-							onClick={toggleOpen}
+							onClick={() => {
+								closeWindow();
+							}}
 						>
 							<div className='flex items-center justify-between'>
 								<RiAdminLine className='inline text-2xl mr-3 text-blueSky' />{' '}
@@ -219,12 +191,6 @@ const UserOptions: React.FC<UserOptionsProps> = ({ window, toggleOpen, isOpen })
 					) : null}
 				</li>
 			</ul>
-						</div>
-						
-					
-					</motion.div>
-		
-			
 		</div>
 	);
 };
