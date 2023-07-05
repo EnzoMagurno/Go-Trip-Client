@@ -8,7 +8,7 @@ import axios from '@/utils/axios'
 export interface InitialStateComment {
     CommentData: {}
     copyCommentData: {}
-    comment: {}
+    comment: []
 }
 
 
@@ -115,5 +115,6 @@ const CommentSlice = createSlice({
 
 export default CommentSlice;
 export const selectCommentIdState = (state) => state.comment.id
-export const selectHotelState = (state) => state.hotel.copyCommentData
+export const selectCommentsByHotelId = (state, hotelId) =>
+  state.comment.commentData.filter((comment) => comment.hotelId === hotelId);
 export const { getCommentCoincidence } = CommentSlice.actions 
