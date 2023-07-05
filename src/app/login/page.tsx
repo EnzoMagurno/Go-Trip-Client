@@ -111,28 +111,7 @@ const page = () => {
 		setIsChecked(event.target.checked);
 	};
 
-	const cookies = new Cookies();
-	const cookieName = 'goTrip_Cookie';
-
-	const expires = new Date();
-	expires.setDate(expires.getDate() + 7);
-
-	const handleClickGoogle = () => {
-		const authUrl =
-			'https://gotrippf-production.up.railway.app/user/auth/google';
-
-		window.open(authUrl, '_blank', 'width=600,height=400');
-		axios
-			.get('https://gotrippf-production.up.railway.app/user/profile')
-			.then((response) => {
-				// Aquí puedes acceder a los datos del JSON
-				console.log(response.data);
-			})
-			.catch((error) => {
-				// Manejo de errores
-				console.log(error);
-			});
-	};
+	const handleClickGoogle = () => {};
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		// console.log(form); //!Check

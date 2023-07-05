@@ -18,7 +18,6 @@ import axios from '../../utils/axios';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { nameCheck } from '../../utils/index';
 import { randomAvatar } from '../../utils/index';
-
 const asap = Asap({ subsets: ['latin'] });
 const josefin = Josefin_Sans({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] });
@@ -235,21 +234,8 @@ const page = () => {
 			})
 		);
 	};
-	const handleClickGoogle = () => {
-		// URL para la autenticación con Google
-		const authUrl =
-			'https://gotrippf-production.up.railway.app/user/auth/google';
 
-		// Abrir una nueva ventana al hacer clic
-		const newWindow = window.open(authUrl, '_blank');
-		if (newWindow) {
-			// La ventana se abrió con éxito
-			// Puedes realizar acciones adicionales en la nueva ventana si es necesario
-		} else {
-			// No se pudo abrir la nueva ventana
-			// Puedes mostrar un mensaje de error o realizar acciones alternativas
-		}
-	};
+	const handleClickGoogle = () => {};
 
 	// TODO: Revisar necesaria implementacion de esta Peticion en RTK
 
