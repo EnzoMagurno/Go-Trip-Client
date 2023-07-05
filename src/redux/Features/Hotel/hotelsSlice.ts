@@ -43,7 +43,6 @@ export const  fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
         Authorization: `Bearer ${token}`
       }
     });
-
     const data = await response.data;
     return data;
   } catch (error) {
