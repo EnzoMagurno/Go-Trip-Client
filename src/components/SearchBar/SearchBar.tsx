@@ -22,7 +22,6 @@ const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) =>
 	
 	const cityData = useSelector(state => state.city.city)
 	const [ cityName, setCityName ] = useState("")
-	console.log(cityData)
 
 	const router = useRouter();
 	const handlerSearch = (e) => {
@@ -38,7 +37,6 @@ const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) =>
 
 	useEffect(() => {
 		if (cityData.city) setCityName(`${cityData.city}${cityData.state ? `, ${cityData.state}` : "" }, ${cityData.country}`)
-		console.log(cityData)
 	}, [cityData])
 
 	return (
@@ -52,7 +50,7 @@ const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) =>
 				disabled={false}
 				spellCheck={false}
 			/>
-            <button onClick={() => { 
+            {cityName? <button onClick={() => { 
 			
 				
 				router.push(`/resultsHotels?city=${cityData.id}`)
@@ -62,7 +60,17 @@ const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) =>
 			}} 
 			className="absolute top-1 flex items-center justify-center bg-zinc-200 w-9 h-9 rounded-full right-1 text-2xl text-iconsPurple dark:text-orangeBg">
             <BsSearch  style={{pointerEvents: "none"}} className=" text-xl"/>
-            </button>
+            </button>: <button disabled onClick={() => { 
+			
+				
+			router.push(`/resultsHotels?city=${cityData.id}`)
+
+			dispatch(getHotelsCoincidencesByCityId(idCity))
+		
+		}} 
+		className="absolute top-1 flex items-center justify-center bg-zinc-200 w-9 h-9 rounded-full right-1 text-2xl text-gray-500 dark:text-orangeBg">
+		<BsSearch  style={{pointerEvents: "none"}} className=" text-xl"/>
+		</button> }
 			<Select toggleOpen={toggleOpen} />
 		</div>
 	);

@@ -16,7 +16,6 @@ const AllHotelsAdmin = () => {
 
 	useEffect(() => {
 		dispatch(fetchingHotel());
-		console.log(hotels);
 	}, [hotels.length, hotelData]);
 
 	const [isOpen, setIsOpen] = useState(false);

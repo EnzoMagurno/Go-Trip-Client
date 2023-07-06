@@ -44,6 +44,7 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 					firstTenCities?.map((city: City) => {
 						return (
 							<button
+							key={city.id}
 								onClick={() => {
 									dispatch(getHotelsCoincidencesByCityId(city.id));
 									router.push(`/resultsHotels?city=${city.id}`)

@@ -8,7 +8,6 @@ import StarRating from "../StarRaiting/StarRaiting";
 import { fetchingRooms, fetchRoomById } from "@/redux/Features/Room/RoomSlice";
 
 const ContainerResult = (props) => {
-    console.log(props);
     
 
     const dispatch = useDispatch()
@@ -19,11 +18,9 @@ const ContainerResult = (props) => {
     }, [])
 
     const rooms = useSelector((state) => state.room.RoomData)
-console.log(rooms);
 
 
     const comments = useSelector((state) => state.comment.comment);
-    console.log(comments);
     
 const roomsPrices =  Array.isArray(rooms)
 ? rooms.filter((room) => room.hotelId === props.id)
@@ -34,10 +31,8 @@ const hotelComments =  Array.isArray(comments)
 ? comments.filter((comment) => comment.hotelId === props.id)
 : [];
 
-console.log(roomsPrices);
 
 
-console.log(hotelComments);
 
 let basePrice = 250
 
@@ -49,7 +44,6 @@ const calif = Array.isArray(comments)
     ? comments.filter((comment) => comment.hotelId === props.id)
     : [];
 
-console.log(calif);
 
 const nums = []
 calif.map((r) => nums.push(r.rating))
@@ -66,7 +60,6 @@ const promedio = (num) => {
 
 
 const result = promedio(nums)
-console.log(result);
 
     
     return (
