@@ -1,7 +1,7 @@
 "use client"
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MainGlobal } from '@/redux/mainInterface';
-import axios from '@/utils/axios';
+import axios from '../../../utils/axios';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
 import { GiToken } from 'react-icons/gi';
 export const TokenUser = localStorage.token.replace(/["']/g, '');

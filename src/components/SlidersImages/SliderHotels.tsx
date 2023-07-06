@@ -47,11 +47,9 @@ const SliderHotels: React.FC<Fonts> = () => {
 					firstTenCities?.map((city: City, index = number) => {
 						return (
 							<button
-<<<<<<< HEAD
+
 							key={city.id}
-=======
-								key={index}
->>>>>>> e175fd2759a00995ee4051812cc7a686e92b1618
+
 								onClick={() => {
 
 									dispatch(getHotelsCoincidencesByCityId(city.id));

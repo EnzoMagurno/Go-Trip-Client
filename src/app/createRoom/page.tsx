@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import axios from 'axios';
+import axios from '../../utils/axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Select from 'react-select';
 import validation from './validation'

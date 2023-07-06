@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { MainGlobal } from "@/redux/mainInterface";
-import axios from "axios";
+import axios from "../../../utils/axios";
 import { TokenUser } from "../Citys/CitySlice";
 export interface Service {
     id: number
@@ -38,7 +38,7 @@ const serviceSlice = createSlice({
     },
     reducers: {
       getServicesCoincidence: (state, action) => {
-        state.copyDataService = state.dataService.filter(service =>  service.name == action.payload)
+        state.copyDataService = state.dataService.filter((service: any) =>  service.name == action.payload)
       }
     },
     extraReducers: (builder) => {
@@ -51,7 +51,7 @@ const serviceSlice = createSlice({
            
             
         })
-        .addCase(fetchingServices.rejected, (state, action) => {
+        .addCase(fetchingServices.rejected, (state: any, action) => {
             state.error = action.error.message || null
         })
     }
@@ -60,5 +60,5 @@ const serviceSlice = createSlice({
 
 
 export default serviceSlice;
-export const selectServiceState = (state: MainGlobal) => state.services.copyServiceData
+export const selectServiceState = (state: any) => state.services.copyServiceData
 export const { getServicesCoincidence } = serviceSlice.actions 
