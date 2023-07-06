@@ -1,18 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { MainGlobal } from "../../mainInterface";
-import axios from "../../../utils/axios";
+import axios from "axios";
+import { TokenUser } from "../Citys/CitySlice";
+/* const getToken = () => {
+    localStorage.getItem("token")
+}
 
-const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
-const getTokenSession = () => {
-    return localStorage.getItem("token");
-  };
+const tokenSession = getToken() */
 
 export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
-        const tokenSession = getTokenSession()
+
 
         const response = await axios.get("/User/readUser/",{
             headers:{
-                Authorization:`Bearer ${TOKEN_FETCH}`
+                Authorization:`Bearer ${TokenUser}`
             }
         });
         console.log(response.data)
@@ -25,12 +26,12 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
     export const updatingUsersReal = createAsyncThunk("updateUsersReal", async (newDataUser) => {
 
         console.log(newDataUser)
-        const tokenSession = getTokenSession()
+
 
 
         const response = await axios.put(`/User/updateUser/${newDataUser.id}`, newDataUser,{
             headers:{
-                Authorization:`Bearer ${TOKEN_FETCH}`
+                Authorization:`Bearer ${TokenUser}`
             }
         } );
         console.log(response.data)
@@ -40,13 +41,9 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
     export const deleteUsersReal = createAsyncThunk("deleteUsersReal", async (id) => {
 
         
-        const tokenSession = getTokenSession()
-
-
         const response = await axios.delete(`/User/deleteUser/${id}`, {
-
             headers:{
-                Authorization:`Bearer ${TOKEN_FETCH}`
+                Authorization:`Bearer ${TokenUser}`
             }
         } )
         console.log(response.data)
@@ -56,14 +53,14 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
     export const activeUsersReal = createAsyncThunk("activeUsersReal", async (id) => {
 
         
-        const tokenSession = getTokenSession()
+    
         console.log(id)
         
         
         
         return await axios.put(`User/restoreUser/${id}`, null, {
             headers:{
-                Authorization:`Bearer ${TOKEN_FETCH}`
+                Authorization:`Bearer ${TokenUser}`
             }
         } )
         .then(response => response.data)
@@ -74,13 +71,11 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 
     export const getallUsersReal = createAsyncThunk("readAllUsersReal", async (id) => {
 
-        
-        const tokenSession = getTokenSession()
 
 
         const response = await axios.get(`/user/readDeletedUsers`,{
             headers:{
-                Authorization:`Bearer ${TOKEN_FETCH}`
+                Authorization:`Bearer ${TokenUser}`
             }
         } );
         console.log(response.data)

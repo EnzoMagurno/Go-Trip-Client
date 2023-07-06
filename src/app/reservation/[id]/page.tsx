@@ -3,11 +3,12 @@
 import { SetStateAction, useEffect, useState } from 'react'
 import { BsArrowLeftShort } from 'react-icons/bs'
 import Link from 'next/link'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
+
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice'
-import { fetchRoomById } from '@/redux/Features/Room/RoomSlice'
+import { fetchinHotelId } from '../../../redux/Features/Hotel/hotelsSlice';
+import { fetchRoomById } from '../../../redux/Features/Room/RoomSlice';
 import { useRouter } from 'next/navigation'
 import MercadoPago from '../../../../public/mercado-pago.svg'
 import Image from 'next/image'
@@ -43,6 +44,9 @@ interface User {
 }
 
 const page = (props: PageProps): React.ReactNode => {
+
+
+    const [tokenSession, setTokenSession] = useLocalStorage('token', '');
     const [idSession, setIdSession] = useLocalStorage('idSession', '')
     const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
     const [userSession, setUserSession] = useLocalStorage<User>('userData', {})
@@ -90,7 +94,6 @@ const page = (props: PageProps): React.ReactNode => {
 
     const handlePayment2 = async (): Promise<void> => {
         try {
-            const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
             const data = {
                 "userId": `${idSession}`,
                 "bookingId": crypto.randomUUID(),
@@ -107,7 +110,7 @@ const page = (props: PageProps): React.ReactNode => {
             };
             const mercadoPagoResponse = await axios.post('/urlPago/mercadoPago', data, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${tokenSession}`
                 }
             });
             const linkPay = mercadoPagoResponse.data.linkPago

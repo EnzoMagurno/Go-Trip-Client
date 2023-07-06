@@ -1,9 +1,7 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-
-const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
+import { TokenUser } from "../Citys/CitySlice";
 
 /* interface InitialStateHotel {
 	hotelData: [],
@@ -12,14 +10,11 @@ const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 } */
 
 export const fetchingHotel = createAsyncThunk('getHotels', async () => {
-	try {
-		const token = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
-		const response = await axios.get('/hotel/findHotel', {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+	try {
+		
+
+		const response = await axios.get('/hotel/findHotel');
 
 		const data = await response.data;
 		return data;
@@ -31,26 +26,27 @@ export const fetchingHotel = createAsyncThunk('getHotels', async () => {
 });
 
 
+
 export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
 	try {
 
-		const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
 
 
 		const response = await axios.get(`/hotel/findhotel/${id}`,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			}
-		);
-		const data = response.data;
-		return data;
-	} catch (error) {
-		// Manejar el error según tus necesidades
-		console.error('Error al obtener el hotel:', error);
-		throw error;
-	}
+                                     {
+      headers: {
+        Authorization: `Bearer ${TokenUser}`
+      }
+    });
+    const data = await response.data;
+    return data;
+  } catch (error) {
+    // Manejar el error según tus necesidades
+    console.error('Error al obtener el hotel:', error);
+    throw error;
+  }
+
 
 });
 
@@ -58,11 +54,11 @@ export const updateHotel = createAsyncThunk(
 	'postHotel',
 	async (updatedData) => {
 		try {
-			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH;
+
 
 			const response = await axios.put('/hotel/updhotel', updatedData, {
 				headers: {
-					Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${TokenUser}`,
 				},
 			});
 
@@ -77,12 +73,15 @@ export const updateHotel = createAsyncThunk(
 );
 
 export const deleteHotel = createAsyncThunk('deleteHotel', async (id) => {
-	return await axios.delete(`/hotel/delHotel/${id}`, {
-		method: 'DELETE',
-		headers: {
-			Authorization: `Bearer ${TOKEN_FETCH}`,
-		},
-	})
+
+	return axios
+		.delete(`/hotel/delHotel/${id}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${TokenUser}`,
+			},
+		})
+
 		.then((response) => {
 			console.log(response.data);
 			return response.data;
@@ -93,7 +92,7 @@ export const restoreHotel = createAsyncThunk('restoreHotel', async (id) => {
 	return axios
 		.put(`/hotel/restoreHotel/${id}`, null, {
 			headers: {
-				Authorization: `Bearer ${TOKEN_FETCH}`,
+				Authorization: `Bearer ${TokenUser}`,
 			},
 		})
 		.then((response) => {
@@ -108,7 +107,7 @@ export const getDeletedHotels = createAsyncThunk(
 		return axios
 			.get(`/hotel/readDeletedHotel`, {
 				headers: {
-					Authorization: `Bearer ${TOKEN_FETCH}`,
+					Authorization: `Bearer ${TokenUser}`,
 				},
 			})
 			.then((response) => response.data)

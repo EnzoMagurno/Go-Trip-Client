@@ -28,7 +28,7 @@ const FiltersHotels = ({optionDefault, optionOrderDefault}) => {
             className="bg-zinc-50 h-10 w-full pl-2  outline-iconsPurple "
             onChange={handleInputChange}
             value={nameU}
-            placeholder="Search user..."
+            placeholder="Search hotel..."
             />
             <div className="absolute bg-iconsPurple hover:bg-orangeBg transition duration-300 w-10 h-full top-0 right-0 cursor-pointer  flex items-center justify-center">
             <BsSearch 

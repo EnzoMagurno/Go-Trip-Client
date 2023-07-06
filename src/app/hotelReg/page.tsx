@@ -15,6 +15,7 @@ import { MainGlobal } from '@/redux/mainInterface';
 import { DragAndDrop } from '@/components/Drag & Drop/DragAndDrop';
 import { Loader } from '@googlemaps/js-api-loader';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 const asapSemi = Asap({
   weight: ['600'],
@@ -61,7 +62,7 @@ function HotelRegister() {
 
   },[])
 
-  
+  const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
 
 interface FormState {
@@ -98,13 +99,13 @@ const handleSubmit = async (e: any) => {
   const formPost = { ...form };
   formPost.numberRooms = Number(form.numberRooms);
   
-  
+  console.log(tokenSession)
   console.log(formPost);
   try {
-    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
     const response = await axios.post("/hotel/newhotel", formPost, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${tokenSession}`
       }
     });
 

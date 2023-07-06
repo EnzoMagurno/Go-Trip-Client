@@ -48,13 +48,23 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 	const dispatch = useDispatch();
 
 	const [editData, setEditData] = useState({
-		name: '',
-		email: '',
-		phone: '',
-		checkIn: '',
-		checkOut: '',
-		overview: '',
-		image: '',
+		address,
+		checkIn,
+		checkOut,
+		destination,
+		destinationId,
+		email,
+		id,
+		image,
+		latitude,
+		phone,
+		longitude,
+		name,
+		numberRooms,
+		overview,
+		rooms,
+		status,
+		gallery
 	});
 
 	const [emailInputDisabled, setEmailEdit] = useState('hidden');
@@ -113,11 +123,10 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 									<div className='absolute z-20 top-0 right-0 bg-white w-10 h-full rounded-lg flex justify-center items-center '>
 										<CiSaveDown2
 											onClick={() => {
-												useEffect( ()=> {
+												
 													dispatch(updateHotel({ id, email: editData.email }));
 												dispatch(fetchinHotelId(id));
 												setEmailEdit('hidden');
-												},[gallery])
 												
 											}}
 											className=' text-iconsPurple w-7 h-7 text-xl '
