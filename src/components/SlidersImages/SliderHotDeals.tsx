@@ -9,7 +9,7 @@ import 'swiper/swiper-bundle.css';
 import { useRouter } from 'next/navigation';
 import { fetchinCommentByHotel } from '@/redux/Features/Commets/CommentsSlice';
 import StarRating from '@/components/StarRaiting/StarRaiting';
-
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 
 import { Fonts } from './SliderHotels';
@@ -17,7 +17,7 @@ import { Fonts } from './SliderHotels';
 const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 
 	const [response, setResponse] = useState(null);
-
+	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
 
 	const router = useRouter();
@@ -25,11 +25,11 @@ const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 		  try {
-			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+			
 	
 			const response = await axios.get('/hotel/findhotel/?destinationId=5ce1ce9c-ceda-4666-8c72-0f4ec34a21fe', {
 			  headers: {
-				Authorization: `Bearer ${token}`
+				Authorization: `Bearer ${tokenSession}`
 			  }
 			});
 			setResponse(response.data)

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '@/utils/axios'
 
-
+import { TokenUser } from "../Citys/CitySlice";
 export interface InitialStateRoom {
     roomData: {}
     copyRoomData: {}
@@ -11,11 +11,11 @@ export interface InitialStateRoom {
 export const fetchRoomById = createAsyncThunk(
     "booking/fetchRoomById",
     async (roomId, { rejectWithValue }) => {
-        const TOKEN = process.env.NEXT_PUBLIC_TOKEN_FETCH
+        
         try {
             const response = await axios.get(`/rooms/findRooms/${roomId}`, {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`,
+                    Authorization: `Bearer ${TokenUser}`,
                     'Content-Type': 'application/json',
                 }
             });
@@ -29,12 +29,12 @@ export const fetchRoomById = createAsyncThunk(
 
 export const fetchingRooms = createAsyncThunk("getRooms", async () => {
     try {
-      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+      
   
       const response = await axios.get("/rooms/findRooms", {
   
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${TokenUser}`
         }
       });
   

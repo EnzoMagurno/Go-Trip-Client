@@ -5,11 +5,11 @@ import { BsArrowLeftShort } from 'react-icons/bs'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice'
-import { fetchRoomById } from '@/redux/Features/Room/RoomSlice'
+import { fetchinHotelId } from '../../../redux/Features/Hotel/hotelsSlice';
+import { fetchRoomById } from '../../../redux/Features/Room/RoomSlice';
 import { useRouter } from 'next/navigation'
 
 const asap = Asap({ subsets: ['latin'] })
@@ -30,6 +30,9 @@ interface PageProps {
 }
 
 const page = (props: PageProps): React.ReactNode => {
+
+
+    const [tokenSession, setTokenSession] = useLocalStorage('token', '');
     const [idSession, setIdSession] = useLocalStorage('idSession', '')
     console.log(idSession);
 
@@ -74,8 +77,8 @@ const page = (props: PageProps): React.ReactNode => {
         try {
 
 
-            const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 
+           
 
 
             const data = {
@@ -94,7 +97,7 @@ const page = (props: PageProps): React.ReactNode => {
             };
             const mercadoPagoResponse = await axios.post('/urlPago/mercadoPago', data, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${tokenSession}`
                 }
             });
             console.log(mercadoPagoResponse.data.linkPago);

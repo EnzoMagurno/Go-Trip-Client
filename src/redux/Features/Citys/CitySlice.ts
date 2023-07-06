@@ -1,7 +1,12 @@
+"use client"
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MainGlobal } from '@/redux/mainInterface';
 import axios from '@/utils/axios';
-const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
+import { GiToken } from 'react-icons/gi';
+export const TokenUser = localStorage.token.replace(/["']/g, '');
+
+
 
 interface CityName {
 	name: string;
@@ -25,40 +30,49 @@ export interface InitialStateCity {
 }
 
 export const fetchingCities = createAsyncThunk('getCities', async () => {
-	return await axios(`/destination`, {
-		method: 'GET',
 
-		headers: {
-			Authorization: `Bearer ${TOKEN_FETCH}`,
-		},
-	})
-		.then((response) => response.data)
+
+/* const tokenSession = request.cookies.get("gootripCookie") */
+
+	return await axios(`/destination`)
+		.then((response) => {
+			console.log(response.data)		
+			return response.data
+		})
 		.catch((error) => console.log(error.message));
 });
 
 export const fetchingCity = createAsyncThunk('getCity', async (cityName) => {
+	
 	return await axios
-		.get(`/destination/?city=${cityName}`, {
+		.get(`/destination/?city=${cityName}` , {
 			headers: {
-				Authorization: `Bearer ${TOKEN_FETCH}`,
+				Authorization: `Bearer ${TokenUser}`,
 			},
-		})
+		} )
 		.then((response) => response.data)
 		.catch((error) => console.log(error.message));
 });
 
+
 export const getHotelsCoincidencesByCityId = createAsyncThunk(
 	'getHotelsByCity',
 	async (id) => {
-		if (!id) return;
 
+		
+
+		
+		if (!id) return;
 		return await axios
-			.get(`/destination/${id}`, {
+			.get(`/destination/${id}` , {
 				headers: {
-					Authorization: `Bearer ${TOKEN_FETCH}`,
+					Authorization: `Bearer ${TokenUser}`,
 				},
 			})
-			.then((response) => response.data)
+			.then((response) => {
+				console.log(response.data) 
+			return response.data
+		})
 			.catch((error) => console.log(error.message));
 	}
 );
