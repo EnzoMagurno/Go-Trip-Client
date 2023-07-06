@@ -125,7 +125,7 @@ const ContainerTypesRooms = ({ roomType }: any) => {
 
 							
 								<ul className='px-10 grid grid-cols-2 justify-between'>
-									{serviceName && serviceName?.map(c => (<li className=''>- {c.name}</li>))}
+									{serviceName && Array.isArray(serviceName) && serviceName?.map(c => (<li className=''>- {c.name}</li>))}
 									
 								</ul>
 							

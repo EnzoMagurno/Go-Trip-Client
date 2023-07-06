@@ -40,6 +40,7 @@ const SliderHotels  = () => {
 					firstTenCities?.map((city: any) => {
 						return (
 							<button
+							key={city.id}
 								onClick={() => {
 
 									dispatch(getHotelsCoincidencesByCityId(city.id));

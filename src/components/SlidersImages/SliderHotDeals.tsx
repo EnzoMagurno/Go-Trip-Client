@@ -54,7 +54,6 @@ const SliderHotDeals =  () => {
 		
 	  const hoteles = response ? response : [];
 
-console.log(response);
  
 
 
@@ -65,8 +64,10 @@ console.log(response);
     <div className="swiper-container ">
       <div className="swiper-wrapper">
         {/* Agrega tus divs del carrusel aquí */}
-		{hoteles && hoteles.map((hotel:any) => 
-			<button onClick={() => {
+		{hoteles && hoteles.map(hotel => 
+			<button 
+			key={hotel.id}
+			onClick={() => {
 				router.push(`/detail/${hotel.id}`);
 			}} className="swiper-slide">
 				

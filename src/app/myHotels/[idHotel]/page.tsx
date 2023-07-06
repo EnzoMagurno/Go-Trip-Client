@@ -15,7 +15,7 @@ import { AnyAction } from '@reduxjs/toolkit';
 
 
 
-const DetailHotel = ({ params }: {params: any}) => {
+const DetailHotel = ({ params }) => {
 
 	const { idHotel } = params
 
@@ -39,7 +39,7 @@ const [selectedImage, setSelectedImage] = useState("null");
 	const [showOverlay, setShowOverlay] = useState(false);
   
 	
-	const handleImageClick = (image: string) => {
+	const handleImageClick = (image) => {
 		setSelectedImage(image);
 		setShowOverlay(true);
 	  };
@@ -70,6 +70,7 @@ const [selectedImage, setSelectedImage] = useState("null");
 				
 			{hotel.gallery && hotel.gallery?.map((i: any, index: any)=> (
 				<Image 
+				key={index}
 				className='rounded-xl'
 				src={i.urlIMG}
 				width={150}

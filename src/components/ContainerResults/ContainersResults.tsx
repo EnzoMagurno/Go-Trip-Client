@@ -6,38 +6,28 @@ import { useEffect, useState } from "react";
 import { getHotelsCoincidencesByCityId } from "../../redux/Features/Citys/CitySlice";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import FiltersBar from "../Filters/FiltersBar";
-import { ThunkDispatch } from '@reduxjs/toolkit';
-import { RootState } from '@/redux/store';
-import { AnyAction } from '@reduxjs/toolkit';
-
-	
-
-	
-const ContainerResults = () => {
+const ContainerResults = ({roboto}) => {
     const searchParams = useSearchParams()
     const idCity = searchParams.get("city")
     const [tokenSession, setTokenSession] = useLocalStorage('token', '');
+    const dispatch = useDispatch()
 
-    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
 
+  const [sortOrder, setSortOrder] = useState('asc'); // Estado para el orden de clasificación
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
     const destination = useSelector((state: any) => state.city.hotelByCity) 
     console.log(destination)
 
+  useEffect(() => {
+    dispatch(getHotelsCoincidencesByCityId(idCity));
+  }, [idCity]);
 
-  
-    
 
-    
-    useEffect(() => {
-        console.log(tokenSession)
-        dispatch(getHotelsCoincidencesByCityId(idCity))
-
-    }, [idCity])
-
-    
-
+  const handleSortOrderChange = (value: any) => {
+    setSortOrder(value);
+  };
     
 
     if (destination?.hotel?.length) {
@@ -59,7 +49,6 @@ const ContainerResults = () => {
                         country={destination.country}
                    
                        
-        
                         />)
                 }    
               
@@ -76,5 +65,6 @@ const ContainerResults = () => {
     }
    
 };
+
 
 export default ContainerResults;
