@@ -12,7 +12,7 @@ import ImageOptions from '@/components/Imageoptions/ImageOptions'
 
 
 
-const DetailHotel = ({ params }) => {
+const DetailHotel = ({ params }: any) => {
 
 	const { idHotel } = params
 
@@ -36,7 +36,7 @@ const [selectedImage, setSelectedImage] = useState(null);
 	const [showOverlay, setShowOverlay] = useState(false);
   
 	
-	const handleImageClick = (image) => {
+	const handleImageClick = (image: any) => {
 		setSelectedImage(image);
 		setShowOverlay(true);
 	  };
@@ -54,8 +54,9 @@ const [selectedImage, setSelectedImage] = useState(null);
 			<h5 className='text-lg font-bold mt-3 mb-3 text-iconsPurple'>Photos</h5>
 			<div className='m-5 max-h-64 overflow-scroll rounded-lg shadow-cardTypeRoom grid grid-cols-2 gap-2 p-2'>
 				
-			{hotel.gallery && hotel.gallery?.map((i, index)=> (
+			{hotel.gallery && hotel.gallery?.map((i: any, index: any)=> (
 				<Image 
+				key={index}
 				className='rounded-xl'
 				src={i.urlIMG}
 				width={150}
