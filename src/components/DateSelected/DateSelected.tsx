@@ -1,7 +1,7 @@
 'use client';
 
 import { useSelector } from 'react-redux';
-const DateSelected = () => {
+const DateSelected = ({ toggleOpen }) => {
 	const [dateOne, dateTwo] = useSelector((state) => state.date.dates);
 	return (
 		<>
@@ -18,7 +18,7 @@ const DateSelected = () => {
 					<p>Exit</p>
 				</div>
 				
-				<div  className='flex w-56 cursor-pointer justify-evenly items-center border  border-iconsPurple rounded-lg'>
+				<div onClick={toggleOpen} className='flex w-56 cursor-pointer justify-evenly items-center border  border-iconsPurple rounded-lg'>
 					<p className='  rounded-lg p-1'>{dateOne}</p>
 					<div>-</div>
 					<p className=' rounded-lg p-1'>{dateTwo}</p>

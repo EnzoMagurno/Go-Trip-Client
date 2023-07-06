@@ -122,7 +122,7 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 
 							
 								<ul className='px-10 grid grid-cols-2 justify-between'>
-									{serviceName && Array.isArray(serviceName) && serviceName?.map(c => (<li className=''>- {c.name}</li>))}
+									{serviceName && serviceName?.map(c => (<li className=''>- {c.name}</li>))}
 									
 								</ul>
 							

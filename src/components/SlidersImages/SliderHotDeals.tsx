@@ -56,6 +56,7 @@ const SliderHotDeals: React.FC<Fonts> =  () => {
 		
 	  const hoteles = response ? response : [];
 
+console.log(response);
  
 
 
@@ -67,9 +68,7 @@ const SliderHotDeals: React.FC<Fonts> =  () => {
       <div className="swiper-wrapper">
         {/* Agrega tus divs del carrusel aquí */}
 		{hoteles && hoteles.map(hotel => 
-			<button 
-			key={hotel.id}
-			onClick={() => {
+			<button onClick={() => {
 				router.push(`/detail/${hotel.id}`);
 			}} className="swiper-slide">
 				
