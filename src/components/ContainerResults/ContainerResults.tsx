@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import StarRating from "../StarRaiting/StarRaiting";
 import { fetchingRooms, fetchRoomById } from "@/redux/Features/Room/RoomSlice";
 
-const ContainerResult = (props) => {
+const ContainerResult = (props: any) => {
     console.log(props);
     
 
@@ -51,14 +51,14 @@ const calif = Array.isArray(comments)
 
 console.log(calif);
 
-const nums = []
+const nums: any[] = []
 calif.map((r) => nums.push(r.rating))
 
 
 
 
-const promedio = (num) => {
-    const sum = num.reduce((acc, num) => acc + num, 0);
+const promedio = (num: any) => {
+    const sum = num.reduce((acc: any, num: any) => acc + num, 0);
     const average = sum / num.length;
     const roundedValue = Math.round(average);
     return roundedValue;
