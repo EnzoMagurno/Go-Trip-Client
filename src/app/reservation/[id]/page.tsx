@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice'
 import { fetchRoomById } from '@/redux/Features/Room/RoomSlice'
 import { useRouter } from 'next/navigation'
+import { FormState } from '@/app/register/page'
 
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
@@ -28,10 +29,29 @@ interface PageProps {
         }
     }
 }
+interface User {
+    address?: string,
+    birthday: string,
+    confirmPassword: string,
+    country: string,
+    dniPassport?: string
+    email: string,
+    gender?: string,
+    name: string,
+    password: string,
+    phone: string,
+    phoneCode: string,
+    photoUser: string[],
+    postalCode: string,
+    rol: string
+}
 
 const page = (props: PageProps): React.ReactNode => {
     const [idSession, setIdSession] = useLocalStorage('idSession', '')
-    console.log(idSession);
+    const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
+    const [userSession, setUserSession] = useLocalStorage<User>('userData', {})
+    console.log(userSession, 'ESTO ES USERSESSION');
+    console.log(idSession, 'esto es idsession');
 
     const { params, searchParams } = props
     const router = useRouter()
@@ -79,10 +99,10 @@ const page = (props: PageProps): React.ReactNode => {
 
 
             const data = {
-                "userId": "69e3f4f3-1e33-4f22-bbd0-8c9264609890",
+                "userId": `${idSession}`,
                 "bookingId": "8893a44a-ff2c-4e43-90b0-c9acc6c66cd4",
-                "name": "Joselito joselito",
-                "email": "mcdany996@gmail.com",
+                "name": `${userNameSession}`,
+                "email": `${userSession.email}`,
                 "reserva": [
                     {
                         "id": 1,

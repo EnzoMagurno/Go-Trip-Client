@@ -1,14 +1,14 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 
 const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
 
 /* interface InitialStateHotel {
-    hotelData: [],
-    copyHotelData: [],
-    hotel: {}
+	hotelData: [],
+	copyHotelData: [],
+	hotel: {}
 } */
 
 export const fetchingHotel = createAsyncThunk('getHotels', async () => {
@@ -31,25 +31,27 @@ export const fetchingHotel = createAsyncThunk('getHotels', async () => {
 });
 
 
-export const  fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
-  try {
+export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
+	try {
 
-    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+		const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 
 
-    const response = await axios.get(`/hotel/findhotel/${id}`, {
+		const response = await axios.get(`/hotel/findhotel/${id}`
+			// {
 
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    const data = await response.data;
-    return data;
-  } catch (error) {
-    // Manejar el error según tus necesidades
-    console.error('Error al obtener el hotel:', error);
-    throw error;
-  }
+			// 	headers: {
+			// 		Authorization: `Bearer ${token}`
+			// 	}
+			// }
+		);
+		const data = response.data;
+		return data;
+	} catch (error) {
+		// Manejar el error según tus necesidades
+		console.error('Error al obtener el hotel:', error);
+		throw error;
+	}
 
 });
 
@@ -125,43 +127,43 @@ const hotelSlice = createSlice({
 		copyHotelsDeleted: [],
 		filterHotelStatus: 'All hotels',
 		orderAlpha: 'A - Z',
-    responseSuccesfull: {},
+		responseSuccesfull: {},
 		hotel: {},
 	},
 	reducers: {
 		searchByName: (state, action) => {
-      
-      if (state.filterHotelStatus === "Active hotels") { 
-      state.copyHotelData = [ ...state.hotelData ].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
-      } else if (state.filterHotelStatus === "Disabled hotels") {
-        state.copyHotelsDeleted = [ ...state.hotelsDeleted ].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
-    } else if (state.filterHotelStatus === "All hotels") {
-      state.copyHotelData = [ ...state.hotelData ].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
-      state.copyHotelsDeleted = [ ...state.hotelsDeleted ].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
 
-    }
-      }, 
+			if (state.filterHotelStatus === "Active hotels") {
+				state.copyHotelData = [...state.hotelData].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
+			} else if (state.filterHotelStatus === "Disabled hotels") {
+				state.copyHotelsDeleted = [...state.hotelsDeleted].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
+			} else if (state.filterHotelStatus === "All hotels") {
+				state.copyHotelData = [...state.hotelData].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
+				state.copyHotelsDeleted = [...state.hotelsDeleted].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
+
+			}
+		},
 		filterHotelsByStatus: (state, action) => {
 			if (action.payload === 'active') {
 				state.filterHotelStatus = 'Active hotels';
-        state.orderAlpha = "A - Z"
-        state.copyHotelsDeleted = []
+				state.orderAlpha = "A - Z"
+				state.copyHotelsDeleted = []
 			} else if (action.payload === 'disabled') {
 				state.filterHotelStatus = 'Disabled hotels';
-        state.orderAlpha = "A - Z"
-        state.copyHotelData = []
+				state.orderAlpha = "A - Z"
+				state.copyHotelData = []
 			} else {
 				state.filterHotelStatus = 'All hotels';
-        state.orderAlpha = "A - Z"
-        state.copyHotelData = state.hotelData
-        state.copyHotelsDeleted = state.hotelsDeleted
+				state.orderAlpha = "A - Z"
+				state.copyHotelData = state.hotelData
+				state.copyHotelsDeleted = state.hotelsDeleted
 			}
 		},
-    orderHotelsAlpha: (state, action) => {
+		orderHotelsAlpha: (state, action) => {
 
-      if (action.payload === "az" && state.filterHotelStatus === "Active hotels") {
-        state.orderAlpha = "A - Z"
-        state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
+			if (action.payload === "az" && state.filterHotelStatus === "Active hotels") {
+				state.orderAlpha = "A - Z"
+				state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
 					if (a.name < b.name) {
 						return -1;
 					}
@@ -171,24 +173,24 @@ const hotelSlice = createSlice({
 					return 0;
 				});
 
-      } else if (action.payload === "za" && state.filterHotelStatus === "Active hotels") {
-        
-        state.orderAlpha = "Z - A"
-        state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
-          if (a.name < b.name) {
-              return 1
-          } 
+			} else if (action.payload === "za" && state.filterHotelStatus === "Active hotels") {
 
-          if (a.name > b.name) {
-              return -1
-          }
+				state.orderAlpha = "Z - A"
+				state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
+					if (a.name < b.name) {
+						return 1
+					}
 
-          return 0
-      })
-        
-      } else if (action.payload === "az" && state.filterHotelStatus === "Disabled hotels") {
-        state.orderAlpha = "A - Z"
-        state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
+					if (a.name > b.name) {
+						return -1
+					}
+
+					return 0
+				})
+
+			} else if (action.payload === "az" && state.filterHotelStatus === "Disabled hotels") {
+				state.orderAlpha = "A - Z"
+				state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
 					if (a.name < b.name) {
 						return -1;
 					}
@@ -198,78 +200,78 @@ const hotelSlice = createSlice({
 					return 0;
 				});
 
-      } else if (action.payload === "za" && state.filterHotelStatus === "Disabled hotels") {
-        state.orderAlpha = "Z - A"
-        state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
-          if (a.name < b.name) {
-              return 1
-          } 
+			} else if (action.payload === "za" && state.filterHotelStatus === "Disabled hotels") {
+				state.orderAlpha = "Z - A"
+				state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
+					if (a.name < b.name) {
+						return 1
+					}
 
-          if (a.name > b.name) {
-              return -1
-          }
+					if (a.name > b.name) {
+						return -1
+					}
 
-          return 0
-      })
-        
-      } else if (action.payload === "az" && state.filterHotelStatus === "All hotels") {
-        state.orderAlpha = "A - Z"
-        state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
-          if (a.name < b.name) {
-              return -1
-          } 
+					return 0
+				})
 
-          if (a.name > b.name) {
-              return 1
-          }
+			} else if (action.payload === "az" && state.filterHotelStatus === "All hotels") {
+				state.orderAlpha = "A - Z"
+				state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
+					if (a.name < b.name) {
+						return -1
+					}
 
-          return 0
-      })
-      state.copyHotelsDeleted = [...state.copyHotelData].sort((a, b) => {
-        if (a.name < b.name) {
-            return -1
-        } 
+					if (a.name > b.name) {
+						return 1
+					}
 
-        if (a.name > b.name) {
-            return 1
-        }
+					return 0
+				})
+				state.copyHotelsDeleted = [...state.copyHotelData].sort((a, b) => {
+					if (a.name < b.name) {
+						return -1
+					}
 
-        return 0
-    })
+					if (a.name > b.name) {
+						return 1
+					}
 
-      } else if (action.payload === "za" && state.filterHotelStatus === "All hotels") {
-        state.orderAlpha = "Z - A"
-        state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
-          if (a.name < b.name) {
-              return 1
-          } 
+					return 0
+				})
 
-          if (a.name > b.name) {
-              return -1
-          }
+			} else if (action.payload === "za" && state.filterHotelStatus === "All hotels") {
+				state.orderAlpha = "Z - A"
+				state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
+					if (a.name < b.name) {
+						return 1
+					}
 
-          return 0
-      })
-      state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
-        if (a.name < b.name) {
-            return 1
-        } 
+					if (a.name > b.name) {
+						return -1
+					}
 
-        if (a.name > b.name) {
-            return -1
-        }
+					return 0
+				})
+				state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
+					if (a.name < b.name) {
+						return 1
+					}
 
-        return 0
-    })
-        
-      }
-    }
+					if (a.name > b.name) {
+						return -1
+					}
+
+					return 0
+				})
+
+			}
+		}
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchingHotel.fulfilled, (state, action) => {
-        
-        if (state.filterHotelStatus === "Disabled hotels") return
+
+				if (state.filterHotelStatus === "Disabled hotels") return
 				const hotelsOrdered = [...action.payload].sort((a, b) => {
 					if (a.name < b.name) {
 						return -1;
@@ -290,42 +292,42 @@ const hotelSlice = createSlice({
 			})
 			.addCase(deleteHotel.fulfilled, (state, action) => {
 				state.hotel = action.payload;
-        state.responseSuccesfull = action.payload
+				state.responseSuccesfull = action.payload
 			})
 			.addCase(restoreHotel.fulfilled, (state, action) => {
-        state.responseSuccesfull = action.payload
-        console.log(state.responseSuccesfull)
+				state.responseSuccesfull = action.payload
+				console.log(state.responseSuccesfull)
 			})
 			.addCase(getDeletedHotels.fulfilled, (state, action) => {
-        if (action.payload === "Request failed with status code 401") {
+				if (action.payload === "Request failed with status code 401") {
 
 
-          state.hotelsDeleted = []
-				state.copyHotelsDeleted = []
+					state.hotelsDeleted = []
+					state.copyHotelsDeleted = []
 
 
-        } else {
+				} else {
 
 
-          if (state.filterHotelStatus === "Active hotels") return  
-        
-				if (!Array.isArray(action.payload)) return;
+					if (state.filterHotelStatus === "Active hotels") return
 
-				const hotelsDeletedOrdered = [...action.payload].sort((a, b) => {
-					if (a.name < b.name) {
-						return -1;
-					}
+					if (!Array.isArray(action.payload)) return;
 
-					if (a.name > b.name) {
-						return 1;
-					}
+					const hotelsDeletedOrdered = [...action.payload].sort((a, b) => {
+						if (a.name < b.name) {
+							return -1;
+						}
 
-					return 0;
-				});
-				state.hotelsDeleted = hotelsDeletedOrdered;
-				state.copyHotelsDeleted = hotelsDeletedOrdered;
-        }
-       
+						if (a.name > b.name) {
+							return 1;
+						}
+
+						return 0;
+					});
+					state.hotelsDeleted = hotelsDeletedOrdered;
+					state.copyHotelsDeleted = hotelsDeletedOrdered;
+				}
+
 			});
 	},
 });
