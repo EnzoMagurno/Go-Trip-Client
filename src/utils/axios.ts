@@ -1,15 +1,7 @@
 import axios from 'axios';
 
-<<<<<<< HEAD
 
 axios.defaults.baseURL = process.env.BASE_URL;
-
-// axios.defaults.baseURL = "http://localhost:8000";
-axios.defaults.baseURL = "https://gotrippf-production.up.railway.app"
-=======
-// axios.defaults.baseURL = process.env.BASE_URL;
->>>>>>> 3d57f8473dd58c1a09102a486e6e5c1347338b6c
-
 
 /* axios.defaults.baseURL = 'http://localhost:8000'; */
 axios.defaults.baseURL = 'https://gotrippf-production.up.railway.app/';

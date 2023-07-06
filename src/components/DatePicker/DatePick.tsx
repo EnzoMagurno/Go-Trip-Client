@@ -16,7 +16,7 @@ interface PropsDatePick {
 	setInputIsDisabled: any
 }
 
-const DatePick: React.FC<PropsDatePick> = ({ open, setInputIsDisabled, toggleOpen }) => {
+const DatePick: React.FC<PropsDatePick> = ({ open, setInputIsDisabled }) => {
 
 	const phoneScreen = 650;
 
