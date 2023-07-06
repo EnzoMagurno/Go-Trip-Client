@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Fonts } from './SliderHotels';
 import { RiH1 } from 'react-icons/ri';
-
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 
 	const [paris, setParis] = useState(null);
 	const [bali, setBali] = useState(null);
+	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
 	
 const router = useRouter()
@@ -17,13 +18,9 @@ const router = useRouter()
 	useEffect(() => {
 		const fetchParis = async () => {
 		  try {
-			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
 	
-			const response = await axios.get('/hotel/findhotel?name=Hotel du Collectionneur', {
-			  headers: {
-				Authorization: `Bearer ${token}`
-			  }
-			});
+			const response = await axios.get('/hotel/findhotel?name=Hotel du Collectionneur');
 			setParis(response.data[0]); 
 		  } catch (error) {
 			console.error('Error en la petición:', error);
@@ -32,13 +29,9 @@ const router = useRouter()
 	
 		const fetchBali = async () => {
 		  try {
-			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
 	
-			const response = await axios.get('/hotel/findhotel?name=The Kayon Valley Resort', {
-			  headers: {
-				Authorization: `Bearer ${token}`
-			  }
-			});
+			const response = await axios.get('/hotel/findhotel?name=The Kayon Valley Resort');
 			setBali(response.data[0]); 
 		  } catch (error) {
 			console.error('Error en la petición:', error);

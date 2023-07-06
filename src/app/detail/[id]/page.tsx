@@ -4,7 +4,7 @@ import { Josefin_Sans, Roboto } from 'next/font/google';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice';
-import React, { useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation';
 import { TbHomeCancel } from 'react-icons/tb'
 import { AiFillBook } from 'react-icons/ai'
@@ -13,7 +13,7 @@ import Link from 'next/link'
 import CommentPost from '@/components/ComentPost/CommentPost';
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import StarRating from '@/components/StarRaiting/StarRaiting';
-import { fetchinCommentByHotel,selectCommentsByHotelId  } from '@/redux/Features/Commets/CommentsSlice';
+import { fetchinCommentByHotel, selectCommentsByHotelId } from '@/redux/Features/Commets/CommentsSlice';
 
 
 const RobotoBold = Roboto({
@@ -62,6 +62,7 @@ interface Params {
 
 const Detail = ({ params }: { params: Params }) => {
     const [idSession, setIdSession] = useLocalStorage('idSession', '');
+    const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
     const { id } = params
 
@@ -70,23 +71,25 @@ const Detail = ({ params }: { params: Params }) => {
     const handleCommentSubmit = async (comment: Comment) => {
         console.log(comment);
         try {
-            const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
-            const response = await axios.post("/comments", comment, {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            });
-        
-            console.log(response.data);
             
+            const response = await axios.post("/comments", comment, {
+
+              headers: {
+                Authorization: `Bearer ${tokenSession}`
+              }
+
+            });
+
+            console.log(response.data);
+
             window.location.reload();
 
-          } catch (error) {
+        } catch (error) {
             console.error('Rating error:', error);
-          }
-      };
+        }
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         dispatch(fetchinHotelId(id))
         dispatch(fetchinCommentByHotel(id))
     }, [])
@@ -94,32 +97,32 @@ const Detail = ({ params }: { params: Params }) => {
     const hotel = useSelector(state => state.hotel.hotel)
     const comments = useSelector((state) => state.comment.comment);
     console.log(comments);
-    
 
-const calif = Array.isArray(comments)
-    ? comments.filter((comment) => comment.hotelId === id)
-    : [];
 
-console.log(calif);
+    const calif = Array.isArray(comments)
+        ? comments.filter((comment) => comment.hotelId === id)
+        : [];
 
-const nums = []
-calif.map((r) => nums.push(r.rating))
+    console.log(calif);
 
-const coms = []
-calif.map((r) => coms.push(r.comment))
+    const nums = []
+    calif.map((r) => nums.push(r.rating))
 
-    
+    const coms = []
+    calif.map((r) => coms.push(r.comment))
+
+
     const promedio = (num) => {
         const sum = num.reduce((acc, num) => acc + num, 0);
         const average = sum / num.length;
         const roundedValue = Math.round(average);
         return roundedValue;
-      }
+    }
 
 
     const result = promedio(nums)
-    
-      
+
+
 
     const dispatch: Dispatch = useDispatch()
     const Room = ({ room }: Hotel) => (
@@ -167,7 +170,7 @@ calif.map((r) => coms.push(r.comment))
         </div>
     );
 
-   
+
 
     return (
         <div className='max-w-screen-xl mx-auto flex flex-col'>
@@ -177,7 +180,7 @@ calif.map((r) => coms.push(r.comment))
                     <h3 className="text-xl font-semibold">{hotel.name}</h3>
                     <h4 className="text-gray-500">{hotel.destination && hotel.destination.city}</h4>
                     <p className="text-gray-500">{hotel.destination && hotel.destination.country}</p>
-                    <StarRating rating={result}/>
+                    <StarRating rating={result} />
                     <div className="flex flex-col justify-start mt-4">
                         <span className="text-gray-700 font-bold">Check-in <span className='pl-2'>{hotel.checkIn}</span></span>
                         <span className="text-gray-700 font-bold">Check-out <span className='pl-2'>{hotel.checkOut}</span></span>
@@ -195,26 +198,26 @@ calif.map((r) => coms.push(r.comment))
                 <h3 className="text-2xl font-bold mb-">About the hotel</h3>
                 <p className="text-lg pb-4 text-gray-700 leading-relaxed ">{hotel.overview}</p>
             </div>
-                
-            {calif[0] && calif? <div className='h-50 z-10 pt-3 mt-5 border shadow-md'>
-              {calif && calif?.map((comment: Object) => {
-                return (
-                    <div className='pb-5 px-5'>
-                    <div className='pb-3'>
-                        <div className='flex'>
-                        <h2 className='top-0 mb-3 text-iconsPurple text-lg'>{comment.user.name}</h2>
-                        <span className='mt-1 ml-2 text-sm'>-{comment.user.country}</span>
+
+            {calif[0] && calif ? <div className='h-50 z-10 pt-3 mt-5 border shadow-md'>
+                {calif && calif?.map((comment: Object, index: number) => {
+                    return (
+                        <div key={index} className='pb-5 px-5'>
+                            <div className='pb-3'>
+                                <div className='flex'>
+                                    <h2 className='top-0 mb-3 text-iconsPurple text-lg'>{comment.user.name}</h2>
+                                    <span className='mt-1 ml-2 text-sm'>-{comment.user.country}</span>
+                                </div>
+                                <p>{comment.comment}</p>
+                                <StarRating rating={comment.rating} />
+                            </div>
+                            <hr />
                         </div>
-                        <p>{comment.comment}</p>
-                        <StarRating rating={comment.rating}/>
-                    </div>
-                    <hr />
-                    </div>
-                )
-              })}  
-            </div>: <h1 className='py-5'>No comments...</h1>}
+                    )
+                })}
+            </div> : <h1 className='py-5 pl-5'>No comments...</h1>}
             <div className='h-50 z-10 pt-3 mt-2 mb-28 border shadow-md'>
-                <CommentPost idHotel={idHotel} idUser={idSession} onSubmit={handleCommentSubmit}/>           
+                <CommentPost idHotel={idHotel} idUser={idSession} onSubmit={handleCommentSubmit} />
             </div>
         </div>
     )

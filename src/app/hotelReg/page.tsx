@@ -15,6 +15,7 @@ import { MainGlobal } from '@/redux/mainInterface';
 import { DragAndDrop } from '@/components/Drag & Drop/DragAndDrop';
 import { Loader } from '@googlemaps/js-api-loader';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 const asapSemi = Asap({
 	weight: ['600'],
@@ -29,203 +30,193 @@ const josefinRegular = Josefin_Sans({
 const listOfCountries = Object.values(countries);
 
 function HotelRegister() {
-	// const { isLoaded } = useLoadScript({
-	//   googleMapsApiKey: process.env.GOOGLEMAPS_API_KEY
-	// })
 
-	const selectCities: object[] = [];
+  // const { isLoaded } = useLoadScript({
+  //   googleMapsApiKey: process.env.GOOGLEMAPS_API_KEY
+  // })
 
-	const router = useRouter();
+  
 
-	const dispatch = useDispatch();
-	const cities = useSelector((state: MainGlobal) => state.city.dataCity);
+  const selectCities: object[] = []
 
-	const [phoneCode, setPhoneCode] = useState<string[]>([]);
-	const [lada, setLada] = useState('');
-	const [completePhone, setCompletePhone] = useState('');
-	const [city, setCity] = useState('');
+  const router = useRouter()
 
-	cities.map((e) => selectCities.push({ label: e.city, value: e.id }));
+  const dispatch = useDispatch()
+  const cities = useSelector((state: MainGlobal) => state.city.dataCity)
+ 
+  const [phoneCode, setPhoneCode] = useState<string[]>([]) 
+  const [lada, setLada] = useState('')
+  const [completePhone, setCompletePhone] = useState('')
+  const [city, setCity] = useState('')
 
-	useEffect(() => {
-		dispatch(fetchingCities());
-		const optionsPhone: string[] = listOfCountries.map(
-			(country) => country.phone
-		);
-		const phoneSet: string[] = [...new Set(optionsPhone)].sort(
-			(a: string, b: string) => parseInt(a, 10) - parseInt(b, 10)
-		);
-		setPhoneCode(phoneSet);
-	}, []);
 
-	interface FormState {
-		destinationId: string;
-		name: string;
-		image: string;
-		email: string;
-		address: string;
-		numberRooms: number;
-		phone: string;
-		checkIn: string;
-		checkOut: string;
-		overview: string;
-	}
+  cities.map(e => selectCities.push({label:e.city, value: e.id}))
+  
 
-	const [errors, setErrors] = useState<Errors>({});
+  useEffect(() => {
+    
+    dispatch(fetchingCities())
+    const optionsPhone: string[] = listOfCountries.map(country => country.phone)
+    const phoneSet: string[] = [...new Set(optionsPhone)].sort((a: string, b: string) => parseInt(a, 10) - parseInt(b, 10));
+    setPhoneCode(phoneSet)
 
-	const [form, setForm] = useState<FormState>({
-		destinationId: '',
-		name: '',
-		image: '',
-		email: '',
-		address: '',
-		numberRooms: 0,
-		phone: '',
-		checkIn: '',
-		checkOut: '',
-		overview: '',
-	});
+  },[])
 
-	const handleSubmit = async (e: any) => {
-		e.preventDefault();
-		const formPost = { ...form };
-		formPost.numberRooms = Number(form.numberRooms);
+  const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
-		console.log(formPost);
-		try {
-			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH;
-			const response = await axios.post('/hotel/newhotel', formPost, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
 
-			const id = response.data.detail.id;
-			console.log(id);
-			/*setHotelId(id)  */
-			router.push(`/createRoom/?id=${id}`);
-		} catch (error) {
-			// console.error('Error al crear el hotel:', error);
-			alert('Please, login again');
-		}
-	};
+interface FormState {
+  destinationId: string;
+  name: string;
+  image: string;
+  email: string;
+  address: string;
+  numberRooms: number
+  phone: string;
+  checkIn: string;
+  checkOut: string;
+  overview: string;
+ 
+}
 
-	const selectChange = (e: any) => {
-		if (form.destinationId.includes(e.value)) {
-		} else {
-			setForm({
-				...form,
-				destinationId: e.value,
-			});
-			setCity(e.label);
-			setErrors(
-				validation({
-					...form,
-					destinationId: e.value,
-				})
-			);
-		}
-	};
+const [errors, setErrors] = useState<Errors>({})
 
-	const handleChange = (e: any) => {
-		setForm({
-			...form,
-			[e.target.name]: e.target.value,
-			phone: lada + completePhone,
-		});
-		console.log(e.target.value);
+const [form, setForm] = useState<FormState>({
+  destinationId: '',
+  name: '',
+  image: '',
+  email: '',
+  address: '',
+  numberRooms: 0,
+  phone: '',
+  checkIn: '',
+  checkOut: '',
+  overview: ''
+});
 
-		setErrors(
-			validation({
-				...form,
-				[e.target.name]: e.target.value,
-			})
-		);
-	};
+const handleSubmit = async (e: any) => {
+  e.preventDefault();
+  const formPost = { ...form };
+  formPost.numberRooms = Number(form.numberRooms);
+  
+  console.log(tokenSession)
+  console.log(formPost);
+  try {
 
-	const handlePhoneChange = (e: any) => {
-		setCompletePhone(e.target.value);
+    const response = await axios.post("/hotel/newhotel", formPost, {
+      headers: {
+        Authorization: `Bearer ${tokenSession}`
+      }
+    });
 
-		console.log(e.target.value);
-	};
+    const id = response.data.detail.id;
+    console.log(id);
+    /*setHotelId(id)  */
+    router.push(`/createRoom/?id=${id}`);
+  } catch (error) {
+    // console.error('Error al crear el hotel:', error);
+alert('Please, login again');
+  }
+};
 
-	const selectLadaChange = (e: any) => {
-		setLada(e.target.value);
-		console.log(lada);
-	};
+const selectChange = (e: any) => {
 
-	// const handleFile = (e: any) => {
+  if (form.destinationId.includes(e.value)) {}else{
+  setForm({
+      ...form,
+      destinationId: e.value
+  });
+  setCity(e.label)
+  setErrors(validation({
+    ...form,
+    destinationId: e.value
+}))}}
+ 
 
-	// }
 
-	console.log(form.image);
+const handleChange = (e: any) => {
 
-	return (
-		<div className=' mt-20 inset-0 bg-neutral-100 pb-20'>
-			<div
-				className={`${asapSemi.className} text-xl w-screen flex justify-start pl-3.5 pt-8`}
-			>
-				<h1>List your hotel whith us</h1>
-			</div>
-			<form
-				onSubmit={handleSubmit}
-				className='bg-neutral-50  mt-5 flex flex-col p-4 shadow-md'
-			>
-				<label className={`${josefinRegular.className}`} htmlFor=''>
-					City
-				</label>
-				<Select
-					className={`${josefinRegular.className}  text-black w-full mt-2.5 `}
-					name='city'
-					options={selectCities}
-					onChange={selectChange}
-					value={form.destinationId}
-					id='cityInput'
-					placeholder={city}
-				/>
-				<span className='text-red-400'>
-					{errors.destinationId && <p>{errors.destinationId}</p>}
-				</span>
 
-				<label
-					className={`${josefinRegular.className} mt-2.5`}
-					htmlFor='hotelNameInput'
-				>
-					Hotel name
-				</label>
-				<input
-					className={`${josefinRegular.className} border-2 rounded-xl my-2 h-14 pl-4`}
-					type='text'
-					onChange={handleChange}
-					id='hotelNameInput'
-					name='name'
-					value={form.name}
-					autoComplete='off'
-				/>
-				<span className='text-red-400'>
-					{errors.name && <p>{errors.name}</p>}
-				</span>
 
-				<label
-					className={`${josefinRegular.className} mt-2.5`}
-					htmlFor='hotelAddressInput'
-				>
-					Address
-				</label>
-				<input
-					className={`${josefinRegular.className} border-2 rounded-xl my-2 h-14 pl-4`}
-					type='text'
-					onChange={handleChange}
-					id='hotelAddressInput'
-					name='address'
-					value={form.address}
-					autoComplete='off'
-				/>
-				<span className='text-red-400'>
-					{errors.address && <p>{errors.address}</p>}
-				</span>
 
-				{/* {isLoaded && isLoaded
+  setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+      phone: lada+completePhone
+      
+      
+  });
+  console.log(e.target.value);
+  
+  setErrors(validation({
+    ...form,
+    [e.target.name]: e.target.value
+}))
+}
+
+const handlePhoneChange = (e: any) => {
+  setCompletePhone(e.target.value)
+  
+  console.log(e.target.value);
+}
+
+const selectLadaChange = (e: any) => {
+  setLada(e.target.value)
+  console.log(lada)
+}
+
+// const handleFile = (e: any) => {
+
+// }
+
+console.log(form.image);
+
+
+
+  return (
+    
+    <div className=' mt-20 inset-0 bg-neutral-100 pb-20'>
+      
+      
+   
+      <div className={`${asapSemi.className} text-xl w-screen flex justify-start pl-3.5 pt-8`}>
+          <h1>List your hotel whith us</h1>
+      </div>
+      <form  onSubmit={handleSubmit} className='bg-neutral-50  mt-5 flex flex-col p-4 shadow-md'>
+        
+          <label className={`${josefinRegular.className}`} htmlFor="">City</label>
+                    <Select className={`${josefinRegular.className}  text-black w-full mt-2.5 `}
+                        name='city'
+                        options={selectCities}
+                        onChange={selectChange}
+                        value={form.destinationId}
+                        id="cityInput"
+                        placeholder={city}
+                        />
+                    <span className='text-red-400'>{errors.destinationId && <p>{errors.destinationId}</p>}</span>
+
+          <label className={`${josefinRegular.className} mt-2.5`} htmlFor="hotelNameInput">Hotel name</label>
+                    <input className={`${josefinRegular.className} border-2 rounded-xl my-2 h-14 pl-4`}
+                        type="text"
+                        onChange={handleChange}
+                        id='hotelNameInput'
+                        name='name'
+                        value={form.name}
+                        autoComplete='off' /> 
+                    <span className='text-red-400'>{errors.name && <p>{errors.name}</p>}</span>    
+
+          <label className={`${josefinRegular.className} mt-2.5`} htmlFor="hotelAddressInput">Address</label>
+                    <input className={`${josefinRegular.className} border-2 rounded-xl my-2 h-14 pl-4`}
+                        type="text"
+                        onChange={handleChange}
+                        id='hotelAddressInput'
+                        name='address'
+                        value={form.address}
+                        autoComplete='off' />     
+                    <span className='text-red-400'>{errors.address && <p>{errors.address}</p>}</span>
+                    
+                    {/* {isLoaded && isLoaded
+
                     ? <GoogleMap zoom={10} center={{lat: 44, lng: -80}} mapContainerStyle={{height: "300px", width:"330px"}}></GoogleMap> 
                     : <div>Loading...</div>}
                      */}
