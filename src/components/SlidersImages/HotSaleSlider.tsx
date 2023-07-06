@@ -1,8 +1,9 @@
 import React from 'react'
-import axios from 'axios';
+import axios from '@/utils/axios'
 import { useEffect, useState } from 'react';
-import { getHotelsCoincidence } from "../../redux/Features/Hotel/hotelsSlice";
+import { useRouter } from 'next/navigation';
 import { Fonts } from './SliderHotels';
+import { RiH1 } from 'react-icons/ri';
 
 const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 
@@ -10,7 +11,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 	const [bali, setBali] = useState(null);
 
 	
-
+const router = useRouter()
 	
 
 	useEffect(() => {
@@ -18,7 +19,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('https://gotrippf-production.up.railway.app/hotel/findhotel?name=Hotel du Collectionneur', {
+			const response = await axios.get('/hotel/findhotel?name=Hotel du Collectionneur', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
@@ -33,7 +34,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 		  try {
 			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 	
-			const response = await axios.get('https://gotrippf-production.up.railway.app/hotel/findhotel?name=The Kayon Valley Resort', {
+			const response = await axios.get('/hotel/findhotel?name=The Kayon Valley Resort', {
 			  headers: {
 				Authorization: `Bearer ${token}`
 			  }
@@ -49,6 +50,7 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 	  }, []);
 
 	
+	
 	  
 
 
@@ -57,7 +59,10 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 			<div className='flex flex-col justify-between'>
 				
 
-				<div className='relative h-56 shadow-img rounded-3xl'>
+				{paris && paris? <button className='relative h-56 shadow-img rounded-3xl'
+				onClick={()=> {
+					router.push(`/detail/${paris.id}`)
+				}}>
 					<img
 						src={paris?.image}
 						alt=''
@@ -67,14 +72,14 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 						<h2 className={`${roboto.className} tracking-wide  text-sm `}>{paris?.name}</h2>
 						<div className='flex justify-between items-center'>
 							<h2 className={`${roboto.className} tracking-wider text-sm`}>Paris</h2>
-							<h3>$400</h3>
+							<h3>${paris.rooms[0].price}</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>
 							<p className=''>France</p>
 							<p className=''>/per night</p>
 						</div>
 					</div>
-                </div>
+                </button> : <h1>Loading...</h1>}
 				
                 <div className=' bg-orangeBg w-full text-white h-24 mt-5 rounded-3xl shadow-img flex justify-center items-center'>
                    
@@ -92,7 +97,10 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
                     </div> 
                 </div>
 
-				<div className='relative  h-56 shadow-img rounded-3xl'>
+				{bali && bali? <button className='relative  h-56 shadow-img rounded-3xl'
+				onClick={()=> {
+					router.push(`/detail/${bali.id}`)
+				}}>
 					<img
 						src={bali?.image}
 						alt=''
@@ -102,14 +110,14 @@ const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
 						<h2 className={`${roboto.className} tracking-wide  text-sm `}>The Kayon Valley Resort</h2>
 						<div className='flex justify-between items-center  '>
 							<h2 className={`${roboto.className} tracking-wider text-sm`}>Bali</h2>
-							<h3>$200</h3>
+							<h3>${bali.rooms[0].price}</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>
 							<p className=''>Indonesia</p>
 							<p className=''>/per night</p>
 						</div>
 					</div>
-				</div>
+				</button> : <h1>Loading...</h1>}
 			</div>
 		</div>
 	);

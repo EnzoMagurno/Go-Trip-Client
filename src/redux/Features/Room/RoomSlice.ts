@@ -1,6 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from '@/utils/axios'
 
+
+export interface InitialStateRoom {
+    roomData: {}
+    copyRoomData: {}
+    room: []
+}
 
 export const fetchRoomById = createAsyncThunk(
     "booking/fetchRoomById",
@@ -21,19 +27,52 @@ export const fetchRoomById = createAsyncThunk(
     }
 );
 
-const roomSlice = createSlice({
-    name: "room",
+export const fetchingRooms = createAsyncThunk("getRooms", async () => {
+    try {
+      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+  
+      const response = await axios.get("/rooms/findRooms", {
+  
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      // Manejar el error según tus necesidades
+      console.error('Error al obtener los hoteles:', error);
+      throw error;
+    }
+  });
+
+const RoomSlice = createSlice({
+    name: "Room",
     initialState: {
-        room: {},
+        roomData: {},
+    copyRoomData: {},
+    room: {}
     },
-    reducers: {},
+    reducers: {
+        getRoomCoincidence: (state, action) => {
+
+    }
+    },
     extraReducers: (builder) => {
         builder
+        .addCase(fetchingRooms.fulfilled, (state, action) => {
+        state.RoomData = action.payload
+
+
+      })
             .addCase(fetchRoomById.fulfilled, (state, action) => {
                 state.room = action.payload;
             })
     },
 });
 
+export default RoomSlice;
 export const selectRoomIdState = (state) => state.room.room
-export default roomSlice.reducer;
+export const selectRoomState = (state) => state.room.room
+export const { getRoomCoincidence } = RoomSlice.actions 

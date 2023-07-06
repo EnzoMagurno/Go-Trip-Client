@@ -3,9 +3,13 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { City } from '../../redux/Features/Citys/CitySlice';
-import { getHotelsCoincidence } from '../../redux/Features/Hotel/hotelsSlice';
+
+/* import { } from '../../redux/Features/Hotel/hotelsSlice'; */
+
 import { fetchingCities } from '../../redux/Features/Citys/CitySlice';
 import { MainGlobal } from '@/redux/mainInterface';
+import { useRouter } from 'next/navigation';
+import { getHotelsCoincidencesByCityId } from '../../redux/Features/Citys/CitySlice';
 
 export interface Font {
 	className: string;
@@ -20,6 +24,8 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 		(state: MainGlobal) => state.city.dataCity
 	);
 
+	const router = useRouter()
+
 	const citiesCopy = cityResults?.slice();
 
 	const dispatch = useDispatch();
@@ -32,7 +38,7 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 		(a, b) => b.hotel.length - a.hotel.length
 	);
 
-	const firstTenCities = citiesSort?.slice(0, 10);
+	const firstTenCities = citiesSort?.slice(0, 20);
 
 	return (
 		<div className='flex overflow-x-auto flex-wrap h-60 my-3 '>
@@ -42,7 +48,10 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 						return (
 							<button
 								onClick={() => {
-									dispatch(getHotelsCoincidence(city.id));
+
+									dispatch(getHotelsCoincidencesByCityId(city.id));
+									router.push(`/resultsHotels?city=${city.id}`)
+
 								}}
 								className='w-36 relative shadow-img rounded-3xl'
 							>

@@ -221,7 +221,7 @@ const page = () => {
 					type='text'
 					autoComplete='off'
 					name='email'
-					value={savedEmail && isChecked ? savedEmail : form.email}
+					value={form.email}
 					onChange={handleChange}
 					onFocus={handleFocus}
 					onBlur={handleBlur}
