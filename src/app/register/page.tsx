@@ -20,6 +20,8 @@ import { nameCheck } from '../../utils/index';
 import { randomAvatar } from '../../utils/index';
 import { useSession, signIn } from 'next-auth/react';
 import GoogleAuth from '../../app/google/page';
+import Cookies from 'universal-cookie';
+
 import { border } from '@cloudinary/url-gen/qualifiers/background';
 
 const asap = Asap({ subsets: ['latin'] });
@@ -290,6 +292,12 @@ const page = () => {
 				photoUser: dataLoggedUser.photoUser,
 				thirdPartyCreated: dataLoggedUser.thirdPartyCreated,
 			});
+
+			const cookies = new Cookies();
+			const cookieToken = responseLogin.data.tokenSession;
+			cookies.set('gotripCookie', cookieToken, { path: '/' });
+			console.log('Cookie almacenada:', cookieToken);
+			setLoading(true);
 
 			router.push('/');
 		} catch (error) {

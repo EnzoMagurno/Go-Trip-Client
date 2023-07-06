@@ -69,7 +69,7 @@ const Detail = ({ params }: { params: Params }) => {
     const idHotel = id
 
     const handleCommentSubmit = async (comment: Comment) => {
-        console.log(comment);
+        
         try {
             
             const response = await axios.post("/comments", comment, {
@@ -80,7 +80,6 @@ const Detail = ({ params }: { params: Params }) => {
 
             });
 
-            console.log(response.data);
 
             window.location.reload();
 
@@ -96,14 +95,14 @@ const Detail = ({ params }: { params: Params }) => {
 
     const hotel = useSelector(state => state.hotel.hotel)
     const comments = useSelector((state) => state.comment.comment);
-    console.log(comments);
+    
 
 
     const calif = Array.isArray(comments)
         ? comments.filter((comment) => comment.hotelId === id)
         : [];
 
-    console.log(calif);
+
 
     const nums = []
     calif.map((r) => nums.push(r.rating))

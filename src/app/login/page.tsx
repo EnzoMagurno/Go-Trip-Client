@@ -131,7 +131,7 @@ const page = () => {
 				// withCredentials: true,
 			})
 			.then((response) => {
-				console.log(response.data); // Muestra la respuesta en la consola
+				/* console.log(response.data); */ // Muestra la respuesta en la consola
 
 				setTokenSession(response.data.tokenSession);
 				setIdSession(response.data.data.id);

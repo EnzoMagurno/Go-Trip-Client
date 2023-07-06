@@ -54,7 +54,7 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 		gallery
 	} = roomType
 
-    console.log(room);
+    
 	
 
 	useEffect(() => {

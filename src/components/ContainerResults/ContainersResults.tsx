@@ -15,7 +15,7 @@ const ContainerResults = ({roboto}) => {
 
 
     const destination = useSelector(state => state.city.hotelByCity) 
-    console.log(destination)
+    
 
 
   
@@ -23,7 +23,7 @@ const ContainerResults = ({roboto}) => {
 
     
     useEffect(() => {
-        console.log(tokenSession)
+        
         dispatch(getHotelsCoincidencesByCityId(idCity, tokenSession))
 
     }, [idCity])

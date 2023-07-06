@@ -22,6 +22,7 @@ const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) =>
 
 	const cityData = useSelector(state => state.city.city)
 	const [cityName, setCityName] = useState("")
+	
 
 	const router = useRouter();
 	const handlerSearch = (e) => {
@@ -36,6 +37,7 @@ const SearchBar: React.FC<PropsSearchBar> = ({ toggleOpen, inputIsDisabled }) =>
 
 	useEffect(() => {
 		if (cityData.city) setCityName(`${cityData.city}${cityData.state ? `, ${cityData.state}` : ""}, ${cityData.country}`)
+		console.log(cityData)
 	}, [cityData])
 
 	return (

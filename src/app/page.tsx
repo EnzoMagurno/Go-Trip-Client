@@ -53,7 +53,7 @@ const Home = () => {
 	}, [typeof window !== 'undefined' && storedUserNameSession]);
 
 	useEffect(() => {
-		console.log(tokenSession)
+		
 		dispatch(fetchingHotel(tokenSession));
 	}, []);
 

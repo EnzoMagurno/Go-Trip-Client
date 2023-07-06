@@ -42,12 +42,12 @@ function ContainerUsersInfo() {
 	}); //!SessionData
 
 	const id = useParams().id;
-	console.log(id);
+	
 
 	const userDataString = localStorage.getItem('userData');
 	let userFound = userDataString ? JSON.parse(userDataString) : null;
 
-	console.log(userFound);
+	
 
 	const optionsCountries: string[] = listOfCountries.map(
 		(country) => country.name

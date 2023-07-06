@@ -66,7 +66,7 @@ const router = useRouter()
         }
       });
   
-      console.log(response);
+      
       router.push(`/myHotels/${id}`);
     } catch (error) {
       console.error('Create error:', error);
