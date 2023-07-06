@@ -144,7 +144,7 @@ function ContainerUsersInfo() {
 	const handleClick = (
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	) => {
-		setEditEnableName(!editEnableName);
+		// setEditEnableName(!editEnableName);
 
 		const data = { ...form };
 
@@ -284,6 +284,7 @@ function ContainerUsersInfo() {
 							} text-white text-xs  py-1 px-1 rounded-full w-[25%]`}
 							onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
 								handleClick(event);
+								setEditEnableName(!editEnableName);
 							}}
 							name='buttonEditName'
 							disabled={errors.name ? true : false}
