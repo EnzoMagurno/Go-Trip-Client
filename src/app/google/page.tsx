@@ -98,20 +98,20 @@ function GoogleAuth() {
 				try {
 					const responseRegister = await axios.post('user/createNewUser', form);
 					const newUserData = responseRegister.data;
-					console.log('Esto es newUserData Register', newUserData);
+					// console.log('Esto es newUserData Register', newUserData);
 				} catch (error) {
-					console.log(error);
-					console.log('Esto es la data en el error antes del login', data);
+					// console.log(error);
+					// console.log('Esto es la data en el error antes del login', data);
 					const responseLogin = await axios.post('user/login', data);
 					const dataLoggedUser = responseLogin.data.data;
-					console.log('Respuesta del login', dataLoggedUser);
+					// console.log('Respuesta del login', dataLoggedUser);
 					const tokenSession = responseLogin.data.tokenSession;
 					setTokenSession(tokenSession);
 
-					console.log(
-						'Esto es el Data Error despues del login',
-						dataLoggedUser
-					); //! Check
+					// console.log(
+					// 	'Esto es el Data Error despues del login',
+					// 	dataLoggedUser
+					// ); //! Check
 					setTokenSession(responseLogin.data.tokenSession);
 					setSessionId(dataLoggedUser.id);
 					setUserNameSession(dataLoggedUser.name);
@@ -138,7 +138,7 @@ function GoogleAuth() {
 					const cookies = new Cookies();
 					const cookieToken = responseLogin.data.tokenSession;
 					cookies.set('gotripCookie', cookieToken, { path: '/' });
-					console.log('Cookie almacenada:', cookieToken);
+					// console.log('Cookie almacenada:', cookieToken);
 					router.push('/');
 				}
 
@@ -147,7 +147,7 @@ function GoogleAuth() {
 				const tokenSession = responseLogin.data.tokenSession;
 				setTokenSession(tokenSession);
 
-				console.log('Esto es el Data', dataLoggedUser); //! Check
+				// console.log('Esto es el Data', dataLoggedUser); //! Check
 				setTokenSession(responseLogin.data.tokenSession);
 				setSessionId(dataLoggedUser.id);
 				setUserNameSession(dataLoggedUser.name);
@@ -174,10 +174,10 @@ function GoogleAuth() {
 				const cookies = new Cookies();
 				const cookieToken = responseLogin.data.tokenSession;
 				cookies.set('gotripCookie', cookieToken, { path: '/' });
-				console.log('Cookie almacenada:', cookieToken);
+				// console.log('Cookie almacenada:', cookieToken);
 				router.push('/');
 			} catch (error) {
-				console.log(error);
+				// console.log(error);
 			}
 		}
 	};
@@ -188,7 +188,7 @@ function GoogleAuth() {
 	};
 
 	const getGoogleData = (setForm: any) => {
-		console.log('Esto es la dataGoogle', session?.user); //! Check la Data de Google
+		// console.log('Esto es la dataGoogle', session?.user); //! Check la Data de Google
 
 		setForm({
 			...form,
@@ -201,7 +201,7 @@ function GoogleAuth() {
 			thirdPartyCreated: true,
 		});
 
-		console.log('Esto es el form', form);
+		// console.log('Esto es el form', form);
 	};
 
 	useEffect(() => {
@@ -209,11 +209,11 @@ function GoogleAuth() {
 	}, [session]);
 
 	useEffect(() => {
-		console.log('Esto es el form', form);
+		// console.log('Esto es el form', form);
 	}, [form]);
 
 	useEffect(() => {
-		console.log('Esto es el DataLogin', dataLogin);
+		// console.log('Esto es el DataLogin', dataLogin);
 		registerGoogleUser(form, dataLogin);
 	}, [form]);
 

@@ -7,6 +7,8 @@ import coverPhoto from './sources/portrait-beautiful-young-asian-women-happy-smi
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google';
+import { useRouter } from 'next/navigation';
+import axios from '../../utils/axios';
 
 const asapSemi = Asap({
 	weight: ['600'],
@@ -20,8 +22,53 @@ const josefinRegular = Josefin_Sans({
 
 function beAHoteiler() {
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
-
 	const [rolSession, setRolSession] = useLocalStorage('rol', '');
+	const [idSession, setIdSession] = useLocalStorage('idSession', '');
+	const [userSession, setUserSession] = useLocalStorage('userData', {
+		name: '',
+		birthday: '',
+		gender: '',
+		address: '',
+		dniPasaport: '',
+		rol: '',
+		country: '',
+		postalCode: '',
+		phoneCode: '',
+		phone: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+		photoUser: [''],
+		thirdPartyCreated: false,
+	}); //!SessionData
+
+	const router = useRouter();
+
+	const handleClick = () => {
+		const changeRol = { ...userSession, rol: 'admin' };
+		console.log('Este es changeRol', changeRol);
+
+		axios
+			.put(`/user/updateUser/${idSession}`, changeRol, {
+				headers: {
+					Authorization: `Bearer ${tokenSession}`,
+				},
+			})
+
+			.then((response) => {
+				console.log('Successful modification');
+				console.log(response.data);
+
+				console.log('Ahora se cambio el rol', response.data);
+				alert('Congratulations, now you can rent your place!');
+
+				router.push('/hotelReg');
+			})
+
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
 	return (
 		<div className=' mt-20 bg-neutral-100 absolute inset-0 flex flex-col items-center justify-center px-10'>
@@ -35,7 +82,11 @@ function beAHoteiler() {
 			</p>
 
 			<Link
-				href={`/hotelReg`}
+				href={''}
+				passHref
+				onClick={() => {
+					handleClick();
+				}}
 				type='button'
 				className={`${josefinRegular.className} bg-[#7533ac] flex flex-row items-center justify-center text-white mt-10 h-10 mx-auto rounded-full w-2/3 `}
 			>
