@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import axios from '../../utils/axios';
+import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Select from 'react-select';
 import validation from './validation'
@@ -10,14 +10,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchingServices } from '@/redux/Features/Services/servicesSlice';
 import { MainGlobal } from '@/redux/mainInterface';
 import ServicesOptions from '@/components/ServicesSelect/ServicesSelect';
-
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 function RoomCreator() {
 
 
 const dispatch = useDispatch()
 
-
+const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
 const searchParams = useSearchParams()
 
@@ -48,10 +48,10 @@ const router = useRouter()
     e.preventDefault();
     
     try {
-      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH  
+      
        const response = await axios.post("/rooms/newRooms", form, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${tokenSession}`
         }
       });
   
@@ -90,10 +90,10 @@ const [form, setForm] = useState<FormState>({
 const handleCreate = async (e:any) => {
   if (newService) {
     try {
-      const token = process.env.NEXT_PUBLIC_TOKEN_FETCH  
+     
        const response = await axios.post("/service", newService, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${tokenSession}`
         }
       });
   

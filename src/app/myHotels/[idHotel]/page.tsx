@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState} from "react";
 import { useRouter } from "next/navigation"
-import { roboto } from '../../../app/page';
 import ContainerTypesRooms from "../../../components/ContainerTypesRooms/ContainerTypesRooms";
 import SettingsHotel from "../../../components/SettingsHotel/SettingsHotel";
 import { useDispatch, useSelector } from "react-redux";
@@ -77,7 +76,7 @@ const [selectedImage, setSelectedImage] = useState(null);
 				<h3 className='mt-3 mb-3 text-lg font-bold text-iconsPurple'>
 				Types Rooms
 			</h3>
-				<div className={`${roboto.className}  shadow-insetContainerTypeRooms border pb-5 rounded-2xl h w-ful grid grid-cols-1 gap-3`}>
+				<div className={`  shadow-insetContainerTypeRooms border pb-5 rounded-2xl h w-ful grid grid-cols-1 gap-3`}>
 				{rooms && rooms?.map((roomType: []) =>{
 					return (
 						<ContainerTypesRooms roomType={roomType}/>

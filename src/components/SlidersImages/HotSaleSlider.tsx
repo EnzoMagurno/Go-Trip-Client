@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Fonts } from './SliderHotels';
 import { RiH1 } from 'react-icons/ri';
-
-const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+const HotSaleSlider: React.FC<Fonts> = () => {
 
 	const [paris, setParis] = useState(null);
 	const [bali, setBali] = useState(null);
+	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
 	
 const router = useRouter()
@@ -17,13 +18,9 @@ const router = useRouter()
 	useEffect(() => {
 		const fetchParis = async () => {
 		  try {
-			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
 	
-			const response = await axios.get('/hotel/findhotel?name=Hotel du Collectionneur', {
-			  headers: {
-				Authorization: `Bearer ${token}`
-			  }
-			});
+			const response = await axios.get('/hotel/findhotel?name=Hotel du Collectionneur');
 			setParis(response.data[0]); 
 		  } catch (error) {
 			console.error('Error en la petición:', error);
@@ -32,13 +29,9 @@ const router = useRouter()
 	
 		const fetchBali = async () => {
 		  try {
-			const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
 	
-			const response = await axios.get('/hotel/findhotel?name=The Kayon Valley Resort', {
-			  headers: {
-				Authorization: `Bearer ${token}`
-			  }
-			});
+			const response = await axios.get('/hotel/findhotel?name=The Kayon Valley Resort');
 			setBali(response.data[0]); 
 		  } catch (error) {
 			console.error('Error en la petición:', error);
@@ -69,9 +62,9 @@ const router = useRouter()
                         className=' rounded-3xl h-full object-cover'
 					/>
 					<div className={` text-white absolute bottom-3 w-full p-3 pb-0 h-20 leading-4`}>
-						<h2 className={`${roboto.className} tracking-wide  text-sm `}>{paris?.name}</h2>
+						<h2 className={` tracking-wide  text-sm `}>{paris?.name}</h2>
 						<div className='flex justify-between items-center'>
-							<h2 className={`${roboto.className} tracking-wider text-sm`}>Paris</h2>
+							<h2 className={` tracking-wider text-sm`}>Paris</h2>
 							<h3>${paris.rooms[0].price}</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>
@@ -107,9 +100,9 @@ const router = useRouter()
                         className=' rounded-3xl h-full object-cover'
 					/>
 					<div className={` text-white absolute bottom-3 w-full p-3 pb-0 h-20 leading-4`}>
-						<h2 className={`${roboto.className} tracking-wide  text-sm `}>The Kayon Valley Resort</h2>
+						<h2 className={` tracking-wide  text-sm `}>The Kayon Valley Resort</h2>
 						<div className='flex justify-between items-center  '>
-							<h2 className={`${roboto.className} tracking-wider text-sm`}>Bali</h2>
+							<h2 className={` tracking-wider text-sm`}>Bali</h2>
 							<h3>${bali.rooms[0].price}</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>

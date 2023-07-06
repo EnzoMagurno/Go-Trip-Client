@@ -23,12 +23,12 @@ const josefin = Josefin_Sans({
 	subsets: ['latin'],
 });
 
-export const badScript = Bad_Script({
+const badScript = Bad_Script({
 	weight: ['400'],
 	subsets: ['latin'],
 });
 
-export const roboto = Roboto({
+ const roboto = Roboto({
 	weight: ['400', '500', '700'],
 	subsets: ['cyrillic'],
 });
@@ -53,7 +53,8 @@ const Home = () => {
 	}, [typeof window !== 'undefined' && storedUserNameSession]);
 
 	useEffect(() => {
-		dispatch(fetchingHotel());
+		console.log(tokenSession)
+		dispatch(fetchingHotel(tokenSession));
 	}, []);
 
 	return (
@@ -70,7 +71,7 @@ const Home = () => {
 			</header>
 
 			<main>
-				<SliderMain roboto={roboto} />
+				<SliderMain />
 			</main>
 
 			<footer className=' bg-slate-600'></footer>

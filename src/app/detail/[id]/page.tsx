@@ -62,6 +62,7 @@ interface Params {
 
 const Detail = ({ params }: { params: Params }) => {
     const [idSession, setIdSession] = useLocalStorage('idSession', '');
+    const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
     const { id } = params
 
@@ -70,10 +71,10 @@ const Detail = ({ params }: { params: Params }) => {
     const handleCommentSubmit = async (comment: Comment) => {
         console.log(comment);
         try {
-            const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+            
             const response = await axios.post("/comments", comment, {
               headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${tokenSession}`
               }
             });
         
