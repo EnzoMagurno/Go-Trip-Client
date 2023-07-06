@@ -45,18 +45,26 @@ const MyHotels = () => {
 
 	// console.log(hotelsById);
 
+	if (hotelsById.length > 0) {
+		return (
+			<div className=' p-5 pb-24'>
+				<div className='grid grid-cols-1 gap-5'>
+					{hotelsById.map((hotel: MyHotel) => (
+						<CardHotelHoteiler
+							key={hotel.id}
+							id={hotel.id}
+							name={hotel.name}
+							image={hotel.image}
+						/>
+					))}
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className=' p-5 pb-24'>
-			<div className='grid grid-cols-1 gap-5'>
-				{hotelsById.map((hotel: MyHotel) => (
-					<CardHotelHoteiler
-						key={hotel.id}
-						id={hotel.id}
-						name={hotel.name}
-						image={hotel.image}
-					/>
-				))}
-			</div>
+			<h1>You don't have any hotels registered!</h1>
 		</div>
 	);
 };

@@ -9,6 +9,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import axios from '../../utils/axios';
+import { useEffect } from 'react';
 
 const asapSemi = Asap({
 	weight: ['600'],
@@ -60,7 +61,11 @@ function beAHoteiler() {
 				console.log(response.data);
 
 				console.log('Ahora se cambio el rol', response.data);
-				alert('Congratulations, now you can rent your place!');
+				alert(
+					'Congratulations, now you can rent your place!, to publish Hotels, login again'
+				);
+
+				setRolSession('admin');
 
 				router.push('/hotelReg');
 			})
