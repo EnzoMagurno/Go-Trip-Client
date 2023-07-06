@@ -51,7 +51,7 @@ export const fetchingCity = createAsyncThunk('getCity', async (cityName) => {
 			},
 		} )
 		.then((response) => response.data)
-		.catch((error) => console.log(error.message));
+		.catch((error) => error.message );
 });
 
 
@@ -106,9 +106,10 @@ const citySlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchingCity.fulfilled, (state: InitialStateCity, action) => {
-				if (action.payload === 'Sorry this city is not founded')
+				if (!Array.isArray(action.payload)) return
+				if (action.payload === 'Sorry this city is not founded') {
 					state.copyDataCity = [];
-				else state.copyDataCity = action.payload;
+				} else state.copyDataCity = action.payload;
 			})
 			.addCase(fetchingCities.fulfilled, (state, action) => {
 				state.dataCity = action.payload;

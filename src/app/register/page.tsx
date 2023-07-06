@@ -1,5 +1,5 @@
 'use client';
-const GoTripLogo = '../../../public/Go-Trip-logo.svg';
+import GoTripLogo from '../../../public/Go-Trip-logo.svg';
 import Image from 'next/image';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import Link from 'next/link';
