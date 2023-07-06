@@ -152,9 +152,8 @@ calif.map((r) => coms.push(r.comment))
             </h2>
             {rooms?.length ? (
                 <div>
-                    {rooms.map((room: string, index: number) => <Room key={hotel.room} room={room} />)}
+                    {rooms.map((room: string, index: number) => <Room key={index} room={room} />)}
                 </div>
-
             ) : (
                 <NoRooms />
             )}

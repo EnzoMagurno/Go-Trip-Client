@@ -3,6 +3,9 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { City } from '../../redux/Features/Citys/CitySlice';
+
+/* import { } from '../../redux/Features/Hotel/hotelsSlice'; */
+
 import { fetchingCities } from '../../redux/Features/Citys/CitySlice';
 import { MainGlobal } from '@/redux/mainInterface';
 import { useRouter } from 'next/navigation';
@@ -46,6 +49,7 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 							<button
 							key={city.id}
 								onClick={() => {
+
 									dispatch(getHotelsCoincidencesByCityId(city.id));
 									router.push(`/resultsHotels?city=${city.id}`)
 

@@ -5,8 +5,7 @@ import { BsArrowLeftShort } from 'react-icons/bs'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google'
-// import { DatePicker } from 'antd'
-// import { Dayjs } from 'dayjs'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice'
@@ -29,21 +28,11 @@ interface PageProps {
         }
     }
 }
-// interface Hotel {
-//     name: string
-//     image: string
-//     destination: {
-//         city: string
-//         moneyType: string
-//     }
-// }
-
-
-// const handleDateChange = (value: Dayjs | null, fieldName: string) => {
-//     const dateValue = value?.format('DD-MM-YYYY');
-// };
 
 const page = (props: PageProps): React.ReactNode => {
+    const [idSession, setIdSession] = useLocalStorage('idSession', '')
+    console.log(idSession);
+
     const { params, searchParams } = props
     const router = useRouter()
     console.log(router);
@@ -81,28 +70,39 @@ const page = (props: PageProps): React.ReactNode => {
     const pago = stay * perDay + taxesAndServices;
 
 
-    const handlePayment = () => {
-        axios.post('/urlPago/mercadoPago',
-            {
-                "carrito": [
+    const handlePayment2 = async () => {
+        try {
+
+
+            const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
+
+
+            const data = {
+                "userId": "69e3f4f3-1e33-4f22-bbd0-8c9264609890",
+                "bookingId": "8893a44a-ff2c-4e43-90b0-c9acc6c66cd4",
+                "name": "Joselito joselito",
+                "email": "mcdany996@gmail.com",
+                "reserva": [
                     {
-                        "nombre": "Compu re buena",
-                        "precio": 1,
-                        "cantidad": perDay
+                        "id": 1,
+                        "nombre": "Camiseta",
+                        "precio": 29.99,
+                        "cantidad": 200
                     }
-                ],
-                // "bookingId": "ABC123",
-                // "userId": "12345"
-            },
-        )
-            .then((response) => {
-                console.log(response.data);
-                window.location.href = `${response.data}`;
-            })
-            .catch((error) => {
-                console.log(error);
+                ]
+            };
+            const mercadoPagoResponse = await axios.post('/urlPago/mercadoPago', data, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
+            console.log(mercadoPagoResponse.data.linkPago);
+        } catch (error) {
+            console.error(error);
+        }
     };
+
 
     return (
         <>
@@ -135,7 +135,7 @@ const page = (props: PageProps): React.ReactNode => {
             <p className={`${asap.className} text-gray-500 font-semibold pl-5 mb-4`}>
                 Summary of charges
             </p>
-            <div className={`${josefin.className} pl-5 flex justify-start`}>
+            <div className={`${josefin.className} flex justify-center`}>
                 <button onClick={() => stay > 1 && setStay(stay - 1)} className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none">
                     <span className="m-auto text-2xl font-thin">-</span>
                 </button>
@@ -145,13 +145,6 @@ const page = (props: PageProps): React.ReactNode => {
                 </button>
 
             </div>
-
-            {/* <form className=''>
-                <DatePicker
-                    onChange={value => handleDateChange(value, 'birthday')}
-                    name='check-in'
-                />
-            </form> */}
 
             <div className='flex justify-start pl-5 mt-3 mb-3'>
                 <h3>Per day: {perDay}</h3>
@@ -194,7 +187,7 @@ const page = (props: PageProps): React.ReactNode => {
                 Book now!
             </h3>
             <div className='flex justify-center'>
-                <button onClick={handlePayment}>Pagar con MercadoPago</button>
+                <button onClick={handlePayment2}>Pagar con MercadoPago</button>
             </div>
 
             {/* PAYMENT METHOD */}
@@ -233,10 +226,10 @@ const page = (props: PageProps): React.ReactNode => {
 
             </div>
 
-            <div className='pl-5 mt-8'>
-                <h3 className={`${asap.className} font-semibold text-gray-500 mb-2`}>Modifying</h3>
-                <p>Any change in the length or dates of a reservation</p>
-                <p>may result in a rate change</p>
+            <div className='mt-8'>
+                <h3 className={`${asap.className} font-semibold text-gray-500 mb-2 pl-5`}>Modifying</h3>
+                <p className='text-center'>Any change in the length or dates of a reservation may result in a rate change</p>
+
             </div>
             <div className='flex justify-center'>
                 <hr className='w-[90%] my-8 h-0.5 border-t-0 bg-gray-500 opacity-20 dark:opacity-50' />
