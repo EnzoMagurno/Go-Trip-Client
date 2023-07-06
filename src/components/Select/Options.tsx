@@ -1,5 +1,5 @@
 import { cleanCoincedences, getNameAndIdCity } from "../../redux/Features/Citys/CitySlice";
-import { getHotelsCoincidence, fetchingHotel } from "../../redux/Features/Hotel/hotelsSlice";
+import {  fetchingHotel } from "../../redux/Features/Hotel/hotelsSlice";
 import { BsPinMapFill } from "react-icons/bs"
 import { useDispatch } from "react-redux";
 

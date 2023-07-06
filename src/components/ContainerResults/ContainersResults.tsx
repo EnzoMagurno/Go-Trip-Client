@@ -10,7 +10,6 @@ const ContainerResults = ({roboto}) => {
     const searchParams = useSearchParams()
     const idCity = searchParams.get("city")
     const [tokenSession, setTokenSession] = useLocalStorage('token', '');
-    const dispatch = useDispatch()
 
 
 
