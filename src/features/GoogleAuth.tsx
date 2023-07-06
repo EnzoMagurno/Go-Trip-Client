@@ -6,7 +6,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { FormState } from '@/app/register/page';
 import { DataLogin } from '@/app/register/page';
 
-import axios from 'axios';
+import axios from '../utils/axios';
 
 function GoogleAuth() {
 	const [tokenSession, setTokenSession] = useLocalStorage('token', ''); //!SessionToken

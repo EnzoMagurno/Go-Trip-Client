@@ -11,7 +11,6 @@ function UserInfo() {
 	const users = useSelector(state => state.user.users)
 	useEffect(() => {
 		dispatch(fetchUsers())
-		console.log(users)
 	}, [users.length])
 	return (
 		<div>

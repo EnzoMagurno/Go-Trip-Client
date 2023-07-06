@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { MainGlobal } from "@/redux/mainInterface";
-import axios from "axios";
+import axios from "../../../utils/axios";
 import { TokenUser } from "../Citys/CitySlice";
 export interface Service {
     id: number

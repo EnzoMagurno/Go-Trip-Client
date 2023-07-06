@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from 'axios'
+import axios from '../../../utils/axios'
 
 import { TokenUser } from "../Citys/CitySlice";
 export interface InitialStateRoom {
