@@ -37,13 +37,12 @@ export const fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
 		const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
 
 
-		const response = await axios.get(`/hotel/findhotel/${id}`
-			// {
-
-			// 	headers: {
-			// 		Authorization: `Bearer ${token}`
-			// 	}
-			// }
+		const response = await axios.get(`/hotel/findhotel/${id}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			}
 		);
 		const data = response.data;
 		return data;
@@ -78,13 +77,12 @@ export const updateHotel = createAsyncThunk(
 );
 
 export const deleteHotel = createAsyncThunk('deleteHotel', async (id) => {
-	return axios
-		.delete(`/hotel/delHotel/${id}`, {
-			method: 'DELETE',
-			headers: {
-				Authorization: `Bearer ${TOKEN_FETCH}`,
-			},
-		})
+	return await axios.delete(`/hotel/delHotel/${id}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${TOKEN_FETCH}`,
+		},
+	})
 		.then((response) => {
 			console.log(response.data);
 			return response.data;

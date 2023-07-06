@@ -197,9 +197,9 @@ const Detail = ({ params }: { params: Params }) => {
             </div>
 
             {calif[0] && calif ? <div className='h-50 z-10 pt-3 mt-5 border shadow-md'>
-                {calif && calif?.map((comment: Object) => {
+                {calif && calif?.map((comment: Object, index: number) => {
                     return (
-                        <div className='pb-5 px-5'>
+                        <div key={index} className='pb-5 px-5'>
                             <div className='pb-3'>
                                 <div className='flex'>
                                     <h2 className='top-0 mb-3 text-iconsPurple text-lg'>{comment.user.name}</h2>
