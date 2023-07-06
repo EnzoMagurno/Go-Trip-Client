@@ -1,6 +1,6 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios from '../../../utils/axios';
 import { TokenUser } from "../Citys/CitySlice";
 
 /* interface InitialStateHotel {
@@ -90,7 +90,6 @@ export const deleteHotel = createAsyncThunk('deleteHotel', async (id: string) =>
 			},
 		})
 		.then((response) => {
-			console.log(response.data);
 			return response.data;
 		});
 });
@@ -103,7 +102,6 @@ export const restoreHotel = createAsyncThunk('restoreHotel', async (id: string) 
 			},
 		})
 		.then((response) => {
-			console.log(response.data);
 			return response.data;
 		});
 });

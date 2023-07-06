@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import axios from 'axios'
+import axios from '../../utils/axios'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHotelsCoincidencesByCityId } from '@/redux/Features/Citys/CitySlice';

@@ -2,7 +2,7 @@
 import React from 'react'
 import { useRouter } from 'next/navigation';
 import Select from 'react-select';
-import axios from 'axios'
+import axios from '../../utils/axios'
 import validation from './validation'
 /* import { AdvancedImage } from '@cloudinary/react'; */
 import { Errors } from './validation'

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { MainGlobal } from "../../mainInterface";
-import axios from "axios";
+import axios from "../../../utils/axios";
 import { TokenUser } from "../Citys/CitySlice";
 /* const getToken = () => {
     localStorage.getItem("token")
@@ -16,7 +16,6 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
                 Authorization:`Bearer ${TokenUser}`
             }
         });
-        console.log(response.data)
       return response.data;
     })
 
@@ -25,7 +24,6 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 
     export const updatingUsersReal = createAsyncThunk("updateUsersReal", async (newDataUser: any) => {
 
-        console.log(newDataUser)
 
 
 
@@ -34,7 +32,6 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
                 Authorization:`Bearer ${TokenUser}`
             }
         } );
-        console.log(response.data)
       return response.data; 
     })
 
@@ -46,7 +43,6 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
                 Authorization:`Bearer ${TokenUser}`
             }
         } )
-        console.log(response.data)
       return response.data; 
     })
     
@@ -54,7 +50,6 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 
         
     
-        console.log(id)
         
         
         
@@ -78,7 +73,6 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
                 Authorization:`Bearer ${TokenUser}`
             }
         } );
-        console.log(response.data)
       return response.data; 
     })
     
@@ -293,12 +287,10 @@ const usersRealSlice = createSlice({
             state.userUpdated = action.payload
         })
         .addCase(getallUsersReal.fulfilled, (state, action) => {
-            console.log(action.payload)
             state.usersDeleted = action.payload 
             state.usersDeletedCopy = action.payload
         })
         .addCase(activeUsersReal.fulfilled, (state, action) => {
-            console.log(action.payload)
         })
     }
 })
