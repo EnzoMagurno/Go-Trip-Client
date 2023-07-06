@@ -10,7 +10,7 @@ export interface InitialStateRoom {
 
 export const fetchRoomById = createAsyncThunk(
     "booking/fetchRoomById",
-    async (roomId, { rejectWithValue }) => {
+    async (roomId) => {
         
         try {
             const response = await axios.get(`/rooms/findRooms/${roomId}`, {
@@ -22,7 +22,7 @@ export const fetchRoomById = createAsyncThunk(
             console.log(roomId, 'ROOM ID PAAA');
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data);
+            return (error);
         }
     }
 );
@@ -62,7 +62,7 @@ const RoomSlice = createSlice({
     extraReducers: (builder) => {
         builder
         .addCase(fetchingRooms.fulfilled, (state, action) => {
-        state.RoomData = action.payload
+        state.roomData = action.payload
 
 
       })
@@ -73,6 +73,6 @@ const RoomSlice = createSlice({
 });
 
 export default RoomSlice;
-export const selectRoomIdState = (state) => state.room.room
-export const selectRoomState = (state) => state.room.room
+export const selectRoomIdState = (state: any) => state.room.room
+export const selectRoomState = (state: any) => state.room.room
 export const { getRoomCoincidence } = RoomSlice.actions 

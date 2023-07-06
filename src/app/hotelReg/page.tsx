@@ -16,6 +16,7 @@ import { DragAndDrop } from '@/components/Drag & Drop/DragAndDrop';
 import { Loader } from '@googlemaps/js-api-loader';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Appdispatch } from '@/redux/store';
 
 const asapSemi = Asap({
   weight: ['600'],
@@ -41,7 +42,7 @@ function HotelRegister() {
 
   const router = useRouter()
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<Appdispatch>()
   const cities = useSelector((state: MainGlobal) => state.city.dataCity)
  
   const [phoneCode, setPhoneCode] = useState<string[]>([]) 

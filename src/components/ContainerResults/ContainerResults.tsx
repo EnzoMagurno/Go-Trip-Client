@@ -6,23 +6,24 @@ import {useEffect} from 'react'
 import { useDispatch } from "react-redux";
 import StarRating from "../StarRaiting/StarRaiting";
 import { fetchingRooms, fetchRoomById } from "@/redux/Features/Room/RoomSlice";
+import { Appdispatch } from "@/redux/store";
 
 const ContainerResult = (props: any) => {
     console.log(props);
     
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<Appdispatch>();
 
 	useEffect(() => {
-        dispatch(fetchingRooms(props.id))
-        dispatch(fetchinCommentByHotel(props.id)) 
+        dispatch(fetchingRooms())
+        dispatch(fetchinCommentByHotel()) 
     }, [])
 
-    const rooms = useSelector((state) => state.room.RoomData)
+    const rooms = useSelector((state: any) => state.room.roomData)
 console.log(rooms);
 
 
-    const comments = useSelector((state) => state.comment.comment);
+    const comments = useSelector((state: any) => state.comment.comment);
     console.log(comments);
     
 const roomsPrices =  Array.isArray(rooms)

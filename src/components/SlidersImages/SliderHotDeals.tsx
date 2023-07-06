@@ -4,7 +4,7 @@ import axios from '@/utils/axios'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHotelsCoincidencesByCityId } from '@/redux/Features/Citys/CitySlice';
-import Swiper, {Navigation, Pagination} from 'swiper';
+import Swiper, { Navigation, Pagination } from 'swiper';
 import 'swiper/swiper-bundle.css';
 import { useRouter } from 'next/navigation';
 import { fetchinCommentByHotel } from '@/redux/Features/Commets/CommentsSlice';
@@ -25,8 +25,6 @@ const SliderHotDeals: React.FC<Fonts> =  () => {
 	useEffect(() => {
 		const fetchData = async () => {
 		  try {
-			
-	
 			const response = await axios.get('/hotel/findhotel/?destinationId=5ce1ce9c-ceda-4666-8c72-0f4ec34a21fe', {
 			  headers: {
 				Authorization: `Bearer ${tokenSession}`
@@ -36,25 +34,27 @@ const SliderHotDeals: React.FC<Fonts> =  () => {
 		  } catch (error) {
 			console.error('Error en la petición:', error);
 		  }
+
 		};
 		if (typeof document !== 'undefined') {
 			// El código que accede al objeto document solo se ejecuta en el navegador
 			const swiper = new Swiper('.swiper-container', {
-		  // Configuración del carrusel
-		  slidesPerView: 1,
-		  spaceBetween: 10,
-		  loop: true,
-		  autoplay: {
-			delay: 3000, // Intervalo de tiempo entre cada slide (en milisegundos)
-			disableOnInteraction: false, // Permite la reproducción automática incluso cuando el usuario interactúa con el carrusel
-		  },
-		})};
-	
-		fetchData();
-	  }, []);
+				// Configuración del carrusel
+				slidesPerView: 1,
+				spaceBetween: 10,
+				loop: true,
+				autoplay: {
+					delay: 3000, // Intervalo de tiempo entre cada slide (en milisegundos)
+					disableOnInteraction: false, // Permite la reproducción automática incluso cuando el usuario interactúa con el carrusel
+				},
+			})
+		};
 
-		
-	  const hoteles = response ? response : [];
+		fetchData();
+	}, []);
+
+
+	const hoteles = response ? response : [];
 
  
 
@@ -99,10 +99,10 @@ const SliderHotDeals: React.FC<Fonts> =  () => {
         
       </div>
 
-      
-    </div>
-	</div>
-  );
+
+			</div>
+		</div>
+	);
 };
 
 export default SliderHotDeals;
