@@ -20,6 +20,7 @@ import { nameCheck } from '../../utils/index';
 import { randomAvatar } from '../../utils/index';
 import { useSession, signIn } from 'next-auth/react';
 import GoogleAuth from '../../app/google/page';
+import { border } from '@cloudinary/url-gen/qualifiers/background';
 
 const asap = Asap({ subsets: ['latin'] });
 const josefin = Josefin_Sans({ subsets: ['latin'] });
@@ -56,6 +57,7 @@ const page = () => {
 	const [focusedField, setFocusedField] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [emailDuplicate, setEmailDuplicate] = useState<boolean>(false);
 	const [confirmShowPassword, setConfirmShowPassword] =
 		useState<boolean>(false);
 
@@ -154,6 +156,16 @@ const page = () => {
 		);
 	};
 
+	const errorClassName =
+		(errors.birthday && focusedField === 'password') ||
+		(errors.birthday && focusedField === 'confirmPassword')
+			? 'border-red-400'
+			: '';
+
+	const errorStyle = {
+		border: errorClassName ? '1px solid red' : '',
+	};
+
 	const phoneHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const selectedPhoneLada = e.target.value;
 		const phoneNumber = form.phone;
@@ -208,6 +220,7 @@ const page = () => {
 
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		setFocusedField(e.target.name);
+		setEmailDuplicate(false);
 	};
 
 	const handleBlur = () => {
@@ -255,7 +268,7 @@ const page = () => {
 			const tokenSession = responseLogin.data.tokenSession;
 			setTokenSession(tokenSession);
 
-			console.log('Esto es el Data', dataLoggedUser); //! Check
+			// console.log('Esto es el Data', dataLoggedUser); //! Check
 			setSessionId(dataLoggedUser.id);
 			setUserNameSession(dataLoggedUser.name);
 			setAvatarSession(dataLoggedUser.photoUser);
@@ -280,7 +293,8 @@ const page = () => {
 
 			router.push('/');
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
+			setEmailDuplicate(true);
 		}
 	};
 
@@ -308,7 +322,7 @@ const page = () => {
 			setTimeout(() => {
 				setLoading(false);
 			}, 2000);
-			console.log('Petición de inicio de sesión');
+			// console.log('Petición de inicio de sesión');
 
 			registerUser(form, dataLogin);
 		} else {
@@ -380,12 +394,7 @@ const page = () => {
 						Birthdate
 					</label>
 					<DatePicker
-						className={`${
-							(errors.birthday && focusedField === 'password') ||
-							(errors.birthday && focusedField === 'confirmPassword')
-								? 'border-red-400'
-								: ''
-						}`}
+						style={errorStyle}
 						name='birthday'
 						onFocus={handleDatePickerFocus}
 						onBlur={handleBlur}
@@ -549,7 +558,13 @@ const page = () => {
 					</label>
 					<div className='relative '>
 						<input
-							className={`${josefin.className} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-full`}
+							className={`${
+								josefin.className
+							} border-2 rounded-xl my-2 pl-3 py-3 pb-3 w-full${
+								errors.password && focusedField === 'confirmPassword'
+									? ' border-red-300'
+									: ''
+							}`}
 							type={showPassword ? 'text' : 'password'}
 							name='password'
 							value={form.password}
@@ -617,6 +632,11 @@ const page = () => {
 						Sign up
 					</button>
 				</div>
+				{emailDuplicate ? (
+					<li className='text-red-400 flex justify-center'>
+						email is registered, try again!
+					</li>
+				) : null}
 				{loading && (
 					<div className='flex justify-center items-center mt-4'>
 						<span className={spinner.loader}></span>
