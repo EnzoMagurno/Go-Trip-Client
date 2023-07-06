@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '@/utils/axios'
+/* const getTokenSession = () => {
+  return localStorage.getItem("token");
+}; */
 
+
+import { TokenUser } from "../Citys/CitySlice"
 
 
 
@@ -16,13 +21,14 @@ export interface InitialStateComment {
 
 
 export const fetchingComments = createAsyncThunk("getComments", async () => {
+
   try {
-    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+    
 
     const response = await axios.get("/comments", {
 
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${TokenUser}`
       }
     });
 
@@ -38,13 +44,13 @@ export const fetchingComments = createAsyncThunk("getComments", async () => {
 export const fetchinCommentId = createAsyncThunk("getComment", async (id) => {
   try {
 
-    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+    
 
 
     const response = await axios.get(`/comment?id=${id}`, {
 
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${TokenUser}`
       }
     });
 
@@ -60,13 +66,13 @@ export const fetchinCommentId = createAsyncThunk("getComment", async (id) => {
 export const fetchinCommentByHotel = createAsyncThunk("getCommentHotel", async (id) => {
   try {
 
-    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
+
 
 
     const response = await axios.get(`/comments?hotelId=${id}`, {
 
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${TokenUser}`
       }
     });
 

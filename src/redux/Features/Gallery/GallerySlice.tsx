@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const TOKEN_FETCH = process.env.NEXT_PUBLIC_TOKEN_FETCH;
+import { TokenUser } from "../Citys/CitySlice";
 
 
 
@@ -25,7 +25,7 @@ export const deleteImage = createAsyncThunk("deleteImage", async (id) => {
 
     method: "DELETE",
     headers: {
-      "Authorization": `Bearer ${TOKEN_FETCH}`
+      "Authorization": `Bearer ${TokenUser}`
     }
   })
     .then(response => response.data)

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { MainGlobal } from "@/redux/mainInterface";
-
-
+import axios from "axios";
+import { TokenUser } from "../Citys/CitySlice";
 export interface Service {
     id: number
     name: string,
@@ -16,17 +16,14 @@ export interface InitialStateService {
 }
 
 export const fetchingServices= createAsyncThunk("getServices", async () => {
-    const token = process.env.NEXT_PUBLIC_TOKEN_FETCH
-    return await fetch("https://gotrippf-production.up.railway.app/service", {
+    
+    return await axios.get("/service", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${TokenUser}`
         }
       })
-    .then(response => response.json())
-    .then(data => {
-        
-        return data
-    })
+    .then(response => response.data)
+    
 })
 
 
