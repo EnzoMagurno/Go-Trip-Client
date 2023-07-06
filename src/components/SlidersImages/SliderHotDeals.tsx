@@ -56,7 +56,7 @@ const SliderHotDeals: React.FC<Fonts> = ({ roboto }) => {
 
 	const hoteles = response ? response : [];
 
-	console.log(response);
+
 
 
 

@@ -99,8 +99,7 @@ const handleSubmit = async (e: any) => {
   const formPost = { ...form };
   formPost.numberRooms = Number(form.numberRooms);
   
-  console.log(tokenSession)
-  console.log(formPost);
+  
   try {
 
     const response = await axios.post("/hotel/newhotel", formPost, {
@@ -110,7 +109,7 @@ const handleSubmit = async (e: any) => {
     });
 
     const id = response.data.detail.id;
-    console.log(id);
+
     /*setHotelId(id)  */
     router.push(`/createRoom/?id=${id}`);
   } catch (error) {
@@ -146,7 +145,7 @@ const handleChange = (e: any) => {
       
       
   });
-  console.log(e.target.value);
+  
   
   setErrors(validation({
     ...form,
@@ -157,19 +156,19 @@ const handleChange = (e: any) => {
 const handlePhoneChange = (e: any) => {
   setCompletePhone(e.target.value)
   
-  console.log(e.target.value);
+  
 }
 
 const selectLadaChange = (e: any) => {
   setLada(e.target.value)
-  console.log(lada)
+
 }
 
 // const handleFile = (e: any) => {
 
 // }
 
-console.log(form.image);
+
 
 
 

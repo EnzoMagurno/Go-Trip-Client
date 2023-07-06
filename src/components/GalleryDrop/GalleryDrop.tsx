@@ -49,7 +49,7 @@ export const GalleryDrop = (props: { idHotel: any; idRoom: any }) => {
           if (uploadGallery.ok) {
             // La solicitud fue exitosa
             const response = await uploadGallery.json();
-            console.log(response); // La respuesta del backend en formato de objeto JavaScript
+            /* console.log(response); */ // La respuesta del backend en formato de objeto JavaScript
             window.location.reload();
 
           } else {

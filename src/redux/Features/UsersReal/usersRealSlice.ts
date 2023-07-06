@@ -16,7 +16,7 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
                 Authorization:`Bearer ${TokenUser}`
             }
         });
-        console.log(response.data)
+
       return response.data;
     })
 
@@ -25,7 +25,7 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 
     export const updatingUsersReal = createAsyncThunk("updateUsersReal", async (newDataUser) => {
 
-        console.log(newDataUser)
+        
 
 
 
@@ -34,7 +34,7 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
                 Authorization:`Bearer ${TokenUser}`
             }
         } );
-        console.log(response.data)
+
       return response.data; 
     })
 
@@ -46,7 +46,7 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
                 Authorization:`Bearer ${TokenUser}`
             }
         } )
-        console.log(response.data)
+        
       return response.data; 
     })
     
@@ -54,7 +54,7 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 
         
     
-        console.log(id)
+        
         
         
         
@@ -293,12 +293,12 @@ const usersRealSlice = createSlice({
             state.userUpdated = action.payload
         })
         .addCase(getallUsersReal.fulfilled, (state, action) => {
-            console.log(action.payload)
+            
             state.usersDeleted = action.payload 
             state.usersDeletedCopy = action.payload
         })
         .addCase(activeUsersReal.fulfilled, (state, action) => {
-            console.log(action.payload)
+
         })
     }
 })

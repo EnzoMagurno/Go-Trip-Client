@@ -47,7 +47,7 @@ function beAHoteiler() {
 
 	const handleClick = () => {
 		const changeRol = { ...userSession, rol: 'admin' };
-		console.log('Este es changeRol', changeRol);
+	/* 	console.log('Este es changeRol', changeRol); */
 
 		axios
 			.put(`/user/updateUser/${idSession}`, changeRol, {
@@ -57,10 +57,10 @@ function beAHoteiler() {
 			})
 
 			.then((response) => {
-				console.log('Successful modification');
-				console.log(response.data);
+				/* console.log('Successful modification'); */
+				/* console.log(response.data); */
 
-				console.log('Ahora se cambio el rol', response.data);
+				/* console.log('Ahora se cambio el rol', response.data); */
 				alert(
 					'Congratulations, now you can rent your place!, to publish Hotels, login again'
 				);

@@ -12,6 +12,7 @@ import { fetchRoomById } from '../../../redux/Features/Room/RoomSlice';
 import { useRouter } from 'next/navigation'
 import MercadoPago from '../../../../public/mercado-pago.svg'
 import Image from 'next/image'
+import { BsCheckCircleFill } from "react-icons/bs"
 
 interface PageProps {
     params: object,
@@ -55,7 +56,7 @@ const page = (props: PageProps): React.ReactNode => {
 
     const { params, searchParams } = props
     const router = useRouter()
-    console.log(router);
+
 
     useEffect(() => {
         dispatch(fetchinHotelId(params.id))
@@ -65,8 +66,8 @@ const page = (props: PageProps): React.ReactNode => {
     const hotel = useSelector(state => state.hotel.hotel)
     const room = useSelector(state => state.room.room)
 
-    console.log(room);
-    console.log(hotel, 'hotel');
+  /*   console.log(room);
+    console.log(hotel, 'hotel'); */
 
     const dispatch = useDispatch()
 
@@ -83,7 +84,7 @@ const page = (props: PageProps): React.ReactNode => {
     const [totalAmount, setTotalAmount] = useState<number>(0);
 
     const currency = room?.destination?.moneyType || ''
-
+    const [ BookingMadeIt, setBooking ] = useState({ status: false })
     useEffect(() => {
         const subtotal = stay * perDay;
         const total = subtotal + taxesAndServices;
@@ -114,7 +115,7 @@ const page = (props: PageProps): React.ReactNode => {
                 }
             });
             const linkPay = mercadoPagoResponse.data.linkPago
-            console.log();
+            if (mercadoPagoResponse.status === 200) setBooking({ status: true })
             console.log(linkPay);
             window.open(linkPay, '_blank')
         } catch (error) {
@@ -150,10 +151,10 @@ const page = (props: PageProps): React.ReactNode => {
             <div className='flex justify-center'>
                 <hr className='w-[90%] my-3 h-0.5 border-t-0 bg-gray-500 opacity-20 dark:opacity-50' />
             </div>
-            <p className={`${asap.className} text-gray-500 font-semibold pl-5 mb-4`}>
+            <p className={` text-gray-500 font-semibold pl-5 mb-4`}>
                 Summary of charges
             </p>
-            <div className={`${josefin.className} flex justify-center`}>
+            <div className={` flex justify-center`}>
                 <button onClick={() => stay > 1 && setStay(stay - 1)} className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none">
                     <span className="m-auto text-2xl font-thin">-</span>
                 </button>
@@ -187,7 +188,7 @@ const page = (props: PageProps): React.ReactNode => {
 
 
             <div className='flex-col justify-start pl-5 w-[90%]'>
-                <h3 className={`${asap.className} mb-2 text-gray-500 mt-6 font-semibold`}>
+                <h3 className={` mb-2 text-gray-500 mt-6 font-semibold`}>
                     Additional charges
                 </h3>
                 <p>
@@ -202,18 +203,32 @@ const page = (props: PageProps): React.ReactNode => {
                 <hr className='w-[90%] mt-6 mb-2 h-0.5 border-t-0 bg-gray-500 opacity-20 dark:opacity-50' />
             </div>
 
-            <h3 className={`${asap.className} flex justify-center mb-4 text-gray-500 mt-3 font-semibold`}>
-                Book now!
-            </h3>
+           
 
-            <div onClick={handlePayment2} className="flex justify-center outline-1 rounded-xl w-full ">
-                <div className='w-full flex justify-center '>
-                    <button className="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-xl focus:outline-none hover:bg-blue-600">
-                        Pagar con
-                        <Image className="w-14 ml-2" src={MercadoPago} alt="" />
-                    </button>
+            {
+                BookingMadeIt.status 
+                ? ( <div className='w-full '>
+                <div className='w-full flex items-center justify-center '> < BsCheckCircleFill className=' text-green-800 text-8xl text-center'/></div>
+               
+            <h5 className='text-lg text-center mt-3 font-medium w-full'>Successful reservation!</h5>
+            </div>) 
+                : (
+                    <div>
+                    <div> <h3 className={` flex justify-center mb-4 text-gray-500 mt-3 font-semibold`}>
+                    Book now!
+                </h3></div>
+                    <div onClick={handlePayment2} className="flex justify-center outline-1 rounded-xl w-full ">
+                    <div className='w-full flex justify-center '>
+                        <button className="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-xl focus:outline-none hover:bg-blue-600">
+                            Pagar con
+                            <Image className="w-14 ml-2" src={MercadoPago} alt="" />
+                        </button>
+                    </div>
                 </div>
-            </div>
+                </div>
+                )
+            }
+          
 
             {/* PAYMENT METHOD */}
             <div className='flex justify-center -z-10'>
@@ -221,7 +236,7 @@ const page = (props: PageProps): React.ReactNode => {
             </div>
 
             <div className='mt-8'>
-                <h3 className={`${asap.className} font-semibold text-gray-500 mb-2 pl-5`}>Modifying</h3>
+                <h3 className={` font-semibold text-gray-500 mb-2 pl-5`}>Modifying</h3>
                 <p className='text-center'>Any change in the length or dates of a reservation may result in a rate change</p>
 
             </div>
@@ -230,7 +245,7 @@ const page = (props: PageProps): React.ReactNode => {
             </div>
 
             <div className='flex flex-col w-[80%] pl-5 mb-20'>
-                <h3 className={`${asap.className} font-semibold  mb-2  text-gray-500`}>
+                <h3 className={` font-semibold  mb-2  text-gray-500`}>
                     Cancellation policy
                 </h3>
                 <p>

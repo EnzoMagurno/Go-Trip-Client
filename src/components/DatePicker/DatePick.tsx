@@ -88,7 +88,7 @@ const DatePick: React.FC<PropsDatePick> = ({ open, setInputIsDisabled, toggleOpe
 
     const handleDateString1 = (values: any, dateString: string ) => {
 
-        console.log({...datesStrings, arrival: dateString})
+
 		 setDatesString({...datesStrings, arrival: dateString})
 
 
@@ -97,7 +97,7 @@ const DatePick: React.FC<PropsDatePick> = ({ open, setInputIsDisabled, toggleOpe
 	};
 
     const handleDateString2 = (values: any, dateString: string) => {
-        console.log({...datesStrings, exit: dateString});
+        
 		setDatesString({...datesStrings, exit: dateString})
 
 		dispatch(saveDates({...datesStrings, exit: dateString}))
