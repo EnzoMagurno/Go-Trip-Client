@@ -23,12 +23,12 @@ const josefin = Josefin_Sans({
 	subsets: ['latin'],
 });
 
-export const badScript = Bad_Script({
+const badScript = Bad_Script({
 	weight: ['400'],
 	subsets: ['latin'],
 });
 
-export const roboto = Roboto({
+ const roboto = Roboto({
 	weight: ['400', '500', '700'],
 	subsets: ['cyrillic'],
 });
