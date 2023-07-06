@@ -1,16 +1,15 @@
 "use client"
 import { useDispatch, useSelector } from "react-redux";
-import { selectHotelState } from "../../redux/Features/Hotel/hotelsSlice"
 import ContainerResult from "./ContainerResult";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getHotelsCoincidencesByCityId } from "@/redux/Features/Citys/CitySlice";
-
+import { getHotelsCoincidencesByCityId } from "../../redux/Features/Citys/CitySlice";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import FiltersBar from "../Filters/FiltersBar";
 const ContainerResults = ({roboto}) => {
     const searchParams = useSearchParams()
     const idCity = searchParams.get("city")
-
+    const [tokenSession, setTokenSession] = useLocalStorage('token', '');
     const dispatch = useDispatch()
 
 
@@ -24,7 +23,8 @@ const ContainerResults = ({roboto}) => {
 
     
     useEffect(() => {
-        dispatch(getHotelsCoincidencesByCityId(idCity))
+        console.log(tokenSession)
+        dispatch(getHotelsCoincidencesByCityId(idCity, tokenSession))
 
     }, [idCity])
 
