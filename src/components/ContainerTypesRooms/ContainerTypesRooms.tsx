@@ -5,7 +5,7 @@ import { BsKey } from 'react-icons/bs';
 import { TfiGallery } from 'react-icons/tfi';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { fetchingServices } from '@/redux/Features/Services/servicesSlice';
-import { fetchRoomById, selectRoomIdState } from "@/redux/Features/Room/RoomSlice";
+import { fetchRoomById, selectRoomIdState } from "../../redux/Features/Room/RoomSlice";
 import { MainGlobal } from '@/redux/mainInterface';
 import { GalleryDrop } from "../GalleryDrop/GalleryDrop";
 import Image from 'next/image';
@@ -13,30 +13,33 @@ import ImageOptions from "../Imageoptions/ImageOptions";
 
 
 
-export interface MyRoom {
+export interface MyRoom  {
 	id: string
-		room: string
-		price: number
-		numRooms: number
-		roomsInUse: number
-		description: string
-		status: boolean
-		ServicesRoom: string[]
-		hotelId: string
-		gallery: []
-}
+	price: number
+	numRooms: number
+	roomsInUse: number 
+	description: string
+	status: boolean
+	ServicesRoom: any[]
+	hotelId: string 
+	gallery: string[]
+	room: any
+} 
 
-export interface RoomProps {
-	roomType: MyRoom
-}
 
-const ContainerTypesRooms = ({ roomType }: RoomProps) => {
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '@/redux/store';
+import { AnyAction } from '@reduxjs/toolkit';
+
+
+const ContainerTypesRooms = ({ roomType }: any) => {
 
 	
-	const dispatch = useDispatch()
-	const [serviceName, setServiceName] = useState<string[]>([]);
+
+	const [serviceName, setServiceName] = useState<any[]>([]);
 	const room = useSelector(selectRoomIdState)
 
+		const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
 	const services = useSelector((state: MainGlobal) => state.services.dataService)
 	
@@ -63,8 +66,8 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 		dispatch(fetchingServices())
 		dispatch(fetchRoomById(id))
 		const getMatchingServices = () => {
-			const matchingServices = ServicesRoom.map((serviceId) => {
-			  return services.find((service) => service.id === serviceId);
+			const matchingServices = ServicesRoom.map((serviceId: any) => {
+			  return services.find((service: any) => service.id === serviceId);
 			});
 		
 			setServiceName(matchingServices);
@@ -79,7 +82,7 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 		const [showOverlay, setShowOverlay] = useState(false);
 	  
 		
-		const handleImageClick = (image) => {
+		const handleImageClick = (image: any) => {
 			setSelectedImage(image);
 			setShowOverlay(true);
 		  };
@@ -145,7 +148,7 @@ const ContainerTypesRooms = ({ roomType }: RoomProps) => {
 						</div>
 						<div className='m-1 max-h-64 overflow-scroll rounded-lg shadow-cardTypeRoom grid grid-cols-2 gap-2 p-2'>
 				
-			{room.gallery && room.gallery?.map((i, index)=> (
+			{room.gallery && room.gallery?.map((i: any, index: any)=> (
 				<Image 
 				className='rounded-xl'
 				src={i.urlIMG}

@@ -2,9 +2,9 @@
 import React from 'react'
 import { useRouter } from 'next/navigation';
 import Select from 'react-select';
-import axios from '../../utils/axios'
+import axios from 'axios'
 import validation from './validation'
-import { AdvancedImage } from '@cloudinary/react';
+/* import { AdvancedImage } from '@cloudinary/react'; */
 import { Errors } from './validation'
 import { countries } from 'countries-list'
 import { useState, useEffect } from 'react';
@@ -16,6 +16,9 @@ import { DragAndDrop } from '@/components/Drag & Drop/DragAndDrop';
 import { Loader } from '@googlemaps/js-api-loader';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { ThunkDispatch } from '@reduxjs/toolkit'; 
+import { RootState } from '@/redux/store'; 
+import {  AnyAction } from "@reduxjs/toolkit"
 
 const asapSemi = Asap({
   weight: ['600'],
@@ -35,13 +38,16 @@ function HotelRegister() {
   //   googleMapsApiKey: process.env.GOOGLEMAPS_API_KEY
   // })
 
-  
 
-  const selectCities: object[] = []
+  
+  interface Citie {
+    name: string
+  }
+  const selectCities: string[] = [];
 
   const router = useRouter()
 
-  const dispatch = useDispatch()
+  
   const cities = useSelector((state: MainGlobal) => state.city.dataCity)
  
   const [phoneCode, setPhoneCode] = useState<string[]>([]) 
@@ -50,9 +56,15 @@ function HotelRegister() {
   const [city, setCity] = useState('')
 
 
-  cities.map(e => selectCities.push({label:e.city, value: e.id}))
+  interface Citys {
+    city: string
+    id: string
+  }
   
 
+  cities.map((e: any) => selectCities.push(e))
+  
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
   useEffect(() => {
     
     dispatch(fetchingCities())

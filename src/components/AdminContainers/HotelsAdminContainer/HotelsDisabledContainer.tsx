@@ -12,7 +12,11 @@ import { MdOutlineEmail } from "react-icons/md";
 import { GiModernCity, GiDirectionSigns } from "react-icons/gi" 
 import { motion } from 'framer-motion'; 
 import { AiOutlineDelete } from 'react-icons/ai'; 
-const HotelsDisabledContainer = (props) => {
+
+import { ThunkDispatch } from '@reduxjs/toolkit'; 
+	import { RootState } from '@/redux/store'; 
+	import {  AnyAction } from "@reduxjs/toolkit"
+const HotelsDisabledContainer = (props: any) => {
 	const {
 		id,
 		address,
@@ -48,9 +52,10 @@ const HotelsDisabledContainer = (props) => {
 		phone: phone,
 	});
 
-	const dispatch = useDispatch();
 
-
+	
+	
+		const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
 
 

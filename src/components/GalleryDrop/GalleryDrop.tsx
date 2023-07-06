@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from '../../utils/axios'
+import axios from 'axios'
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { BoxDragAndDrop } from './BoxDragAndDrop';
 import { ImageSelected } from './ImageSelected';

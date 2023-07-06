@@ -3,9 +3,9 @@
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google';
 import Link from 'next/link';
 import { BsArrowLeftShort } from 'react-icons/bs';
-import GoTripLogo from '../../../../public/Go-Trip-logo.svg';
+const GoTripLogo = '../../../../public/Go-Trip-logo.svg';
 import Image from 'next/image';
-import ContainerUsersInfo from '@/components/ContainerUsersInfo/ContainerUsersInfo';
+import ContainerUsersInfo from '../../../components/ContainerUsersInfo/ContainerUsersInfo';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 const asap = Asap({ subsets: ['latin'] });

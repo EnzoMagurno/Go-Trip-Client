@@ -23,7 +23,7 @@ export const fetchingUsersReal = createAsyncThunk("getUsersReal", async () => {
 
 
 
-    export const updatingUsersReal = createAsyncThunk("updateUsersReal", async (newDataUser) => {
+    export const updatingUsersReal = createAsyncThunk("updateUsersReal", async (newDataUser: any) => {
 
         console.log(newDataUser)
 
@@ -132,7 +132,7 @@ const usersRealSlice = createSlice({
     reducers: {
         nameEdit: (state, action) => {;
         },
-        searchByName: (state, action) => {
+        searchByName: (state: any, action) => {
 
             
 
@@ -141,14 +141,14 @@ const usersRealSlice = createSlice({
                 state.usersRealCopy = [ ...state.usersReal].filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase()))
                 state.usersDeletedCopy = [...state.usersDeleted].filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase()))
             } else if (state.usersFilter[0]?.deletedAt === null) {
-                state.usersFilter = state.usersReal.filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase())).length 
-                ? state.usersReal.filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase())) 
+                state.usersFilter = state.usersReal.filter((user: any) => user.name.toLowerCase().includes(action.payload.toLowerCase())).length 
+                ? state.usersReal.filter((user: any) => user.name.toLowerCase().includes(action.payload.toLowerCase())) 
                 : state.usersFilter = state.usersFilter
 
             } else if (typeof state.usersFilter[0]?.deletedAt === "string"){
 
-                state.usersFilter = state.usersDeleted.filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase())).length
-                ? state.usersDeleted.filter(user => user.name.toLowerCase().includes(action.payload.toLowerCase()))
+                state.usersFilter = state.usersDeleted.filter((user: any) => user.name.toLowerCase().includes(action.payload.toLowerCase())).length
+                ? state.usersDeleted.filter((user: any) => user.name.toLowerCase().includes(action.payload.toLowerCase()))
                 : state.usersFilter = state.usersFilter
             }
 
@@ -159,12 +159,12 @@ const usersRealSlice = createSlice({
                 state.filterBy = "Active users"
                 state.allUsers = false
                 state.orderAlpha = "A - Z"
-                state.usersFilter = state.usersReal.filter(user => !user.deletedAt)
+                state.usersFilter = state.usersReal.filter((user: any) => !user.deletedAt)
             } else if (action.payload === "disabled"){
                 state.filterBy = "Disabled users"
                 state.orderAlpha = "A - Z"
                 state.allUsers = false
-                state.usersFilter = state.usersDeleted.filter(user => user.deletedAt).sort((a, b) => {
+                state.usersFilter = state.usersDeleted.filter((user: any) => user.deletedAt).sort((a: any, b: any) => {
                     
                     if (a.name < b.name) {
                         return -1
@@ -186,7 +186,7 @@ const usersRealSlice = createSlice({
 
             if (state.allUsers && action.payload === "az") {
                 state.orderAlpha = "A - Z"
-                state.usersRealCopy = [ ...state.usersRealCopy].sort((a, b) => {
+                state.usersRealCopy = [ ...state.usersRealCopy].sort((a: any, b: any) => {
                     if (a.name < b.name) {
                         return -1
                     } 
@@ -198,7 +198,7 @@ const usersRealSlice = createSlice({
                     return 0
                 })
 
-                state.usersDeletedCopy = [ ...state.usersDeletedCopy ].sort((a, b) => {
+                state.usersDeletedCopy = [ ...state.usersDeletedCopy ].sort((a: any, b: any) => {
                     if (a.name < b.name) {
                         return -1
                     } 
@@ -211,7 +211,7 @@ const usersRealSlice = createSlice({
                 })
             } else if (state.allUsers && action.payload === "za") {
                 state.orderAlpha = "Z - A"
-                state.usersRealCopy = [ ...state.usersRealCopy].sort((a, b) => {
+                state.usersRealCopy = [ ...state.usersRealCopy].sort((a: any, b: any) => {
                     if (a.name < b.name) {
                         return 1
                     } 
@@ -223,7 +223,7 @@ const usersRealSlice = createSlice({
                     return 0
                 })
 
-                state.usersDeletedCopy = [ ...state.usersDeletedCopy ].sort((a, b) => {
+                state.usersDeletedCopy = [ ...state.usersDeletedCopy ].sort((a: any, b: any) => {
                     if (a.name < b.name) {
                         return 1
                     } 
@@ -236,7 +236,7 @@ const usersRealSlice = createSlice({
                 })
             } else if (action.payload === "az") {
                 state.orderAlpha = "A - Z"
-                state.usersFilter =  [...state.usersFilter].sort((a, b) => {
+                state.usersFilter =  [...state.usersFilter].sort((a: any, b: any) => {
                     if (a.name < b.name) {
                         return -1
                     } 
@@ -250,7 +250,7 @@ const usersRealSlice = createSlice({
                
             } else {
                 state.orderAlpha = "Z - A"
-                state.usersFilter = [ ...state.usersFilter].sort((a, b) => {
+                state.usersFilter = [ ...state.usersFilter].sort((a: any, b: any) => {
                     if (a.name < b.name) {
                         return 1
                     } 
@@ -269,9 +269,9 @@ const usersRealSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(fetchingUsersReal.fulfilled, (state:InitialStateRealUser, action) => {
+        .addCase(fetchingUsersReal.fulfilled, (state: any, action: any) => {
 
-            const arrOrdered = [...action.payload].sort((a, b) => {
+            const arrOrdered = [...action.payload].sort((a: any, b: any) => {
                 if (a.name < b.name) {
                     return -1
                 } 

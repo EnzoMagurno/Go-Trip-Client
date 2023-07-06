@@ -1,15 +1,10 @@
-/* import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { MainGlobal } from "../../mainInterface";
 
 
 
 export const fetchingUsers = createAsyncThunk("getUsers", async () => {
-    return await fetch("http://localhost:3001/", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+    return await fetch("http://localhost:3001/")
   });
  
 
@@ -57,5 +52,5 @@ const usersSlice = createSlice({
 })
 
 export const { sortReverseData } = usersSlice.actions;
-export const selectAllUsers = (state: MainGlobal): User[] => state.users.usersCopy
-export default usersSlice; */
+export const selectAllUsers = (state: any) => state.users.usersCopy
+export default usersSlice; 

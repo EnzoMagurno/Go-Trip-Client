@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from '@/utils/axios'
+import axios from 'axios'
 
 import { TokenUser } from "../Citys/CitySlice";
 export interface InitialStateRoom {
@@ -10,7 +10,7 @@ export interface InitialStateRoom {
 
 export const fetchRoomById = createAsyncThunk(
     "booking/fetchRoomById",
-    async (roomId, { rejectWithValue }) => {
+    async (roomId: string, { rejectWithValue }: any) => {
         
         try {
             const response = await axios.get(`/rooms/findRooms/${roomId}`, {
@@ -21,7 +21,7 @@ export const fetchRoomById = createAsyncThunk(
             });
             console.log(roomId, 'ROOM ID PAAA');
             return response.data;
-        } catch (error) {
+        } catch (error: any) {
             return rejectWithValue(error.response.data);
         }
     }
@@ -61,7 +61,7 @@ const RoomSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(fetchingRooms.fulfilled, (state, action) => {
+        .addCase(fetchingRooms.fulfilled, (state: any, action) => {
         state.RoomData = action.payload
 
 
@@ -73,6 +73,6 @@ const RoomSlice = createSlice({
 });
 
 export default RoomSlice;
-export const selectRoomIdState = (state) => state.room.room
-export const selectRoomState = (state) => state.room.room
+export const selectRoomIdState = (state: any) => state.room.room
+export const selectRoomState = (state: any) => state.room.room
 export const { getRoomCoincidence } = RoomSlice.actions 

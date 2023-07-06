@@ -1,6 +1,6 @@
 'use client';
 import Logo_GoTrip from './images/Go-Trip-logo.svg';
-import Logo_GoTrip_Dark from './images/Go-Trip-logo_Dark.svg';
+import  Logo_GoTrip_Dark  from  './images/Go-Trip-logo_Dark.svg';
 import Image from 'next/image';
 import { useState } from 'react';
 import UserOptions from '../UserOptions/UserOptions';
@@ -53,7 +53,9 @@ const NavBarTop = () => {
 				<Image
 					src={!themeIsDark ? Logo_GoTrip : Logo_GoTrip_Dark}
 					alt='Logo_GoTrip'
-					className=''
+					className='w-full'
+					width={0}
+					height={0}
 				/>
 			</button>
 

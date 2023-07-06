@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import coverPhoto from './sources/portrait-beautiful-young-asian-women-happy-smile-relax-outdoor-swimming-pool-resort.jpg';
+const coverPhoto = 'https://as2.ftcdn.net/v2/jpg/05/54/49/37/1000_F_554493763_8lh34fMzfBzUU50jSHzyHoM4qwpYrbmi.jpg';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google';

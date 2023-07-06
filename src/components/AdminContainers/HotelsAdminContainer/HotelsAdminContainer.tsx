@@ -6,16 +6,18 @@ import { useDispatch } from 'react-redux';
 import {
 	deleteHotel,
 	fetchingHotel,
-} from '../../../redux/Features/Hotel/hotelsSlice';
+} from "../../../redux/Features/Hotel/hotelsSlice";
 import { BsTelephone } from "react-icons/bs";
 import { MdOutlineEmail } from "react-icons/md";
 import { GrDirections } from "react-icons/gr";
 import { GiModernCity, GiDirectionSigns } from "react-icons/gi" 
 import { motion } from 'framer-motion';
+import { ThunkDispatch } from '@reduxjs/toolkit'; 
+import { RootState } from '@/redux/store'; 
+import {  AnyAction } from "@reduxjs/toolkit"
 
 
-
-const AdminContainer = (props) => {
+const AdminContainer = (props: any) => {
 	const {
 		id,
 		address,
@@ -50,11 +52,9 @@ const AdminContainer = (props) => {
 		email: email,
 		phone: phone,
 	});
-
-	const dispatch = useDispatch();
-
-
-
+	
+	const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
+	
 
 
 	const deleteHotelHandler = () => {

@@ -9,8 +9,11 @@ import FiltersHotels from '../../../components/SelectHotelsHost/FiltersHotelHost
 import HotelsAdminContainer from '../../../components/AdminContainers/HotelsAdminContainer/HotelsAdminContainer';
 import HotelsDisabledContainer from '../../../components/AdminContainers/HotelsAdminContainer/HotelsDisabledContainer';
 import { TbMoodHappy } from "react-icons/tb"
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '@/redux/store';
+import { AnyAction } from '@reduxjs/toolkit';
 const AllHotelsHost = () => {
-	const dispatch = useDispatch();
+	const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
 	const {
 		copyHotelData,
@@ -20,7 +23,7 @@ const AllHotelsHost = () => {
 		hotelsDeleted,
 		hotelData,
 		responseSuccesfull,
-	} = useSelector((state) => state.hotel);
+	} = useSelector((state: any) => state.hotel);
 
 	useEffect(() => {
 		dispatch(fetchingHotel());
@@ -48,7 +51,7 @@ const AllHotelsHost = () => {
 ) : (
 				<></>
 			)} 
-			{copyHotelData.map((hotel) => (
+			{copyHotelData.map((hotel: any) => (
 				<HotelsAdminContainer
 					key={hotel.id}
 					address={hotel.address}
@@ -82,7 +85,7 @@ const AllHotelsHost = () => {
 			) : (
 				<></>
 			)}
-			{copyHotelsDeleted?.map((hotel) => (
+			{copyHotelsDeleted?.map((hotel: any) => (
 				<HotelsDisabledContainer
 					key={hotel.id}
 					address={hotel.address}

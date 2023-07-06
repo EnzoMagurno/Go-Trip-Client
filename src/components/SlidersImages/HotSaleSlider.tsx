@@ -1,14 +1,14 @@
 import React from 'react'
-import axios from '@/utils/axios'
+import axios from 'axios'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Fonts } from './SliderHotels';
+
 import { RiH1 } from 'react-icons/ri';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-const HotSaleSlider: React.FC<Fonts> = () => {
+const HotSaleSlider = () => {
 
-	const [paris, setParis] = useState(null);
-	const [bali, setBali] = useState(null);
+	const [paris, setParis] = useState<any>(null);
+	const [bali, setBali] = useState<any>(null);
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
 	

@@ -4,7 +4,6 @@ import { TbEdit } from 'react-icons/tb';
 import { BiDirections } from 'react-icons/bi';
 import { AiOutlineMail, AiOutlinePhone, AiOutlineBell } from 'react-icons/ai';
 import { MdOutlineBedroomChild } from 'react-icons/md';
-import { roboto, badScript } from '../../app/page';
 import { CiLocationOn } from 'react-icons/ci';
 import { useEffect, useState } from 'react';
 import { MyHotel } from '../../app/myHotels/page';
@@ -16,7 +15,16 @@ import {
 	fetchinHotelId,
 } from '../../redux/Features/Hotel/hotelsSlice';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { ChangeEvent } from 'react';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '@/redux/store';
+import { AnyAction } from '@reduxjs/toolkit';
 
+
+
+	
+
+    
 
 
 interface HotelProps {
@@ -43,9 +51,10 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 		status,
 		gallery
 	} = hotel;
+
 	
-	
-	const dispatch = useDispatch();
+
+    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
 	const [editData, setEditData] = useState({
 		address,
@@ -74,9 +83,9 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 
 	
 	return (
-		<div className={`${roboto.className}`}>
+		<div >
 			<h5
-				className={`${badScript.className} text-center p-3 font-bold text-2xl`}
+				className={` text-center p-3 font-bold text-2xl`}
 			>
 				{name}
 			</h5>
@@ -124,7 +133,7 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 										<CiSaveDown2
 											onClick={() => {
 												
-													dispatch(updateHotel({ id, email: editData.email }));
+													dispatch(updateHotel({ id, email: editData.email, name }));
 												dispatch(fetchinHotelId(id));
 												setEmailEdit('hidden');
 												
@@ -175,7 +184,7 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 									<div className='absolute z-20 top-0 right-0 bg-white w-10 h-full rounded-lg flex justify-center items-center '>
 										<CiSaveDown2
 											onClick={() => {
-												dispatch(updateHotel({ id, phone: editData.phone }));
+												dispatch(updateHotel({ id, phone: editData.phone, name }));
 												dispatch(fetchinHotelId(id));
 												setPhoneEdit('hidden');
 											}}
@@ -261,6 +270,7 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 														id,
 														checkIn: editData.checkIn,
 														checkOut: editData.checkOut,
+														name
 													})
 												);
 
@@ -308,13 +318,13 @@ const SettingsHotel = ({ hotel }: HotelProps) => {
 					<textarea
 						name='overview'
 						value={editData.overview}
-						onChange={(event) => editDataHandler(event, editData, setEditData)}
+						onChange={(event: any) => editDataHandler(event, editData, setEditData)}
 						className='shadow-img w-full z-20 h-full rounded-lg p-2 font-normal overflow-auto text-black text-base'
 					/>
 					<div className='absolute z-20 top-0 right-0 bg-white w-10  rounded-lg flex justify-center items-center '>
 						<CiSaveDown2
 							onClick={() => {
-								dispatch(updateHotel({ id, overview: editData.overview }));
+								dispatch(updateHotel({ id, overview: editData.overview, name }));
 								dispatch(fetchinHotelId(id));
 								setDescriptionEdit('hidden');
 							}}

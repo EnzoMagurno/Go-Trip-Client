@@ -9,14 +9,17 @@ import Link from "next/link";
 import { GalleryDrop } from "@/components/GalleryDrop/GalleryDrop";
 import Image from 'next/image';
 import ImageOptions from '@/components/Imageoptions/ImageOptions'
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '@/redux/store';
+import { AnyAction } from '@reduxjs/toolkit';
 
 
 
-const DetailHotel = ({ params }) => {
+const DetailHotel = ({ params }: {params: any}) => {
 
 	const { idHotel } = params
 
-    const dispatch = useDispatch()
+    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
     const hotel = useSelector(selectHotelIdState)
 	const rooms: [] = hotel.rooms
 
@@ -32,11 +35,11 @@ const DetailHotel = ({ params }) => {
 // hotel.rooms.map((h)=> rooms.push(h))
 // console.log(rooms);
 
-const [selectedImage, setSelectedImage] = useState(null);
+const [selectedImage, setSelectedImage] = useState("null");
 	const [showOverlay, setShowOverlay] = useState(false);
   
 	
-	const handleImageClick = (image) => {
+	const handleImageClick = (image: string) => {
 		setSelectedImage(image);
 		setShowOverlay(true);
 	  };
@@ -45,6 +48,17 @@ const [selectedImage, setSelectedImage] = useState(null);
 		setShowOverlay(false);
 	  };
 
+	  interface RoomData {
+		id: string
+		price: number
+		numRooms: number
+		roomsInUse: number 
+		description: string
+		status: boolean
+		ServicesRoom: any[]
+		hotelId: string 
+		gallery: string[]
+	} 
 
 	return (
 		<div className='p-5 pb-24'>
@@ -54,7 +68,7 @@ const [selectedImage, setSelectedImage] = useState(null);
 			<h5 className='text-lg font-bold mt-3 mb-3 text-iconsPurple'>Photos</h5>
 			<div className='m-5 max-h-64 overflow-scroll rounded-lg shadow-cardTypeRoom grid grid-cols-2 gap-2 p-2'>
 				
-			{hotel.gallery && hotel.gallery?.map((i, index)=> (
+			{hotel.gallery && hotel.gallery?.map((i: any, index: any)=> (
 				<Image 
 				className='rounded-xl'
 				src={i.urlIMG}
@@ -64,7 +78,7 @@ const [selectedImage, setSelectedImage] = useState(null);
 				onClick={() => handleImageClick(i)}
 				/>
 				))}
-				<GalleryDrop  idHotel={hotel.id} />
+				<GalleryDrop  idHotel={hotel.id} idRoom="" />
 			</div>
 				{showOverlay && (
         <ImageOptions image={selectedImage} onClose={handleCloseOverlay} />
@@ -76,7 +90,7 @@ const [selectedImage, setSelectedImage] = useState(null);
 				Types Rooms
 			</h3>
 				<div className={`  shadow-insetContainerTypeRooms border pb-5 rounded-2xl h w-ful grid grid-cols-1 gap-3`}>
-				{rooms && rooms?.map((roomType: []) =>{
+				{rooms && rooms?.map((roomType: RoomData[]) =>{
 					return (
 						<ContainerTypesRooms roomType={roomType}/>
 					)

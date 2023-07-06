@@ -6,15 +6,23 @@ import { useEffect, useState } from "react";
 import { getHotelsCoincidencesByCityId } from "../../redux/Features/Citys/CitySlice";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import FiltersBar from "../Filters/FiltersBar";
-const ContainerResults = ({roboto}) => {
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '@/redux/store';
+import { AnyAction } from '@reduxjs/toolkit';
+
+	
+
+	
+const ContainerResults = () => {
     const searchParams = useSearchParams()
     const idCity = searchParams.get("city")
     const [tokenSession, setTokenSession] = useLocalStorage('token', '');
-    const dispatch = useDispatch()
+
+    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
 
 
-    const destination = useSelector(state => state.city.hotelByCity) 
+    const destination = useSelector((state: any) => state.city.hotelByCity) 
     console.log(destination)
 
 
@@ -24,7 +32,7 @@ const ContainerResults = ({roboto}) => {
     
     useEffect(() => {
         console.log(tokenSession)
-        dispatch(getHotelsCoincidencesByCityId(idCity, tokenSession))
+        dispatch(getHotelsCoincidencesByCityId(idCity))
 
     }, [idCity])
 
@@ -41,7 +49,7 @@ const ContainerResults = ({roboto}) => {
                 <h3 className="text-center pt-2 pb-2">{ hotel.length } Results of { `${destination.city}, ${destination.state}, ${destination.country}` }</h3>
                  <div className="grid grid-row s-6 gap-5" >
                 {
-                    hotel.map(hotels => <ContainerResult 
+                    hotel.map((hotels: any) => <ContainerResult 
                         key={hotels.id}
                         id={hotels.id}
                         name={hotels.name} 
@@ -51,8 +59,7 @@ const ContainerResults = ({roboto}) => {
                         country={destination.country}
                    
                        
-                       
-                        roboto={roboto}
+        
                         />)
                 }    
               

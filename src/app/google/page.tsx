@@ -8,7 +8,7 @@ import { DataLogin } from '@/app/register/page';
 import { useRouter } from 'next/navigation';
 import Cookies from 'universal-cookie';
 
-import axios from '../../utils/axios';
+import axios from 'axios';
 
 function GoogleAuth() {
 	const [tokenSession, setTokenSession] = useLocalStorage('token', ''); //!SessionToken

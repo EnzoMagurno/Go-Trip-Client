@@ -1,8 +1,13 @@
 import { RiHotelLine } from 'react-icons/ri';
 import Link from 'next/link';
-import { Hotel } from "../../app/myHotels/page";
 
-const CardHotelHoteiler: React.FC<Hotel> = ({ id, name, image }) => {
+interface Props {
+	id: string
+	name: string
+	image: string
+}
+
+const CardHotelHoteiler: React.FC<Props> = ({ id, name, image }) => {
 	return (
 		<Link href={`myHotels/${id}`}>
 			<div className='w-full relative m-auto rounded-2xl shadow-img  flex justify-center items-center '>

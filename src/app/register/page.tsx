@@ -1,5 +1,5 @@
 'use client';
-import GoTripLogo from '../../../public/Go-Trip-logo.svg';
+const GoTripLogo = '../../../public/Go-Trip-logo.svg';
 import Image from 'next/image';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import Link from 'next/link';
@@ -14,17 +14,17 @@ import { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import spinner from '../login/loading.module.css';
-import axios from '../../utils/axios';
+import axios from 'axios';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { nameCheck } from '../../utils/index';
-import { randomAvatar } from '../../utils/index';
+import { nameCheck, randomAvatar } from '../../utils/index';
+
 import { useSession, signIn } from 'next-auth/react';
 import GoogleAuth from '../../app/google/page';
 
 const asap = Asap({ subsets: ['latin'] });
 const josefin = Josefin_Sans({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] });
-export const listOfCountries = Object.values(countries);
+const listOfCountries = Object.values(countries);
 
 export interface FormState {
 	name: string;

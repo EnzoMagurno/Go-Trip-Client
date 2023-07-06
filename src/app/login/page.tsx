@@ -1,5 +1,5 @@
 'use client';
-import GoTripLogo from '../../../public/Go-Trip-logo.svg';
+const GoTripLogo =  '../../../public/Go-Trip-logo.svg';
 import Image from 'next/image';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { Errors } from './validation';
 import validation from './validation';
 import spinner from './loading.module.css';
-import axios from '../../utils/axios';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { FormState as FormRegister } from '../register/page';

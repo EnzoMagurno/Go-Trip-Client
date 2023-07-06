@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from '@/utils/axios'
+import axios from 'axios'
 /* const getTokenSession = () => {
   return localStorage.getItem("token");
 }; */
@@ -41,7 +41,7 @@ export const fetchingComments = createAsyncThunk("getComments", async () => {
   }
 });
 
-export const fetchinCommentId = createAsyncThunk("getComment", async (id) => {
+export const fetchinCommentId = createAsyncThunk("getComment", async (id: string) => {
   try {
 
     
@@ -63,13 +63,13 @@ export const fetchinCommentId = createAsyncThunk("getComment", async (id) => {
   }
 });
 
-export const fetchinCommentByHotel = createAsyncThunk("getCommentHotel", async (id) => {
+export const fetchinCommentByHotel = createAsyncThunk("getCommentHotel", async () => {
   try {
 
 
 
 
-    const response = await axios.get(`/comments?hotelId=${id}`, {
+    const response = await axios.get(`/comments?hotelId=`, {
 
       headers: {
         Authorization: `Bearer ${TokenUser}`
@@ -120,7 +120,7 @@ const CommentSlice = createSlice({
 
 
 export default CommentSlice;
-export const selectCommentIdState = (state) => state.comment.id
-export const selectCommentsByHotelId = (state, hotelId) =>
-  state.comment.commentData.filter((comment) => comment.hotelId === hotelId);
+export const selectCommentIdState = (state:any) => state.comment.id
+export const selectCommentsByHotelId = (state: any, hotelId: any) =>
+  state.comment.commentData.filter((comment: any) => comment.hotelId === hotelId);
 export const { getCommentCoincidence } = CommentSlice.actions 

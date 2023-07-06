@@ -9,7 +9,7 @@ import { TokenUser } from "../Citys/CitySlice";
     hotel: {}
 } */
 
-export const fetchingHotel = createAsyncThunk('getHotels', async () => {
+export const fetchingHotel = createAsyncThunk<void>('getHotels', async (): Promise<any> => {
 
 	try {
 		
@@ -26,7 +26,7 @@ export const fetchingHotel = createAsyncThunk('getHotels', async () => {
 });
 
 
-export const  fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
+export const  fetchinHotelId = createAsyncThunk("getHotel", async (id: string) => {
   try {
 
     
@@ -48,9 +48,20 @@ export const  fetchinHotelId = createAsyncThunk("getHotel", async (id) => {
 
 });
 
+interface hotel {
+	email?: string
+	id: string
+	phone?: string
+	name: string
+	checkIn?: string
+	checkOut?: string
+	overview?:string
+}
+
+
 export const updateHotel = createAsyncThunk(
 	'postHotel',
-	async (updatedData) => {
+	async (updatedData: hotel) => {
 		try {
 
 
@@ -70,7 +81,7 @@ export const updateHotel = createAsyncThunk(
 	}
 );
 
-export const deleteHotel = createAsyncThunk('deleteHotel', async (id) => {
+export const deleteHotel = createAsyncThunk('deleteHotel', async (id: string) => {
 	return axios
 		.delete(`/hotel/delHotel/${id}`, {
 			method: 'DELETE',
@@ -84,7 +95,7 @@ export const deleteHotel = createAsyncThunk('deleteHotel', async (id) => {
 		});
 });
 
-export const restoreHotel = createAsyncThunk('restoreHotel', async (id) => {
+export const restoreHotel = createAsyncThunk('restoreHotel', async (id: string) => {
 	return axios
 		.put(`/hotel/restoreHotel/${id}`, null, {
 			headers: {
@@ -111,6 +122,21 @@ export const getDeletedHotels = createAsyncThunk(
 	}
 );
 
+interface hotel {
+	name: string
+}
+
+interface InitialStateHotel {
+		hotelData: hotel[],
+		copyHotelData: hotel[],
+		hotelsDeleted: hotel[],
+		copyHotelsDeleted: hotel[],
+		filterHotelStatus: string,
+		orderAlpha: string,
+    responseSuccesfull: hotel,
+		hotel: hotel,
+}
+
 const hotelSlice = createSlice({
 	name: 'hotel',
 	initialState: {
@@ -127,12 +153,12 @@ const hotelSlice = createSlice({
 		searchByName: (state, action) => {
       
       if (state.filterHotelStatus === "Active hotels") { 
-      state.copyHotelData = [ ...state.hotelData ].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
+      state.copyHotelData = [ ...state.hotelData ].filter((hotel: any) => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
       } else if (state.filterHotelStatus === "Disabled hotels") {
-        state.copyHotelsDeleted = [ ...state.hotelsDeleted ].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
+        state.copyHotelsDeleted = [ ...state.hotelsDeleted ].filter((hotel: any) => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
     } else if (state.filterHotelStatus === "All hotels") {
-      state.copyHotelData = [ ...state.hotelData ].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
-      state.copyHotelsDeleted = [ ...state.hotelsDeleted ].filter(hotel => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
+      state.copyHotelData = [ ...state.hotelData ].filter((hotel: any) => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
+      state.copyHotelsDeleted = [ ...state.hotelsDeleted ].filter((hotel: any) => hotel.name.toLowerCase().includes(action.payload.toLowerCase()))
 
     }
       }, 
@@ -156,7 +182,7 @@ const hotelSlice = createSlice({
 
       if (action.payload === "az" && state.filterHotelStatus === "Active hotels") {
         state.orderAlpha = "A - Z"
-        state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
+        state.copyHotelData = [...state.copyHotelData].sort((a: any, b:any) => {
 					if (a.name < b.name) {
 						return -1;
 					}
@@ -169,7 +195,7 @@ const hotelSlice = createSlice({
       } else if (action.payload === "za" && state.filterHotelStatus === "Active hotels") {
         
         state.orderAlpha = "Z - A"
-        state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
+        state.copyHotelData = [...state.copyHotelData].sort((a: any, b: any) => {
           if (a.name < b.name) {
               return 1
           } 
@@ -183,7 +209,7 @@ const hotelSlice = createSlice({
         
       } else if (action.payload === "az" && state.filterHotelStatus === "Disabled hotels") {
         state.orderAlpha = "A - Z"
-        state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
+        state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a: any, b: any) => {
 					if (a.name < b.name) {
 						return -1;
 					}
@@ -195,7 +221,7 @@ const hotelSlice = createSlice({
 
       } else if (action.payload === "za" && state.filterHotelStatus === "Disabled hotels") {
         state.orderAlpha = "Z - A"
-        state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
+        state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a: any, b: any) => {
           if (a.name < b.name) {
               return 1
           } 
@@ -209,7 +235,7 @@ const hotelSlice = createSlice({
         
       } else if (action.payload === "az" && state.filterHotelStatus === "All hotels") {
         state.orderAlpha = "A - Z"
-        state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
+        state.copyHotelData = [...state.copyHotelData].sort((a: any, b: any) => {
           if (a.name < b.name) {
               return -1
           } 
@@ -220,7 +246,7 @@ const hotelSlice = createSlice({
 
           return 0
       })
-      state.copyHotelsDeleted = [...state.copyHotelData].sort((a, b) => {
+      state.copyHotelsDeleted = [...state.copyHotelData].sort((a: any, b: any) => {
         if (a.name < b.name) {
             return -1
         } 
@@ -234,7 +260,7 @@ const hotelSlice = createSlice({
 
       } else if (action.payload === "za" && state.filterHotelStatus === "All hotels") {
         state.orderAlpha = "Z - A"
-        state.copyHotelData = [...state.copyHotelData].sort((a, b) => {
+        state.copyHotelData = [...state.copyHotelData].sort((a: any, b: any) => {
           if (a.name < b.name) {
               return 1
           } 
@@ -245,7 +271,7 @@ const hotelSlice = createSlice({
 
           return 0
       })
-      state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a, b) => {
+      state.copyHotelsDeleted = [...state.copyHotelsDeleted].sort((a: any, b: any ) => {
         if (a.name < b.name) {
             return 1
         } 
@@ -262,10 +288,10 @@ const hotelSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchingHotel.fulfilled, (state, action) => {
+			.addCase(fetchingHotel.fulfilled, (state: any, action: any ) => {
         
         if (state.filterHotelStatus === "Disabled hotels") return
-				const hotelsOrdered = [...action.payload].sort((a, b) => {
+				const hotelsOrdered = [...action.payload].sort((a: any, b: any) => {
 					if (a.name < b.name) {
 						return -1;
 					}
@@ -291,7 +317,7 @@ const hotelSlice = createSlice({
         state.responseSuccesfull = action.payload
         console.log(state.responseSuccesfull)
 			})
-			.addCase(getDeletedHotels.fulfilled, (state, action) => {
+			.addCase(getDeletedHotels.fulfilled, (state: any, action: any) => {
         if (action.payload === "Request failed with status code 401") {
 
 
@@ -306,7 +332,7 @@ const hotelSlice = createSlice({
         
 				if (!Array.isArray(action.payload)) return;
 
-				const hotelsDeletedOrdered = [...action.payload].sort((a, b) => {
+				const hotelsDeletedOrdered = [...action.payload].sort((a: any, b: any) => {
 					if (a.name < b.name) {
 						return -1;
 					}
@@ -326,7 +352,7 @@ const hotelSlice = createSlice({
 });
 
 export default hotelSlice;
-export const selectHotelIdState = (state) => state.hotel.hotel;
-export const selectOriginalHotelState = (state) => state.hotel.hotelData;
-export const selectHotelState = (state) => state.hotel.copyHotelData;
+export const selectHotelIdState = (state: any) => state.hotel.hotel;
+export const selectOriginalHotelState = (state: any) => state.hotel.hotelData;
+export const selectHotelState = (state: any) => state.hotel.copyHotelData;
 export const { searchByName, filterHotelsByStatus, orderHotelsAlpha } = hotelSlice.actions;

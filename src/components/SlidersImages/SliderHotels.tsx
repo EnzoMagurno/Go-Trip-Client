@@ -11,15 +11,8 @@ import { MainGlobal } from '@/redux/mainInterface';
 import { useRouter } from 'next/navigation';
 import { getHotelsCoincidencesByCityId } from '../../redux/Features/Citys/CitySlice';
 
-export interface Font {
-	className: string;
-}
 
-export interface Fonts {
-	roboto: Font;
-}
-
-const SliderHotels: React.FC<Fonts> = () => {
+const SliderHotels  = () => {
 	const cityResults: City[] = useSelector(
 		(state: MainGlobal) => state.city.dataCity
 	);
@@ -35,7 +28,7 @@ const SliderHotels: React.FC<Fonts> = () => {
 	}, []);
 
 	const citiesSort = citiesCopy?.sort(
-		(a, b) => b.hotel.length - a.hotel.length
+		(a:any, b: any) => b.hotel.length - a.hotel.length
 	);
 
 	const firstTenCities = citiesSort?.slice(0, 20);
@@ -44,7 +37,7 @@ const SliderHotels: React.FC<Fonts> = () => {
 		<div className='flex overflow-x-auto flex-wrap h-60 my-3 '>
 			<div className='flex flex-row gap-5 my-3'>
 				{firstTenCities &&
-					firstTenCities?.map((city: City) => {
+					firstTenCities?.map((city: any) => {
 						return (
 							<button
 								onClick={() => {

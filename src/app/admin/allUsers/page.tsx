@@ -9,14 +9,17 @@ import ActiveUsers from '../../../components/AdminContainers/UsersAdminContainer
 import UsersDeleted from '../../../components/AdminContainers/UsersAdminContainer/UsersDeleted';
 import FiltersUsers from '../../../components/SearchBarUsers/SearchBarUsers';
 import { FiUserX, FiUserCheck } from 'react-icons/fi';
+import { ThunkDispatch } from '@reduxjs/toolkit'; 
+import { RootState } from '@/redux/store'; 
+import {  AnyAction } from "@reduxjs/toolkit"
 
 const AllUsersAdmin = () => {
-	const dispatch = useDispatch();
+
 	const { usersFilter, usersReal, usersRealCopy, usersDeletedCopy, usersDeleted, filterBy, orderAlpha, allUsers } =
-		useSelector((state) => state.usersReal);
+		useSelector((state: any) => state.usersReal);
 
 
-
+		const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 	const [isActive, setIsActive] = useState(usersFilter[0]?.deletedAt);
 	
 
@@ -58,7 +61,7 @@ const AllUsersAdmin = () => {
 							<h5 className='font-medium text-xl '>Active Users</h5>
 						</div>
 
-						{usersRealCopy.map((user) => (
+						{usersRealCopy.map((user: any) => (
 							<ActiveUsers
 								deletedAt={user?.deletedAt}
 								key={user.id}
@@ -90,7 +93,7 @@ const AllUsersAdmin = () => {
 							<h5 className='font-medium text-xl '>Disabled Users</h5>
 						</div>
 
-						{usersDeletedCopy.map((user) => (
+						{usersDeletedCopy.map((user: any) => (
 							<UsersDeleted
 								deletedAt={user?.deletedAt}
 								key={user.id}
@@ -134,7 +137,7 @@ const AllUsersAdmin = () => {
 									<FiUserCheck className='inline-block absolute top-0 left-3 text-3xl text-green-500 ' />
 									<h5 className='font-medium text-xl '>Active Users</h5>
 								</div>
-								{usersFilter.map((user) => (
+								{usersFilter.map((user: any) => (
 									<ActiveUsers
 										deletedAt={user?.deletedAt}
 										key={user.id}
@@ -165,7 +168,7 @@ const AllUsersAdmin = () => {
 									<FiUserX className='inline-block absolute top-0 left-2 text-3xl text-red-500 ' />
 									<h5 className='font-medium text-xl '>Disabled Users</h5>
 								</div>
-								{usersFilter.map((user) => (
+								{usersFilter.map((user: any) => (
 									<UsersDeleted
 										deletedAt={user?.deletedAt}
 										key={user.id}

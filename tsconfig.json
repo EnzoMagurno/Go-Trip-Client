@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "downlevelIteration": true,
+    "noEmitOnError": false,
     "lib": [
       "dom",
       "dom.iterable",
@@ -11,7 +12,7 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -31,12 +32,16 @@
     }
   },
   "include": [
+    "src/app",
+    "src",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/components/AdminContainers/HotelsAdminContainer/HotelsAdminContainer.jsx"
+    ],
   "exclude": [
     "node_modules"
   ]
 }
+  

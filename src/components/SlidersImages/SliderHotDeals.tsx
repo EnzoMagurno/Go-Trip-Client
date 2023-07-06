@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import axios from '@/utils/axios'
+import axios from 'axios'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHotelsCoincidencesByCityId } from '@/redux/Features/Citys/CitySlice';
@@ -12,9 +12,7 @@ import StarRating from '@/components/StarRaiting/StarRaiting';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 
-import { Fonts } from './SliderHotels';
-
-const SliderHotDeals: React.FC<Fonts> =  () => {
+const SliderHotDeals =  () => {
 
 	const [response, setResponse] = useState(null);
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
@@ -67,7 +65,7 @@ console.log(response);
     <div className="swiper-container ">
       <div className="swiper-wrapper">
         {/* Agrega tus divs del carrusel aquí */}
-		{hoteles && hoteles.map(hotel => 
+		{hoteles && hoteles.map((hotel:any) => 
 			<button onClick={() => {
 				router.push(`/detail/${hotel.id}`);
 			}} className="swiper-slide">

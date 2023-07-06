@@ -1,12 +1,16 @@
 "use client"
 import { fetchingUsers, selectAllUsers, sortReverseData, User } from "../../redux/Features/Users/usersSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { ThunkDispatch } from '@reduxjs/toolkit'; 
+import { RootState } from '@/redux/store'; 
+import {  AnyAction } from "@reduxjs/toolkit"
+
 
 
 const Fetching = () => {
     
     const allUsers = useSelector(selectAllUsers)
-    const dispatch = useDispatch()
+    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
     return (
         <div>

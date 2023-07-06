@@ -1,12 +1,13 @@
-import SliderHotels, { Fonts } from "./SliderHotels";
+
 import SliderHotDeals from "./SliderHotDeals";
 import HotSaleSlider from "./HotSaleSlider";
-const SliderMain: React.FC<Fonts> = ({ roboto }) => {
+import SliderHotels from "./SliderHotels";
+const SliderMain = () => {
     return (
         <section>
-          <SliderHotels roboto={roboto} />
-        <SliderHotDeals roboto={roboto}/>
-        <HotSaleSlider roboto={roboto}/>
+          <SliderHotels  />
+        <SliderHotDeals />
+        <HotSaleSlider />
 
         </section>
     )

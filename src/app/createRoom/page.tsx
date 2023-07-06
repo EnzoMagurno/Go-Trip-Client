@@ -12,6 +12,10 @@ import { fetchingServices } from '@/redux/Features/Services/servicesSlice';
 import { MainGlobal } from '@/redux/mainInterface';
 import ServicesOptions from '@/components/ServicesSelect/ServicesSelect';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '@/redux/store';
+import { AnyAction } from '@reduxjs/toolkit';
+
 
 const asapSemi = Asap({
   weight: ['600'],
@@ -25,18 +29,32 @@ const josefinRegular = Josefin_Sans({
 
 function RoomCreator() {
 
-
-const dispatch = useDispatch()
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
 
 const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 
 const searchParams = useSearchParams()
 
 const id: string | null = searchParams.get('id')
+interface room {
+  ServicesRoom: string[] 
+  response: string
+}
+
+interface form {
+  room: string
+  price: number
+  status: boolean
+  numRooms: number
+  roomsInUse: number
+  description: string
+  ServicesRoom: room[],
+  hotelId: string
+}
 
 const selectServices: object[] = []
-const [serviceName, setServiceName] = useState([]);
-const [newService, setNewService] = useState({
+const [serviceName, setServiceName] = useState<any>([]);
+const [newService, setNewService] = useState<any>({
   name: ''
 })
 
@@ -85,9 +103,9 @@ interface FormState {
   
 }
 
-const [errors, setErrors] = useState<Errors>({})
+const [errors, setErrors] = useState<any>({})
 
-const [form, setForm] = useState<FormState>({
+const [form, setForm] = useState<any>({
   room: '',
   price: 0,
   status: false,
@@ -98,7 +116,8 @@ const [form, setForm] = useState<FormState>({
   hotelId: id
 });
 
-const handleCreate = async (e:any) => {
+
+const handleCreate = async () => {
   if (newService) {
     try {
      
@@ -110,7 +129,7 @@ const handleCreate = async (e:any) => {
   
       console.log(response.data.name);
        setForm({ ...form, ServicesRoom: [...form. ServicesRoom, response.data.id]})
-       setServiceName((prevServiceName) => [
+       setServiceName((prevServiceName: any) => [
         ...prevServiceName,
         { value: response.data.id, name: response.data.name }
       ])
@@ -144,13 +163,13 @@ const handleChange = (e: any) => {
 
 
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDelete = (e: any/* React.MouseEvent<HTMLButtonElement> */) => {
     
     
-    const updatedServiceName = serviceName.filter((c) => c.value !== e.target.value);
+    const updatedServiceName = serviceName.filter((c: any) => c.value !== e.target.value);
     setForm({
       ...form,
-      ServicesRoom: form.ServicesRoom.filter((c) => c !== e.target)
+      ServicesRoom: form.ServicesRoom.filter((c: any) => c !== e.target)
     })
     setServiceName(updatedServiceName);
   
@@ -227,14 +246,14 @@ const handleChange = (e: any) => {
   services={services}
   setServiceName={setServiceName}
   selectedServices={form.ServicesRoom}
-  onChange={(updatedSelectedServices) =>{ 
+  onChange={(updatedSelectedServices: any) =>{ 
     setForm({ ...form, ServicesRoom: updatedSelectedServices})
   }
     
   }
 />
                         <div className='grid bg-neutral-50 grid-cols-3 rounded-xl my-4 gap-4  border-2 justify-between p-2'>
-{serviceName.map(c => (<span className={`${josefinRegular.className} flex items-center h-full text-center relative  text-md text-white bg-[#7533ac] rounded-xl p-2`}>{c.name}<button type='button' className='w-2 text-lg p-0 absolute -top-0.5 right-0 mr-2'  onClick={handleDelete} value={c.value}>x</button></span>))}
+{serviceName.map((c: any) => (<span className={`${josefinRegular.className} flex items-center h-full text-center relative  text-md text-white bg-[#7533ac] rounded-xl p-2`}>{c.name}<button type='button' className='w-2 text-lg p-0 absolute -top-0.5 right-0 mr-2'  onClick={handleDelete} value={c.value}>x</button></span>))}
                     </div>
                 
                     <label className={`${josefinRegular.className} mt-2.5`} htmlFor="NewServices">New service</label>

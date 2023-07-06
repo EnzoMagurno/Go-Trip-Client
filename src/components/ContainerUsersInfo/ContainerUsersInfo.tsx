@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk'; // Importa ThunkDispatch
 import { AnyAction } from 'redux';
 import { useParams } from 'next/navigation';
-import axios from '../../utils/axios';
+import axios from 'axios';
 import { Asap, Josefin_Sans, Poppins } from 'next/font/google';
 import { AiOutlineEdit } from 'react-icons/ai';
 import validation, { Errors } from '../../app/register/validation';
-import { listOfCountries } from '../../app/register/page';
+import { countries } from 'countries-list';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { FormState } from '../../app/register/page';
 
@@ -18,7 +18,7 @@ const josefin = Josefin_Sans({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300'] });
 
 const EditIcon = AiOutlineEdit;
-
+const listOfCountries = Object.values(countries);
 function ContainerUsersInfo() {
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');

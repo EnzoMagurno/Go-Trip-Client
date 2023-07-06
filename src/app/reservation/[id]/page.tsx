@@ -11,31 +11,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchinHotelId } from '../../../redux/Features/Hotel/hotelsSlice';
 import { fetchRoomById } from '../../../redux/Features/Room/RoomSlice';
 import { useRouter } from 'next/navigation'
-
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '@/redux/store';
+import { AnyAction } from '@reduxjs/toolkit';
 const asap = Asap({ subsets: ['latin'] })
 const josefin = Josefin_Sans({ subsets: ['latin'] })
 const poppins = Poppins({ weight: ['100'], subsets: ['latin'] })
 
-interface PageProps {
-    params: {},
-    searchParams: object,
-    hotel: {
-        name: string,
-        image: string,
-        destination: {
-            city: string,
-            moneyType: string
-        }
-    }
-}
 
-const page = (props: PageProps): React.ReactNode => {
 
+const Page = (props: any): React.ReactNode => {
+
+
+
+  
 
     const [tokenSession, setTokenSession] = useLocalStorage('token', '');
     const [idSession, setIdSession] = useLocalStorage('idSession', '')
     console.log(idSession);
-
+    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
     const { params, searchParams } = props
     const router = useRouter()
     console.log(router);
@@ -43,12 +37,12 @@ const page = (props: PageProps): React.ReactNode => {
         dispatch(fetchinHotelId(params.id))
         dispatch(fetchRoomById(searchParams.room))
     }, [])
-    const hotel = useSelector(state => state.hotel.hotel)
-    const room = useSelector(state => state.room.room)
+    const hotel = useSelector((state: any) => state.hotel.hotel)
+    const room = useSelector((state: any) => state.room.room)
     console.log(room);
     console.log(hotel, 'hotel');
 
-    const dispatch = useDispatch()
+    
 
     const [perDay, setPerDay] = useState<number>(0)
     console.log('perday', perDay);
@@ -250,4 +244,4 @@ const page = (props: PageProps): React.ReactNode => {
     )
 }
 
-export default page
+export default Page;

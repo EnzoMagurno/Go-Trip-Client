@@ -1,9 +1,8 @@
 'use client'
-import axios from '@/utils/axios'
-import { Josefin_Sans, Roboto } from 'next/font/google';
+import axios from 'axios'
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchinHotelId } from '@/redux/Features/Hotel/hotelsSlice';
+import { fetchinHotelId } from '../../../redux/Features/Hotel/hotelsSlice';
 import React, { useEffect, useState} from "react"
 import { useRouter } from 'next/navigation';
 import { TbHomeCancel } from 'react-icons/tb'
@@ -11,34 +10,12 @@ import { AiFillBook } from 'react-icons/ai'
 import { BsFillJournalBookmarkFill } from 'react-icons/bs'
 import Link from 'next/link'
 import CommentPost from '@/components/ComentPost/CommentPost';
-import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useLocalStorage } from '../../../hooks/useLocalStorage'
 import StarRating from '@/components/StarRaiting/StarRaiting';
-import { fetchinCommentByHotel,selectCommentsByHotelId  } from '@/redux/Features/Commets/CommentsSlice';
-
-
-const RobotoBold = Roboto({
-    weight: ['700'],
-    subsets: ['latin'],
-})
-
-const josefinBold = Josefin_Sans({
-    weight: ['700'],
-    subsets: ['latin'],
-});
-const josefinSemiBold = Josefin_Sans({
-    weight: ['600'],
-    subsets: ['latin'],
-});
-const josefinRegular = Josefin_Sans({
-    weight: ['400'],
-    subsets: ['latin'],
-});
-const josefinLight = Josefin_Sans({
-    weight: ['300'],
-    subsets: ['latin'],
-});
-
-
+import { fetchinCommentByHotel,selectCommentsByHotelId  } from '../../../redux/Features/Commets/CommentsSlice';
+import { ThunkDispatch } from '@reduxjs/toolkit'; 
+import { RootState } from '@/redux/store'; 
+import { AnyAction } from '@reduxjs/toolkit';
 
 
 
@@ -69,6 +46,8 @@ const Detail = ({ params }: { params: Params }) => {
     const idHotel = id
 
     const handleCommentSubmit = async (comment: Comment) => {
+
+        
         console.log(comment);
         try {
             
@@ -86,14 +65,14 @@ const Detail = ({ params }: { params: Params }) => {
             console.error('Rating error:', error);
           }
       };
-
+      const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch();
       useEffect(() => {
         dispatch(fetchinHotelId(id))
-        dispatch(fetchinCommentByHotel(id))
+        dispatch(fetchinCommentByHotel())
     }, [])
 
-    const hotel = useSelector(state => state.hotel.hotel)
-    const comments = useSelector((state) => state.comment.comment);
+    const hotel = useSelector((state: any) => state.hotel.hotel)
+    const comments = useSelector((state: any) => state.comment.comment);
     console.log(comments);
     
 
@@ -103,15 +82,15 @@ const calif = Array.isArray(comments)
 
 console.log(calif);
 
-const nums = []
+const nums: any = []
 calif.map((r) => nums.push(r.rating))
 
 const coms = []
 calif.map((r) => coms.push(r.comment))
 
     
-    const promedio = (num) => {
-        const sum = num.reduce((acc, num) => acc + num, 0);
+    const promedio = (num: any) => {
+        const sum = num.reduce((acc: any, num: any) => acc + num, 0);
         const average = sum / num.length;
         const roundedValue = Math.round(average);
         return roundedValue;
@@ -121,9 +100,26 @@ calif.map((r) => coms.push(r.comment))
     const result = promedio(nums)
     
       
+    interface Room {
+        id: string
+        room: string | number
+        description: string
+        price: number | string
+        numRooms: number | string
+    }
 
-    const dispatch: Dispatch = useDispatch()
-    const Room = ({ room }: Hotel) => (
+
+    interface user {
+        name: string
+        country: string
+    }
+    interface comments {
+        user: user
+        comment: string
+        rating: number
+    }
+   
+    const Room = ({ room } :{ room: Room }) => (
         < div className="bg-gray-300 border rounded-lg overflow-hidden mt-4" >
             <div className="p-4">
                 <h2 className="text-xl font-semibold">{room.room}</h2>
@@ -140,7 +136,7 @@ calif.map((r) => coms.push(r.comment))
             </div>
         </div >
     );
-    const Rooms = ({ rooms }: Hotel) => (
+    const Rooms = ({ rooms }: any) => (
         <div>
             <h2 className="flex justify-center text-2xl mt-3">{rooms?.length
                 ?
@@ -153,7 +149,7 @@ calif.map((r) => coms.push(r.comment))
             </h2>
             {rooms?.length ? (
                 <div>
-                    {rooms.map((room: string, index: number) => <Room key={index} room={room} />)}
+                    {rooms.map((room: any, index: any) => <Room key={index} room={room} />)}
                 </div>
             ) : (
                 <NoRooms />
@@ -198,7 +194,7 @@ calif.map((r) => coms.push(r.comment))
             </div>
                 
             {calif[0] && calif? <div className='h-50 z-10 pt-3 mt-5 border shadow-md'>
-              {calif && calif?.map((comment: Object) => {
+              {calif && calif?.map((comment: comments) => {
                 return (
                     <div className='pb-5 px-5'>
                     <div className='pb-3'>

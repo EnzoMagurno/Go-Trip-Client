@@ -1,7 +1,7 @@
 "use client"
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MainGlobal } from '@/redux/mainInterface';
-import axios from '@/utils/axios';
+import axios from 'axios';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
 import { GiToken } from 'react-icons/gi';
 export const TokenUser = localStorage.token.replace(/["']/g, '');
@@ -57,7 +57,7 @@ export const fetchingCity = createAsyncThunk('getCity', async (cityName) => {
 
 export const getHotelsCoincidencesByCityId = createAsyncThunk(
 	'getHotelsByCity',
-	async (id) => {
+	async (id: any) => {
 
 		
 

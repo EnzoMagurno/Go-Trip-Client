@@ -7,7 +7,7 @@ import {
 } from '../../redux/Features/Hotel/hotelsSlice';
 import { useEffect } from 'react';
 import CardHotelHoteiler from '../../components/CardHotelHoteiler/CardHotelHoteiler';
-
+import { Appdispatch } from '@/redux/store'; 
 export interface MyHotel {
 	address: string
 		checkIn: string
@@ -31,7 +31,7 @@ export interface MyHotel {
 const MyHotels = () => {
 	const hotels = useSelector(selectOriginalHotelState);
 
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<Appdispatch>()
 	
 	useEffect(() => {
 		dispatch(fetchingHotel());
