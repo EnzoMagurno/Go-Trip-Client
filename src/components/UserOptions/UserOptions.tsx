@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import Cookies from 'universal-cookie';
 import { motion } from 'framer-motion';
+import { signOut } from 'next-auth/react';
 
 interface UserOptionsProps {
 	window: string;
@@ -22,7 +23,6 @@ const UserOptions: React.FC<UserOptionsProps> = ({
 }) => {
 	const router = useRouter();
 
-	//!Matener Codigo
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
 	const [idSession, setIdSession] = useLocalStorage('idSession', '');
 	const [userNameSession, setUserNameSession] = useLocalStorage('username', '');
@@ -48,21 +48,26 @@ const UserOptions: React.FC<UserOptionsProps> = ({
 		localStorage.removeItem('userData');
 		router.refresh();
 		toggleOpen();
+		signOut();
 		cookies.remove('gotripCookie', { path: '/' });
 		setClickCount((prevCount) => prevCount + 1);
 		router.push('/');
 	};
 
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			const storedAvatarSession = localStorage.getItem('avatar');
-			if (storedAvatarSession) {
-				setAvatarSession(JSON.parse(storedAvatarSession));
-			}
-		}
-	}, []);
+	const storedTokenSession = localStorage.getItem('token');
+
+	const storedAvatarSession = localStorage.getItem('avatar');
 
 	const storedUserNameSession = localStorage.getItem('username');
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			storedAvatarSession;
+			setAvatarSession(
+				storedAvatarSession ? JSON.parse(storedAvatarSession) : ''
+			);
+		}
+	}, [typeof window !== 'undefined' && storedAvatarSession]);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -72,6 +77,13 @@ const UserOptions: React.FC<UserOptionsProps> = ({
 			);
 		}
 	}, [typeof window !== 'undefined' && storedUserNameSession]);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			storedTokenSession;
+			setTokenSession(storedTokenSession ? JSON.parse(storedTokenSession) : '');
+		}
+	}, [typeof window !== 'undefined' && storedTokenSession]);
 
 	return (
 		<div
