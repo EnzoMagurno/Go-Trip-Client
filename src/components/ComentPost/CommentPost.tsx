@@ -14,13 +14,13 @@ const CommentPost: React.FC<CommentRatingProps> = ({ onSubmit, idHotel, idUser }
   const [rating, setRating] = useState(0);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
+    
 
     setComment(event.target.value);
   };
 
   const handleRatingChange = (value: number) => {
-    console.log(value);
+    
 
     setRating(value);
   };

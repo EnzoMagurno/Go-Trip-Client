@@ -36,7 +36,7 @@ export const fetchingCities = createAsyncThunk('getCities', async () => {
 
 	return await axios(`/destination`)
 		.then((response) => {
-			console.log(response.data)		
+				
 			return response.data
 		})
 		.catch((error) => console.log(error.message));
@@ -70,7 +70,7 @@ export const getHotelsCoincidencesByCityId = createAsyncThunk(
 				},
 			})
 			.then((response) => {
-				console.log(response.data) 
+ 
 			return response.data
 		})
 			.catch((error) => console.log(error.message));

@@ -83,7 +83,7 @@ export const deleteHotel = createAsyncThunk('deleteHotel', async (id) => {
 		})
 
 		.then((response) => {
-			console.log(response.data);
+			
 			return response.data;
 		});
 });
@@ -96,7 +96,7 @@ export const restoreHotel = createAsyncThunk('restoreHotel', async (id) => {
 			},
 		})
 		.then((response) => {
-			console.log(response.data);
+
 			return response.data;
 		});
 });
@@ -293,7 +293,7 @@ const hotelSlice = createSlice({
 			})
 			.addCase(restoreHotel.fulfilled, (state, action) => {
 				state.responseSuccesfull = action.payload
-				console.log(state.responseSuccesfull)
+			
 			})
 			.addCase(getDeletedHotels.fulfilled, (state, action) => {
 				if (action.payload === "Request failed with status code 401") {
