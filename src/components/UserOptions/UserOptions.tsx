@@ -46,7 +46,6 @@ const UserOptions: React.FC<UserOptionsProps> = ({
 		setAvatarSession(['']);
 		setRolSession('');
 		localStorage.removeItem('userData');
-		router.refresh();
 		toggleOpen();
 		signOut();
 		cookies.remove('gotripCookie', { path: '/' });
@@ -59,6 +58,15 @@ const UserOptions: React.FC<UserOptionsProps> = ({
 	const storedAvatarSession = localStorage.getItem('avatar');
 
 	const storedUserNameSession = localStorage.getItem('username');
+
+	const storedRolSession = localStorage.getItem('rol');
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			storedRolSession;
+			setRolSession(storedRolSession ? JSON.parse(storedRolSession) : '');
+		}
+	}, [typeof window !== 'undefined' && storedRolSession]);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
