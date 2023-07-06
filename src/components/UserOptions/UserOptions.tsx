@@ -10,6 +10,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import Cookies from 'universal-cookie';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
+import { nameCheck } from '../../utils';
 
 interface UserOptionsProps {
 	window: string;
@@ -81,7 +82,9 @@ const UserOptions: React.FC<UserOptionsProps> = ({
 		if (typeof window !== 'undefined') {
 			storedUserNameSession;
 			setUserNameSession(
-				storedUserNameSession ? JSON.parse(storedUserNameSession) : ''
+				storedUserNameSession
+					? nameCheck(JSON.parse(storedUserNameSession))
+					: ''
 			);
 		}
 	}, [typeof window !== 'undefined' && storedUserNameSession]);
