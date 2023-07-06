@@ -8,6 +8,7 @@ import NavBarFooter from '../components/navBarFooter/NavBarFooter';
 import { Josefin_Sans } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 import { usePathname } from 'next/navigation';
+import AuthProvider from '../features/AuthProvider';
 
 export const josefin = Josefin_Sans({
 	subsets: ['latin'],
@@ -36,11 +37,13 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<Providers>
-				<body className={`${inter.className}`}>
-					{renderNavBarTop && <NavBarTop />}
-					{children}
-					{renderNavBarFooter && <NavBarFooter />}
-				</body>
+				<AuthProvider>
+					<body className={`${inter.className}`}>
+						{renderNavBarTop && <NavBarTop />}
+						{children}
+						{renderNavBarFooter && <NavBarFooter />}
+					</body>
+				</AuthProvider>
 			</Providers>
 		</html>
 	);
