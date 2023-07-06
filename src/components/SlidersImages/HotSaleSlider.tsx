@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Fonts } from './SliderHotels';
 import { RiH1 } from 'react-icons/ri';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-const HotSaleSlider: React.FC<Fonts> = ({ roboto }) => {
+const HotSaleSlider: React.FC<Fonts> = () => {
 
 	const [paris, setParis] = useState(null);
 	const [bali, setBali] = useState(null);
@@ -62,9 +62,9 @@ const router = useRouter()
                         className=' rounded-3xl h-full object-cover'
 					/>
 					<div className={` text-white absolute bottom-3 w-full p-3 pb-0 h-20 leading-4`}>
-						<h2 className={`${roboto.className} tracking-wide  text-sm `}>{paris?.name}</h2>
+						<h2 className={` tracking-wide  text-sm `}>{paris?.name}</h2>
 						<div className='flex justify-between items-center'>
-							<h2 className={`${roboto.className} tracking-wider text-sm`}>Paris</h2>
+							<h2 className={` tracking-wider text-sm`}>Paris</h2>
 							<h3>${paris.rooms[0].price}</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>
@@ -100,9 +100,9 @@ const router = useRouter()
                         className=' rounded-3xl h-full object-cover'
 					/>
 					<div className={` text-white absolute bottom-3 w-full p-3 pb-0 h-20 leading-4`}>
-						<h2 className={`${roboto.className} tracking-wide  text-sm `}>The Kayon Valley Resort</h2>
+						<h2 className={` tracking-wide  text-sm `}>The Kayon Valley Resort</h2>
 						<div className='flex justify-between items-center  '>
-							<h2 className={`${roboto.className} tracking-wider text-sm`}>Bali</h2>
+							<h2 className={` tracking-wider text-sm`}>Bali</h2>
 							<h3>${bali.rooms[0].price}</h3>
 						</div>
 						<div className='flex justify-between items-center text-xs'>

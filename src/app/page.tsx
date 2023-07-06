@@ -71,7 +71,7 @@ const Home = () => {
 			</header>
 
 			<main>
-				<SliderMain roboto={roboto} />
+				<SliderMain />
 			</main>
 
 			<footer className=' bg-slate-600'></footer>

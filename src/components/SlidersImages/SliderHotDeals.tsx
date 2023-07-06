@@ -14,7 +14,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 import { Fonts } from './SliderHotels';
 
-const SliderHotDeals: React.FC<Fonts> =  ({ roboto }) => {
+const SliderHotDeals: React.FC<Fonts> =  () => {
 
 	const [response, setResponse] = useState(null);
 	const [tokenSession, setTokenSession] = useLocalStorage('token', '');
@@ -63,7 +63,7 @@ console.log(response);
 
   return (
 	<div className=' mt-3 mb-3 overflow-hidden'>
-	<h2 className={`${roboto.className} text-subTitle mb-3`}>Hot Deals</h2>
+	<h2 className={`text-subTitle mb-3`}>Hot Deals</h2>
     <div className="swiper-container ">
       <div className="swiper-wrapper">
         {/* Agrega tus divs del carrusel aquí */}
@@ -76,8 +76,8 @@ console.log(response);
 					<div className='absolute bottom-0 text-white w-full pl-3 pr-3 h-12 '>
 						<div className='bg-slate-600 w-full h-full left-0 opacity-50 absolute rounded-bl-3xl rounded-br-3xl'></div>
 						<div className='flex justify-between'>
-							<h2 className={`${roboto.className} relative z-10 flex justify-center items-center`}>{hotel.name}</h2>
-							<h2 className={`${roboto.className} text-little relative text-base z-50 flex justify-center items-center`} >$250</h2>
+							<h2 className={`relative z-10 flex justify-center items-center`}>{hotel.name}</h2>
+							<h2 className={` text-little relative text-base z-50 flex justify-center items-center`} >$250</h2>
 						</div>
 						<div className='flex justify-between'>
 							<p className={`text-little relative z-10 flex justify-center items-center `}>{hotel.city}</p>

@@ -19,7 +19,7 @@ export interface Fonts {
 	roboto: Font;
 }
 
-const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
+const SliderHotels: React.FC<Fonts> = () => {
 	const cityResults: City[] = useSelector(
 		(state: MainGlobal) => state.city.dataCity
 	);
@@ -62,7 +62,7 @@ const SliderHotels: React.FC<Fonts> = ({ roboto }) => {
 									className={`w-full h-full object-cover rounded-r-3xl rounded-l-3xl `}
 								/>
 								<div className='absolute bottom-0 text-white left-3 pb-3 z-30'>
-									<h2 className={`${roboto.className}`}>{city.city}</h2>
+									<h2 >{city.city}</h2>
 									<p className='text-little'>{city.hotel.length} properties</p>
 								</div>
 							</button>
