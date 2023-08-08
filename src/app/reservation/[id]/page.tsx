@@ -66,8 +66,10 @@ const page = (props: PageProps): React.ReactNode => {
     const hotel = useSelector(state => state.hotel.hotel)
     const room = useSelector(state => state.room.room)
 
-  /*   console.log(room);
-    console.log(hotel, 'hotel'); */
+     console.log(room);
+    console.log(hotel, 'hotel'); 
+
+    
 
     const dispatch = useDispatch()
 
@@ -82,6 +84,7 @@ const page = (props: PageProps): React.ReactNode => {
     const [stay, setStay] = useState<number>(1);
     const [taxesAndServices] = useState<number>(60)
     const [totalAmount, setTotalAmount] = useState<number>(0);
+    
 
     const currency = room?.destination?.moneyType || ''
     const [ BookingMadeIt, setBooking ] = useState({ status: false })
